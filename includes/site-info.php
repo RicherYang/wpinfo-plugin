@@ -34,7 +34,7 @@ class RY_WPI_SiteInfo
     protected static function from_file_name($list, $site_ID, &$body, $dir_name)
     {
         $url = get_post_meta($site_ID, 'url', true);
-        preg_match_all('@' . $url . '/[^\'"]*/' . $dir_name . '/([a-z0-9\-\_]*)/@iU', $body, $matches);
+        preg_match_all('@' . substr($url, 6) . '/[^\'"]*/' . $dir_name . '/([a-z0-9\-\_]*)/@iU', $body, $matches);
 
         if (isset($matches[1])) {
             $list = array_merge($list, $matches[1]);
