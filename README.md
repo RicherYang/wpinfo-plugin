@@ -1,0 +1,1 @@
+# wpinfo-plugin
