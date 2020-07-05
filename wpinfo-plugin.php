@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WPInfo
+Plugin Name: WPInfo plugin
 Version: 1.0.3
 Author: Richer Yang
 Author URI: https://richer.tw/
