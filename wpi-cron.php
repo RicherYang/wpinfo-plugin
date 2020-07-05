@@ -11,24 +11,24 @@ class RY_WPI_Cron
             self::$initiated = true;
 
             add_action('wei/get_info', [__CLASS__, 'get_info']);
-            add_action('wei/get_site_theme_plugin', [__CLASS__, 'get_site_theme_plugin']);
+            add_action('wei/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
             add_action('wei/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wei/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
             add_action('wei/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
-            add_action('wei/reget_site_theme_plugin', [__CLASS__, 'reget_site_theme_plugin']);
+            add_action('wei/reget_website_theme_plugin', [__CLASS__, 'reget_website_theme_plugin']);
         }
     }
 
     public static function get_info($site_ID)
     {
-        if (get_post_type($site_ID) != 'site') {
+        if (get_post_type($site_ID) != 'website') {
             return;
         }
 
         $site_name = '';
-        $url = get_field('url', $site_ID);
-        $rest_url = get_field('rest_url', $site_ID);
+        $url = get_post_meta($site_ID, 'url', true);
+        $rest_url = get_post_meta($site_ID, 'rest_url', true);
 
         if (!empty($rest_url)) {
             $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
@@ -36,7 +36,6 @@ class RY_WPI_Cron
 
         if (empty($site_name)) {
             $response = wp_remote_get($url);
-            file_put_contents('D:/123/123.txt', var_export($response, true));
             if (!is_wp_error($response)) {
                 if (200 == wp_remote_retrieve_response_code($response)) {
                     $body = wp_remote_retrieve_body($response);
@@ -70,7 +69,7 @@ class RY_WPI_Cron
                 'post_status' => 'publish'
             ]);
 
-            as_schedule_single_action(time(), 'wei/get_site_theme_plugin', [$site_ID]);
+            as_schedule_single_action(time(), 'wei/get_website_theme_plugin', [$site_ID]);
         }
     }
 
@@ -83,9 +82,9 @@ class RY_WPI_Cron
                 $data = @json_decode($body, true);
 
                 if ($data) {
-                    update_field('description', $data['description'], $site_ID);
-                    update_field('rest_url', $rest_url, $site_ID);
-                    update_field('rest_api', implode(',', $data['namespaces']), $site_ID);
+                    update_post_meta($site_ID, 'description', $data['description']);
+                    update_post_meta($site_ID, 'rest_url', $rest_url);
+                    update_post_meta($site_ID, 'rest_api', implode(',', $data['namespaces']));
 
                     return $data['name'];
                 }
@@ -114,7 +113,7 @@ class RY_WPI_Cron
                     }
 
                     if ($use_wp) {
-                        update_field('description', (string) $xml->channel->description, $site_ID);
+                        update_post_meta($site_ID, 'description', (string) $xml->channel->description);
 
                         return (string) $xml->channel->title;
                     }
@@ -125,25 +124,23 @@ class RY_WPI_Cron
         return '';
     }
 
-    public static function get_site_theme_plugin($site_ID)
+    public static function get_website_theme_plugin($site_ID)
     {
-        if (get_post_type($site_ID) != 'site') {
+        if (get_post_type($site_ID) != 'website') {
             return;
         }
 
-        $url = get_field('url', $site_ID);
+        $url = get_post_meta($site_ID, 'url', true);
         $response = wp_remote_get($url);
         if (!is_wp_error($response)) {
             if (200 == wp_remote_retrieve_response_code($response)) {
                 $body = wp_remote_retrieve_body($response);
 
                 $themes = apply_filters('wei/add_theme', [], $site_ID, $body);
-                $themes = array_filter(array_unique($themes));
-                wp_set_post_terms($site_ID, $themes, 'theme');
+                RY_WPI_SiteInfo::add_site_info($site_ID, 'theme', $themes);
 
                 $plugins = apply_filters('wei/add_plugin', [], $site_ID, $body);
-                $plugins = array_filter(array_unique($plugins));
-                wp_set_post_terms($site_ID, $plugins, 'plugin');
+                RY_WPI_SiteInfo::add_site_info($site_ID, 'plugin', $plugins);
             }
         }
 
@@ -152,11 +149,15 @@ class RY_WPI_Cron
         ]);
     }
 
-    public static function get_theme_info($term_ID)
+    public static function get_theme_info($theme_ID)
     {
-        $term = get_term($term_ID, 'theme');
+        if (get_post_type($theme_ID) != 'theme') {
+            return;
+        }
 
-        $response = wp_remote_get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $term->slug);
+        $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
+
+        $response = wp_remote_get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug);
         if (is_wp_error($response)) {
             return;
         }
@@ -167,25 +168,31 @@ class RY_WPI_Cron
         $body = wp_remote_retrieve_body($response);
         $data = @json_decode($body, true);
         if ($data && isset($data['name'])) {
-            wp_update_term($term_ID, 'theme', [
-                'name' => $data['name']
+            wp_update_post([
+                'ID' => $theme_ID,
+                'post_title' => $data['name']
             ]);
-            update_field('at_org', 1, $term);
-            update_field('url', $data['homepage'], $term);
-            $version = get_field('version', $term);
+            if (isset($data['tags'])) {
+                wp_set_post_tags($theme_ID, array_values($data['tags']));
+            }
+
+            update_post_meta($theme_ID, 'at_org', 1);
+            update_post_meta($theme_ID, 'url', $data['homepage']);
+            $version = get_post_meta('version', $theme_ID, true);
             if (version_compare($version, $data['version'], '<')) {
-                update_field('version', $data['version'], $term);
+                update_post_meta($theme_ID, 'version', $data['version']);
             }
         }
-
-        update_field('update', current_time('mysql'), $term);
     }
 
-    public static function get_plugin_info($term_ID)
+    public static function get_plugin_info($plugin_ID)
     {
-        $term = get_term($term_ID, 'plugin');
+        if (get_post_type($plugin_ID) != 'plugin') {
+            return;
+        }
+        $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
 
-        $response = wp_remote_get('https://api.wordpress.org/plugins/info/1.0/' . $term->slug . '.json');
+        $response = wp_remote_get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json');
         if (is_wp_error($response)) {
             return;
         }
@@ -195,52 +202,64 @@ class RY_WPI_Cron
 
         $body = wp_remote_retrieve_body($response);
         $data = @json_decode($body, true);
-
         if ($data && isset($data['name'])) {
-            wp_update_term($term_ID, 'plugin', [
-                'name' => $data['name']
+            wp_update_post([
+                'ID' => $plugin_ID,
+                'post_title' => $data['name']
             ]);
-            update_field('at_org', 1, $term);
-            update_field('url', $data['homepage'], $term);
-            $version = get_field('version', $term);
+            if (isset($data['tags'])) {
+                wp_set_post_tags($plugin_ID, array_values($data['tags']));
+            }
+
+            update_post_meta($plugin_ID, 'at_org', 1);
+            update_post_meta($plugin_ID, 'url', $data['homepage']);
+            $version = get_post_meta('version', $plugin_ID, true);
             if (version_compare($version, $data['version'], '<')) {
-                update_field('version', $data['version'], $term);
+                update_post_meta($plugin_ID, 'version', $data['version']);
             }
         }
-
-        update_field('update', current_time('mysql'), $term);
     }
 
     public static function reget_theme_plugin_info()
     {
-        $term_query = new WP_Term_Query();
-        $terms = $term_query->query([
-            'taxonomy' => ['plugin', 'theme'],
-            'hide_empty' => false,
-            'meta_key' => 'update',
-            'meta_type' => 'DATETIME',
-            'orderby' => 'meta_value',
-            'order' => 'ASC',
-            'number' => 2
-        ]);
-        foreach ($terms as $term) {
-            do_action('wei/get_' . $term->taxonomy . '_info', $term->term_id);
-        }
-    }
-
-    public static function reget_site_theme_plugin()
-    {
-        $site_query = new WP_Query();
-        $site_query->query([
-            'post_type' => 'site',
+        $query = new WP_Query();
+        $query->query([
+            'post_type' => ['theme', 'plugin'],
             'post_status' => 'publish',
             'orderby' => 'modified',
             'order' => 'ASC',
             'posts_per_page' => 2
         ]);
-        while ($site_query->have_posts()) {
-            $site_query->the_post();
-            do_action('wei/get_site_theme_plugin', get_the_ID());
+        while ($query->have_posts()) {
+            $query->the_post();
+            do_action('wei/get_' . get_post_type() . '_info', get_the_ID());
+        }
+    }
+
+    public static function reget_website_theme_plugin()
+    {
+        $checkdate = new DateTime('', wp_timezone());
+        $checkdate->sub(new DateInterval('P2D'));
+
+        $query = new WP_Query();
+        $query->query([
+            'post_type' => 'website',
+            'post_status' => 'publish',
+            'date_query' => [
+                'column' => 'post_modified',
+                'before' => [
+                    'year' => $checkdate->format('Y'),
+                    'month' => $checkdate->format('m'),
+                    'day' => $checkdate->format('d')
+                ]
+            ],
+            'orderby' => 'modified',
+            'order' => 'ASC',
+            'posts_per_page' => 2
+        ]);
+        while ($query->have_posts()) {
+            $query->the_post();
+            do_action('wei/get_website_theme_plugin', get_the_ID());
         }
     }
 }

@@ -1,0 +1,14 @@
+#website_info table,
+#plugin_info table {
+    width: 100%;
+}
+#website_info table input,
+#plugin_info table input {
+    width: 100%;
+}
+#website_info table td:nth-of-type(1) {
+    width: 7em;
+}
+#plugin_info table td:nth-of-type(1) {
+    width: 10em;
+}

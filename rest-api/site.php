@@ -45,7 +45,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
 
         if (empty($data)) {
             $site_query = new WP_Query([
-                'post_type' => 'site',
+                'post_type' => 'website',
                 'post_status' => ['publish', 'draft'],
                 'name' => $slug_url,
                 'orderby' => 'ID',
@@ -70,14 +70,14 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
 
         if (empty($data)) {
             $site_ID = wp_insert_post([
-                'post_type' => 'site',
+                'post_type' => 'website',
                 'post_title' => $real_url,
                 'post_name' => $slug_url,
                 'post_status' => 'draft',
                 'comment_status' => 'closed',
                 'ping_status' => 'closed'
             ]);
-            update_field('url', $real_url, $site_ID);
+            update_post_meta($site_ID, 'url', $real_url);
             as_schedule_single_action(time(), 'wei/get_info', [$site_ID]);
 
             $data['info'] = 'confirming';

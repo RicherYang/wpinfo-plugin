@@ -12,22 +12,18 @@ class RY_WPI
         if (!self::$initiated) {
             self::$initiated = true;
 
-            if (!WP_DEBUG) {
-                include_once(RY_WPI_PLUGIN_DIR . 'includes/acf-field.php');
-            }
+            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
+            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
+            require_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
 
-            include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
-            include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
-            include_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
-
-            include_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
-            include_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
+            require_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
+            require_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
 
             if (is_admin()) {
-                include_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
+                require_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
                 add_action('init', ['RY_WPI_update', 'update']);
 
-                include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
+                require_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
             } else {
                 remove_action('wp_head', 'rsd_link');
                 remove_action('wp_head', 'wlwmanifest_link');
@@ -56,39 +52,65 @@ class RY_WPI
 
             add_action('init', [__CLASS__, 'register_post_type'], 9);
             add_action('rest_api_init', [__CLASS__, 'initial_rest_routes'], 100);
-
-            add_action('created_theme', [__CLASS__, 'get_theme_info']);
-            add_action('created_plugin', [__CLASS__, 'get_plugin_info']);
         }
     }
 
     public static function register_post_type()
     {
-        register_post_type('site', [
+        register_post_type('website', [
             'labels' => [
-                'name' => '網站資訊',
+                'name' => '網站',
                 'add_new' => '新增網站資訊',
                 'add_new_item' => '新增網站資訊',
                 'search_items' => '搜尋網站資訊',
             ],
             'public' => true,
+            'hierarchical' => false,
             'has_archive' => true,
             'show_in_admin_bar' => false,
             'supports' => ['title', 'custom-fields'],
             'taxonomies' => ['category', 'post_tag']
         ]);
 
-        register_taxonomy('theme', ['site'], [
-            'label' => '佈景主題',
+        register_post_type('plugin', [
+            'labels' => [
+                'name' => '網站 外掛',
+                'add_new' => '新增外掛',
+                'add_new_item' => '新增外掛',
+                'search_items' => '搜尋外掛',
+            ],
             'public' => true,
-            'show_admin_column' => true,
+            'hierarchical' => false,
+            'has_archive' => true,
+            'show_in_admin_bar' => false,
+            'supports' => ['title', 'custom-fields'],
+            'taxonomies' => ['category', 'post_tag']
+        ]);
+
+        register_post_type('theme', [
+            'labels' => [
+                'name' => '網站 佈景主題',
+                'add_new' => '新增佈景主題',
+                'add_new_item' => '新增佈景主題',
+                'search_items' => '搜尋佈景主題',
+            ],
+            'public' => true,
+            'hierarchical' => false,
+            'has_archive' => true,
+            'show_in_admin_bar' => false,
+            'supports' => ['title', 'custom-fields'],
+            'taxonomies' => ['category', 'post_tag']
+        ]);
+
+        register_taxonomy('theme', ['website'], [
+            'label' => '佈景主題',
+            'public' => false,
             'hierarchical' => false
         ]);
 
-        register_taxonomy('plugin', ['site'], [
+        register_taxonomy('plugin', ['website'], [
             'label' => '外掛',
-            'public' => true,
-            'show_admin_column' => true,
+            'public' => false,
             'hierarchical' => false
         ]);
     }
@@ -99,16 +121,6 @@ class RY_WPI
 
         $controller = new RY_WPI_Site_Controller;
         $controller->register_routes();
-    }
-
-    public static function get_theme_info($term_ID)
-    {
-        as_schedule_single_action(time(), 'wei/get_theme_info', [$term_ID]);
-    }
-
-    public static function get_plugin_info($term_ID)
-    {
-        as_schedule_single_action(time(), 'wei/get_plugin_info', [$term_ID]);
     }
 
     public static function hide_version($meta)

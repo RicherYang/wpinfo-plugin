@@ -12,13 +12,14 @@ class RY_WPI_Ajax
 
             add_action('wp_ajax_wei_get_info', [__CLASS__, 'get_info']);
             add_action('wp_ajax_wei_get_theme_plugin', [__CLASS__, 'get_theme_plugin']);
+            add_action('wp_ajax_wei_get_plugin_info', [__CLASS__, 'get_plugin_info']);
         }
     }
 
     public static function get_info()
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        if (get_post_type($site_ID) == 'site') {
+        if (get_post_type($site_ID) == 'website') {
             do_action('wei/get_info', $site_ID);
         }
     }
@@ -26,8 +27,17 @@ class RY_WPI_Ajax
     public static function get_theme_plugin()
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        if (get_post_type($site_ID) == 'site') {
-            do_action('wei/get_site_theme_plugin', $site_ID);
+        if (get_post_type($site_ID) == 'website') {
+            do_action('wei/get_website_theme_plugin', $site_ID);
+        }
+    }
+
+    public static function get_plugin_info()
+    {
+        $plugin_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $post_type = get_post_type($plugin_ID);
+        if (in_array($post_type, ['theme', 'plugin'])) {
+            do_action('wei/get_' . $post_type . '_info', $plugin_ID);
         }
     }
 }
