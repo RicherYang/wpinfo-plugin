@@ -13,10 +13,6 @@ final class RY_WPI_update
             return;
         }
 
-        if (version_compare($now_version, '1.0.3', '<')) {
-            RY_WPI::update_option('version', '1.0.3');
-        }
-
         if (version_compare($now_version, '1.1.1', '<')) {
             global $wpdb;
 
@@ -52,6 +48,10 @@ final class RY_WPI_update
             }
 
             RY_WPI::update_option('version', '1.1.1');
+        }
+
+        if (version_compare($now_version, '1.1.2', '<')) {
+            RY_WPI::update_option('version', '1.1.2');
         }
     }
 }

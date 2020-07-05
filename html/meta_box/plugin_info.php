@@ -1,7 +1,5 @@
 <?php
 $metadata = has_meta($post->ID);
-$meta_id_key = array_column($metadata, 'meta_id', 'meta_key');
-$metadata = array_combine(array_column($metadata, 'meta_id'), $metadata);
 
 $list = [
     'at_org' => '官網上架',
@@ -13,13 +11,13 @@ $list = [
 ?>
 <table>
     <?php
-    foreach ($list as $key => $name) {
-        if (isset($meta_id_key[$key])) {
+    foreach ($metadata as $data) {
+        if (isset($list[$data['meta_key']])) {
             echo '<tr>'
-                . '<td>' . $name . '</td>'
+                . '<td>' . $list[$data['meta_key']] . '</td>'
                 . '<td>'
-                    . '<input type="text" name="meta[' . $meta_id_key[$key] . '][value]" value="' . esc_attr($metadata[$meta_id_key[$key]]['meta_value']) . '">'
-                    . '<input type="hidden" name="meta[' . $meta_id_key[$key] . '][key]" value="' . esc_attr($metadata[$meta_id_key[$key]]['meta_key']) . '">'
+                    . '<input type="text" name="meta[' . $data['meta_id'] . '][value]" value="' . esc_attr($data['meta_value']) . '">'
+                    . '<input type="hidden" name="meta[' . $data['meta_id'] . '][key]" value="' . esc_attr($data['meta_key']) . '">'
                 . '</td>'
                 . '</tr>';
         }

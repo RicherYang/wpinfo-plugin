@@ -15,8 +15,8 @@ $list = [
             echo '<tr>'
                 . '<td>' . $list[$data['meta_key']] . '</td>'
                 . '<td>'
-                    . '<input type="text" name="meta[' . $data['meta_key'] . '][value]" value="' . esc_attr($data['meta_value']) . '">'
-                    . '<input type="hidden" name="meta[' . $data['meta_key'] . '][key]" value="' . esc_attr($data['meta_key']) . '">'
+                    . '<input type="text" name="meta[' . $data['meta_id'] . '][value]" value="' . esc_attr($data['meta_value']) . '">'
+                    . '<input type="hidden" name="meta[' . $data['meta_id'] . '][key]" value="' . esc_attr($data['meta_key']) . '">'
                 . '</td>'
                 . '</tr>';
         }
