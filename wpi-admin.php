@@ -11,9 +11,20 @@ class RY_WPI_Admin
             self::$initiated = true;
 
             add_action('init', [__CLASS__, 'check_schedule'], 20);
+
+            add_action('save_post_plugin', [__CLASS__, 'get_theme_plugin_info'], 10, 3);
+            add_action('save_post_theme', [__CLASS__, 'get_theme_plugin_info'], 10, 3);
             add_action('add_meta_boxes_website', [__CLASS__, 'website_meta_box']);
             add_action('add_meta_boxes_plugin', [__CLASS__, 'plugin_meta_box']);
             add_action('add_meta_boxes_theme', [__CLASS__, 'plugin_meta_box']);
+        }
+    }
+
+    public static function get_theme_plugin_info($post_ID, $post, $update)
+    {
+        if (!$update) {
+            update_post_meta($post_ID, 'used_count', 0);
+            update_post_meta($post_ID, 'rest_key', '');
         }
     }
 
