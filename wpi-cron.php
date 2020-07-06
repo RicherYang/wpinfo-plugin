@@ -228,7 +228,7 @@ class RY_WPI_Cron
             'post_status' => 'publish',
             'orderby' => 'modified',
             'order' => 'ASC',
-            'posts_per_page' => 2
+            'posts_per_page' => 3
         ]);
         while ($query->have_posts()) {
             $query->the_post();
@@ -245,17 +245,9 @@ class RY_WPI_Cron
         $query->query([
             'post_type' => 'website',
             'post_status' => 'publish',
-            'date_query' => [
-                'column' => 'post_modified',
-                'before' => [
-                    'year' => $checkdate->format('Y'),
-                    'month' => $checkdate->format('m'),
-                    'day' => $checkdate->format('d')
-                ]
-            ],
             'orderby' => 'modified',
             'order' => 'ASC',
-            'posts_per_page' => 2
+            'posts_per_page' => 3
         ]);
         while ($query->have_posts()) {
             $query->the_post();
