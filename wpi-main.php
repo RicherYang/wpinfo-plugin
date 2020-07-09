@@ -102,6 +102,15 @@ class RY_WPI
             'taxonomies' => ['category', 'post_tag']
         ]);
 
+        register_post_type('remote_log', [
+            'label' => '抓取紀錄',
+            'public' => false,
+            'hierarchical' => false,
+            'show_ui' => true,
+            'show_in_admin_bar' => false,
+            'supports' => ['title', 'editor']
+        ]);
+
         register_taxonomy('theme', ['website'], [
             'label' => '佈景主題',
             'public' => false,
