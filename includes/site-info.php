@@ -40,8 +40,9 @@ class RY_WPI_SiteInfo
             $list = array_merge($list, $matches[1]);
         }
 
-        array_walk($list, 'strtolower');
-        array_walk($list, 'sanitize_title');
+        foreach ($list as &$name) {
+            $name = sanitize_title(strtolower($name));
+        }
 
         return $list;
     }

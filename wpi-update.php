@@ -50,8 +50,8 @@ final class RY_WPI_update
             RY_WPI::update_option('version', '1.1.1');
         }
 
-        if (version_compare($now_version, '1.1.7', '<')) {
-            RY_WPI::update_option('version', '1.1.7');
+        if (version_compare($now_version, '1.1.7.1', '<')) {
+            RY_WPI::update_option('version', '1.1.7.1');
         }
     }
 }
