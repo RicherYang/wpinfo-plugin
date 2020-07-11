@@ -17,6 +17,7 @@ class RY_WPI_Admin
             add_action('add_meta_boxes_website', [__CLASS__, 'website_meta_box']);
             add_action('add_meta_boxes_plugin', [__CLASS__, 'plugin_meta_box']);
             add_action('add_meta_boxes_theme', [__CLASS__, 'plugin_meta_box']);
+            add_action('delete_post', [__CLASS__, 'delete_post_info']);
         }
     }
 
@@ -46,6 +47,26 @@ class RY_WPI_Admin
         remove_meta_box('postcustom', null, 'normal');
         add_meta_box('plugin_info', '基本資訊', [__CLASS__, 'plugin_info'], null, 'normal');
         add_meta_box('plugin_action', 'WEI 操作', [__CLASS__, 'plugin_action'], null, 'side');
+    }
+
+    public static function delete_post_info($post_ID)
+    {
+        $post_type = get_post_type($post_ID);
+        $post_query = new WP_Query();
+        $post_query->query([
+            'post_type' => 'website',
+            'post_status' => 'publish',
+            'meta_key' => $post_type,
+            'meta_value' => $post_ID,
+            'orderby' => 'modified',
+            'order' => 'DESC',
+            'posts_per_page' => '-1'
+        ]);
+        while ($post_query->have_posts()) {
+            $post_query->the_post();
+
+            delete_post_meta(get_the_ID(), $post_type, $post_ID);
+        }
     }
 
     public static function website_info($post)
