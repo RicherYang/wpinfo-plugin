@@ -27,15 +27,19 @@ class RY_WPI_SiteInfo
         preg_match_all('@' . preg_quote(substr($url, 6), '@') . '/[^\'"]*/themes/([a-z0-9\-\_]*)/@iU', $body, $matches, PREG_SET_ORDER);
 
         if (count($matches)) {
-            $list = array_filter(array_unique($matches));
-            foreach ($list as $theme) {
+            foreach ($matches as $theme) {
+                $theme[1] = sanitize_title(strtolower($theme[1]));
+                if (in_array($theme[1], $themes)) {
+                    continue;
+                }
                 $themes[] = sanitize_title(strtolower($theme[1]));
 
                 $body = RY_WPI_Cron::remote_get('https:' . $theme[0] . 'style.css');
-                if (!empty($body)) {
-                    if (preg_match('/^[ \t\/*#@]*Template:(.*)$/mi', $body, $match) && $match[1]) {
-                        $themes[] = sanitize_title(strtolower(trim($theme[1])));
-                    }
+                if (empty($body)) {
+                    continue;
+                }
+                if (preg_match('/^[ \t\/*#@]*Template:(.*)$/mi', $body, $match) && $match[1]) {
+                    $themes[] = sanitize_title(strtolower(trim($theme[1])));
                 }
             }
         }
