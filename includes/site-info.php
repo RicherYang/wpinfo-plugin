@@ -23,28 +23,39 @@ class RY_WPI_SiteInfo
 
     public static function theme_from_file_name($themes, $site_ID, $body)
     {
-        return self::from_file_name($themes, $site_ID, $body, 'themes');
+        $url = get_post_meta($site_ID, 'url', true);
+        preg_match_all('@' . preg_quote(substr($url, 6), '@') . '/[^\'"]*/themes/([a-z0-9\-\_]*)/@iU', $body, $matches, PREG_SET_ORDER);
+
+        if (count($matches)) {
+            $list = array_filter(array_unique($matches));
+            foreach ($list as $theme) {
+                $themes[] = sanitize_title(strtolower($theme[1]));
+
+                $body = RY_WPI_Cron::remote_get('https:' . $theme[0] . 'style.css');
+                if (!empty($body)) {
+                    if (preg_match('/^[ \t\/*#@]*Template:(.*)$/mi', $body, $match) && $match[1]) {
+                        $themes[] = sanitize_title(strtolower(trim($theme[1])));
+                    }
+                }
+            }
+        }
+
+        return $themes;
     }
 
     public static function plugin_from_file_name($plugins, $site_ID, $body)
     {
-        return self::from_file_name($plugins, $site_ID, $body, 'plugins');
-    }
-
-    protected static function from_file_name($list, $site_ID, &$body, $dir_name)
-    {
         $url = get_post_meta($site_ID, 'url', true);
-        preg_match_all('@' . substr($url, 6) . '/[^\'"]*/' . $dir_name . '/([a-z0-9\-\_]*)/@iU', $body, $matches);
+        preg_match_all('@' . preg_quote(substr($url, 6), '@') . '/[^\'"]*/plugins/([a-z0-9\-\_]*)/@iU', $body, $matches);
 
         if (isset($matches[1])) {
-            $list = array_merge($list, $matches[1]);
+            $list = array_filter(array_unique($matches[1]));
+            foreach ($list as $name) {
+                $plugins[] = sanitize_title(strtolower($name));
+            }
         }
 
-        foreach ($list as &$name) {
-            $name = sanitize_title(strtolower($name));
-        }
-
-        return $list;
+        return $plugins;
     }
 
     public static function plugin_from_rest($plugins, $site_ID)

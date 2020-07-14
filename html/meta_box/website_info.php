@@ -19,8 +19,6 @@ $list = [
                     . '<input type="hidden" name="meta[' . $data['meta_id'] . '][key]" value="' . esc_attr($data['meta_key']) . '">'
                 . '</td>'
                 . '</tr>';
-        } else {
-            update_post_meta($post->ID, $data['meta_key'], '');
         }
     }
     ?>

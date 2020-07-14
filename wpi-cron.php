@@ -241,7 +241,7 @@ class RY_WPI_Cron
         }
     }
 
-    protected static function remote_get($url)
+    public static function remote_get($url)
     {
         $response = wp_remote_get($url, [
             'timeout' => 10
