@@ -14,7 +14,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
             '/' . $this->rest_base . '/check_url',
             [
                 [
-                    'methods' => WP_REST_Server::READABLE,
+                    'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'check_url'],
                     'args' => [
                         'url' => [
@@ -78,6 +78,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
                 'ping_status' => 'closed'
             ]);
             update_post_meta($site_ID, 'url', $real_url);
+            update_post_meta($site_ID, 'rest_url', '');
             as_schedule_single_action(time(), 'wei/get_info', [$site_ID]);
 
             $data['info'] = 'confirming';
