@@ -15,8 +15,8 @@ class RY_WPI_Cron
             add_action('wei/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wei/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
+            add_action('wei/reget_info', [__CLASS__, 'reget_info']);
             add_action('wei/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
-            add_action('wei/reget_website_theme_plugin', [__CLASS__, 'reget_website_theme_plugin']);
         }
     }
 
@@ -30,13 +30,9 @@ class RY_WPI_Cron
         $url = get_post_meta($site_ID, 'url', true);
         $rest_url = get_post_meta($site_ID, 'rest_url', true);
 
-        if (!empty($rest_url)) {
-            $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
-        }
-
-        if (empty($site_name)) {
-            $body = self::remote_get($url);
-            if (!empty($body)) {
+        $body = self::remote_get($url);
+        if (!empty($body)) {
+            if (empty($rest_url)) {
                 $link_cat = strpos($body, 'https://api.w.org/');
                 if ($link_cat !== false) {
                     $rest_url = substr($body, $link_cat + 18, 250);
@@ -50,7 +46,21 @@ class RY_WPI_Cron
                 if (filter_var($rest_url, FILTER_VALIDATE_URL) === false) {
                     $rest_url = $url . '/wp-json';
                 }
-                $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
+            }
+
+            $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
+
+            preg_match_all('@(/[^\'"]*/)(themes|plugins)/@iU', $body, $matches);
+            if (isset($matches[1])) {
+                $dir_list = array_unique($matches[1]);
+                $min_dir_len = PHP_INT_MAX;
+                foreach ($dir_list as $dir) {
+                    if (strlen($dir) < $min_dir_len) {
+                        $content_path = $dir;
+                        $min_dir_len = strlen($dir);
+                    }
+                    update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
+                }
             }
         }
 
@@ -206,23 +216,7 @@ class RY_WPI_Cron
         }
     }
 
-    public static function reget_theme_plugin_info()
-    {
-        $query = new WP_Query();
-        $query->query([
-            'post_type' => ['theme', 'plugin'],
-            'post_status' => 'publish',
-            'orderby' => 'modified',
-            'order' => 'ASC',
-            'posts_per_page' => 1
-        ]);
-        while ($query->have_posts()) {
-            $query->the_post();
-            do_action('wei/get_' . get_post_type() . '_info', get_the_ID());
-        }
-    }
-
-    public static function reget_website_theme_plugin()
+    public static function reget_info()
     {
         $checkdate = new DateTime('', wp_timezone());
         $checkdate->sub(new DateInterval('P2D'));
@@ -237,7 +231,23 @@ class RY_WPI_Cron
         ]);
         while ($query->have_posts()) {
             $query->the_post();
-            do_action('wei/get_website_theme_plugin', get_the_ID());
+            do_action('wei/get_info', get_the_ID());
+        }
+    }
+
+    public static function reget_theme_plugin_info()
+    {
+        $query = new WP_Query();
+        $query->query([
+            'post_type' => ['theme', 'plugin'],
+            'post_status' => 'publish',
+            'orderby' => 'modified',
+            'order' => 'ASC',
+            'posts_per_page' => 1
+        ]);
+        while ($query->have_posts()) {
+            $query->the_post();
+            do_action('wei/get_' . get_post_type() . '_info', get_the_ID());
         }
     }
 

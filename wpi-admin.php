@@ -98,8 +98,8 @@ class RY_WPI_Admin
             as_schedule_recurring_action(time(), 600, 'wei/reget_theme_plugin_info');
         }
 
-        if (!as_next_scheduled_action('wei/reget_website_theme_plugin')) {
-            as_schedule_recurring_action(time(), 600, 'wei/reget_website_theme_plugin');
+        if (!as_next_scheduled_action('wei/reget_info')) {
+            as_schedule_recurring_action(time(), 600, 'wei/reget_info');
         }
     }
 }
