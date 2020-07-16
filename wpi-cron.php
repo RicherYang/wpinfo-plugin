@@ -50,17 +50,32 @@ class RY_WPI_Cron
 
             $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
 
-            preg_match_all('@(/[^\'"]*/)(themes|plugins)/@iU', $body, $matches);
+            $domain = parse_url($url, PHP_URL_HOST);
+            preg_match_all('@(/[a-z0-9\-\_\./]*/)(themes|plugins)/@iU', $body, $matches);
             if (isset($matches[1])) {
                 $dir_list = array_unique($matches[1]);
+                var_dump($dir_list);
                 $min_dir_len = PHP_INT_MAX;
+                $find_same_domain = false;
                 foreach ($dir_list as $dir) {
-                    if (strlen($dir) < $min_dir_len) {
-                        $content_path = $dir;
-                        $min_dir_len = strlen($dir);
+                    if (parse_url($dir, PHP_URL_HOST) == $domain) {
+                        if ($find_same_domain === false) {
+                            $min_dir_len = PHP_INT_MAX;
+                            $find_same_domain = true;
+                        }
+                        if (strlen($dir) < $min_dir_len) {
+                            $content_path = $dir;
+                            $min_dir_len = strlen($dir);
+                        }
                     }
-                    update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
+                    if ($find_same_domain === false) {
+                        if (strlen($dir) < $min_dir_len) {
+                            $content_path = $dir;
+                            $min_dir_len = strlen($dir);
+                        }
+                    }
                 }
+                update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
             }
         }
 
