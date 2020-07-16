@@ -79,7 +79,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
             ]);
             update_post_meta($site_ID, 'url', $real_url);
             update_post_meta($site_ID, 'rest_url', '');
-            as_schedule_single_action(time(), 'wei/get_info', [$site_ID]);
+            as_enqueue_async_action('wei/get_info', [$site_ID]);
 
             $data['info'] = 'confirming';
         }

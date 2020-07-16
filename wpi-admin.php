@@ -99,7 +99,7 @@ class RY_WPI_Admin
         }
 
         if (!as_next_scheduled_action('wei/reget_info')) {
-            as_schedule_recurring_action(time(), 600, 'wei/reget_info');
+            as_schedule_recurring_action(time(), 300, 'wei/reget_info');
         }
     }
 }

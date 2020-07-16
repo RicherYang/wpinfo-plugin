@@ -54,9 +54,9 @@ class RY_WPI_Cron
             preg_match_all('@(/[a-z0-9\-\_\./]*/)(themes|plugins)/@iU', $body, $matches);
             if (isset($matches[1])) {
                 $dir_list = array_unique($matches[1]);
-                var_dump($dir_list);
                 $min_dir_len = PHP_INT_MAX;
                 $find_same_domain = false;
+                $content_path = '';
                 foreach ($dir_list as $dir) {
                     if (parse_url($dir, PHP_URL_HOST) == $domain) {
                         if ($find_same_domain === false) {
@@ -75,7 +75,9 @@ class RY_WPI_Cron
                         }
                     }
                 }
-                update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
+                if (!empty($content_path)) {
+                    update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
+                }
             }
         }
 
