@@ -24,7 +24,11 @@ class RY_WPI_SiteInfo
     public static function theme_from_file_name($themes, $site_ID, $body)
     {
         $url = get_post_meta($site_ID, 'url', true);
-        preg_match_all('@' . preg_quote(substr($url, 6), '@') . '/[^\'"]*/themes/([a-z0-9\-\_]*)/@iU', $body, $matches, PREG_SET_ORDER);
+        $url = substr($url, 8);
+        if (substr($url, 0, 4) == 'www.') {
+            $url = substr($url, 4);
+        }
+        preg_match_all('@' . preg_quote($url, '@') . '/[a-z0-9\-\_\./]*/themes/([a-z0-9\-\_]*)/@iU', $body, $matches, PREG_SET_ORDER);
 
         if (count($matches)) {
             foreach ($matches as $theme) {
@@ -50,7 +54,11 @@ class RY_WPI_SiteInfo
     public static function plugin_from_file_name($plugins, $site_ID, $body)
     {
         $url = get_post_meta($site_ID, 'url', true);
-        preg_match_all('@' . preg_quote(substr($url, 6), '@') . '/[^\'"]*/plugins/([a-z0-9\-\_]*)/@iU', $body, $matches);
+        $url = substr($url, 8);
+        if (substr($url, 0, 4) == 'www.') {
+            $url = substr($url, 4);
+        }
+        preg_match_all('@' . preg_quote($url, '@') . '/[a-z0-9\-\_\./]*/plugins/([a-z0-9\-\_]*)/@iU', $body, $matches);
 
         if (isset($matches[1])) {
             $list = array_filter(array_unique($matches[1]));
