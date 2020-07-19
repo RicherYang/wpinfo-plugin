@@ -20,7 +20,7 @@ class RY_WPI_Ajax
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (get_post_type($site_ID) == 'website') {
-            do_action('wpi/get_info', $site_ID);
+            do_action('wpi/get_info', $site_ID, false);
         }
     }
 

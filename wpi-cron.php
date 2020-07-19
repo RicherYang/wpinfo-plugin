@@ -48,7 +48,9 @@ class RY_WPI_Cron
                 }
             }
 
-            $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
+            if ($rest_url != 'not_use') {
+                $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
+            }
 
             $domain = parse_url($url, PHP_URL_HOST);
             preg_match_all('@(/[a-z0-9\-\_\./]*/)(themes|plugins)/@iU', $body, $matches);
@@ -83,6 +85,10 @@ class RY_WPI_Cron
 
         if (empty($site_name)) {
             $site_name = self::use_feed_get_site_name($url . '/feed', $site_ID);
+        }
+
+        if (empty($site_name) && get_post_states($site_ID) == 'publish') {
+            $site_name = get_the_title($site_ID);
         }
 
         if (!empty($site_name)) {
@@ -120,6 +126,7 @@ class RY_WPI_Cron
     {
         $post_status = get_post_status($site_ID);
         $body = self::remote_get($feed_url);
+
         if (!empty($body)) {
             $xml = simplexml_load_string($body);
 
@@ -292,7 +299,7 @@ class RY_WPI_Cron
                 'post_type' => 'remote_log',
                 'post_title' => 'Error ' . $url,
                 'post_status' => 'publish',
-                'post_content' => wp_remote_retrieve_body($response->get_error_messages())
+                'post_content' => $response->get_error_messages()
             ]);
         }
         return '';

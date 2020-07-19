@@ -33,8 +33,8 @@ $list = [
 </table>
 
 <p>
-    佈景主題：<?php the_post_list(get_post_meta($post->ID, 'theme')); ?>
+    佈景主題：<?php the_post_list(get_post_meta($post->ID, 'theme'), '，'); ?>
 </p>
 <p>
-    外掛：<?php the_post_list(get_post_meta($post->ID, 'plugin')); ?>
+    外掛：<?php the_post_list(get_post_meta($post->ID, 'plugin'), '，'); ?>
 </p>
