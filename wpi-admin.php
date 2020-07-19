@@ -94,12 +94,12 @@ class RY_WPI_Admin
         wp_register_style('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/css/meta_box.css', [], RY_WPI_VERSION);
         wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
 
-        if (!as_next_scheduled_action('wei/reget_theme_plugin_info')) {
-            as_schedule_recurring_action(time(), 600, 'wei/reget_theme_plugin_info');
+        if (!as_next_scheduled_action('wpi/reget_theme_plugin_info')) {
+            as_schedule_recurring_action(time(), 600, 'wpi/reget_theme_plugin_info');
         }
 
-        if (!as_next_scheduled_action('wei/reget_info')) {
-            as_schedule_recurring_action(time(), 300, 'wei/reget_info');
+        if (!as_next_scheduled_action('wpi/reget_info')) {
+            as_schedule_recurring_action(time(), 300, 'wpi/reget_info');
         }
     }
 }

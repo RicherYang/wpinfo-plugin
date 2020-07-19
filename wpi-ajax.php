@@ -20,7 +20,7 @@ class RY_WPI_Ajax
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (get_post_type($site_ID) == 'website') {
-            do_action('wei/get_info', $site_ID);
+            do_action('wpi/get_info', $site_ID);
         }
     }
 
@@ -28,7 +28,7 @@ class RY_WPI_Ajax
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (get_post_type($site_ID) == 'website') {
-            do_action('wei/get_website_theme_plugin', $site_ID);
+            do_action('wpi/get_website_theme_plugin', $site_ID);
         }
     }
 
@@ -37,7 +37,7 @@ class RY_WPI_Ajax
         $plugin_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $post_type = get_post_type($plugin_ID);
         if (in_array($post_type, ['theme', 'plugin'])) {
-            do_action('wei/get_' . $post_type . '_info', $plugin_ID);
+            do_action('wpi/get_' . $post_type . '_info', $plugin_ID);
         }
     }
 }

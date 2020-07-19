@@ -3,7 +3,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
 {
     public function __construct()
     {
-        $this->namespace = 'wei/v1';
+        $this->namespace = 'wpi/v1';
         $this->rest_base = 'site';
     }
 
@@ -19,7 +19,24 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
                     'args' => [
                         'url' => [
                             'required' => true,
-                            'type'  => 'string'
+                            'type' => 'string'
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/get_info',
+            [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => [$this, 'get_info'],
+                    'args' => [
+                        'site_ID' => [
+                            'required' => true,
+                            'type' => 'integer'
                         ]
                     ]
                 ]
@@ -79,9 +96,28 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
             ]);
             update_post_meta($site_ID, 'url', $real_url);
             update_post_meta($site_ID, 'rest_url', '');
-            as_enqueue_async_action('wei/get_info', [$site_ID]);
 
             $data['info'] = 'confirming';
+            $data['id'] = $site_ID;
+        }
+
+        $data = $this->add_additional_fields_to_object($data, $request);
+
+        return rest_ensure_response($data);
+    }
+
+    public function get_info($request)
+    {
+        $data = [];
+
+        $site_ID = (int) $request['site_ID'];
+
+        if (get_post_type($site_ID) == 'website') {
+            do_action('wpi/get_info', $site_ID, false);
+            if (get_post_status($site_ID) == 'publish') {
+                do_action('wpi/get_website_theme_plugin', $site_ID);
+                $data['url'] = get_permalink($site_ID);
+            }
         }
 
         $data = $this->add_additional_fields_to_object($data, $request);

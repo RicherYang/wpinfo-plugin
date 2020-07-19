@@ -32,11 +32,11 @@ final class RY_WPI_update
                 'post_status' => 'publish',
                 'posts_per_page' => -1
             ]);
-            as_unschedule_all_actions('wei/get_info');
-            as_unschedule_all_actions('wei/get_website_theme_plugin');
+            as_unschedule_all_actions('wpi/get_info');
+            as_unschedule_all_actions('wpi/get_website_theme_plugin');
             while ($post_query->have_posts()) {
                 $post_query->the_post();
-                as_schedule_single_action(time(), 'wei/get_info', [get_the_ID()]);
+                as_schedule_single_action(time(), 'wpi/get_info', [get_the_ID()]);
             }
 
             $term_query = new WP_Term_Query();
@@ -50,8 +50,8 @@ final class RY_WPI_update
             RY_WPI::update_option('version', '1.1.1');
         }
 
-        if (version_compare($now_version, '1.1.15', '<')) {
-            RY_WPI::update_option('version', '1.1.15');
+        if (version_compare($now_version, '1.1.16', '<')) {
+            RY_WPI::update_option('version', '1.1.16');
         }
     }
 }

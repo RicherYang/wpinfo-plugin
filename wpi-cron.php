@@ -10,17 +10,17 @@ class RY_WPI_Cron
         if (!self::$initiated) {
             self::$initiated = true;
 
-            add_action('wei/get_info', [__CLASS__, 'get_info']);
-            add_action('wei/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            add_action('wei/get_theme_info', [__CLASS__, 'get_theme_info']);
-            add_action('wei/get_plugin_info', [__CLASS__, 'get_plugin_info']);
+            add_action('wpi/get_info', [__CLASS__, 'get_info'], 10, 2);
+            add_action('wpi/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
+            add_action('wpi/get_theme_info', [__CLASS__, 'get_theme_info']);
+            add_action('wpi/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
-            add_action('wei/reget_info', [__CLASS__, 'reget_info']);
-            add_action('wei/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
+            add_action('wpi/reget_info', [__CLASS__, 'reget_info']);
+            add_action('wpi/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
         }
     }
 
-    public static function get_info($site_ID)
+    public static function get_info($site_ID, $auto_next = true)
     {
         if (get_post_type($site_ID) != 'website') {
             return;
@@ -92,7 +92,9 @@ class RY_WPI_Cron
                 'post_status' => 'publish'
             ]);
 
-            as_schedule_single_action(time(), 'wei/get_website_theme_plugin', [$site_ID]);
+            if ($auto_next) {
+                as_schedule_single_action(time(), 'wpi/get_website_theme_plugin', [$site_ID]);
+            }
         }
     }
 
@@ -150,10 +152,10 @@ class RY_WPI_Cron
         $url = get_post_meta($site_ID, 'url', true);
         $body = self::remote_get($url);
         if (!empty($body)) {
-            $themes = apply_filters('wei/add_theme', [], $site_ID, $body);
+            $themes = apply_filters('wpi/add_theme', [], $site_ID, $body);
             RY_WPI_SiteInfo::add_site_info($site_ID, 'theme', $themes);
 
-            $plugins = apply_filters('wei/add_plugin', [], $site_ID, $body);
+            $plugins = apply_filters('wpi/add_plugin', [], $site_ID, $body);
             RY_WPI_SiteInfo::add_site_info($site_ID, 'plugin', $plugins);
         }
 
@@ -248,7 +250,7 @@ class RY_WPI_Cron
         ]);
         while ($query->have_posts()) {
             $query->the_post();
-            do_action('wei/get_info', get_the_ID());
+            do_action('wpi/get_info', get_the_ID());
         }
     }
 
@@ -264,7 +266,7 @@ class RY_WPI_Cron
         ]);
         while ($query->have_posts()) {
             $query->the_post();
-            do_action('wei/get_' . get_post_type() . '_info', get_the_ID());
+            do_action('wpi/get_' . get_post_type() . '_info', get_the_ID());
         }
     }
 

@@ -14,10 +14,10 @@ class RY_WPI_SiteInfo
                 require_once ABSPATH . 'wp-admin/includes/post.php';
             }
 
-            add_filter('wei/add_theme', [__CLASS__, 'theme_from_file_name'], 10, 3);
-            add_filter('wei/add_plugin', [__CLASS__, 'plugin_from_file_name'], 10, 3);
+            add_filter('wpi/add_theme', [__CLASS__, 'theme_from_file_name'], 10, 3);
+            add_filter('wpi/add_plugin', [__CLASS__, 'plugin_from_file_name'], 10, 3);
 
-            add_filter('wei/add_plugin', [__CLASS__, 'plugin_from_rest'], 10, 2);
+            add_filter('wpi/add_plugin', [__CLASS__, 'plugin_from_rest'], 10, 2);
         }
     }
 
@@ -148,7 +148,7 @@ class RY_WPI_SiteInfo
                 $type_list[] = $new_ID;
                 update_post_meta($new_ID, 'used_count', 0);
                 update_post_meta($new_ID, 'rest_key', '');
-                as_schedule_single_action(time(), 'wei/get_' . $type . '_info', [$new_ID]);
+                as_schedule_single_action(time(), 'wpi/get_' . $type . '_info', [$new_ID]);
             }
         }
 
