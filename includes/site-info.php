@@ -38,7 +38,7 @@ class RY_WPI_SiteInfo
                 }
                 $themes[] = sanitize_title(strtolower($theme[1]));
 
-                $body = RY_WPI_Cron::remote_get('https:' . $theme[0] . 'style.css');
+                $body = RY_WPI_Cron::remote_get('https://' . $theme[0] . 'style.css');
                 if (empty($body)) {
                     continue;
                 }

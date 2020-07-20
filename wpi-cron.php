@@ -87,7 +87,7 @@ class RY_WPI_Cron
             $site_name = self::use_feed_get_site_name($url . '/feed', $site_ID);
         }
 
-        if (empty($site_name) && get_post_states($site_ID) == 'publish') {
+        if (empty($site_name) && get_post_status($site_ID) == 'publish') {
             $site_name = get_the_title($site_ID);
         }
 
@@ -299,7 +299,7 @@ class RY_WPI_Cron
                 'post_type' => 'remote_log',
                 'post_title' => 'Error ' . $url,
                 'post_status' => 'publish',
-                'post_content' => $response->get_error_messages()
+                'post_content' => implode("\n", $response->get_error_messages())
             ]);
         }
         return '';

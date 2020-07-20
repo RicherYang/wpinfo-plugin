@@ -10,9 +10,9 @@ class RY_WPI_Ajax
         if (!self::$initiated) {
             self::$initiated = true;
 
-            add_action('wp_ajax_wei_get_info', [__CLASS__, 'get_info']);
-            add_action('wp_ajax_wei_get_theme_plugin', [__CLASS__, 'get_theme_plugin']);
-            add_action('wp_ajax_wei_get_plugin_info', [__CLASS__, 'get_plugin_info']);
+            add_action('wp_ajax_wpi_get_info', [__CLASS__, 'get_info']);
+            add_action('wp_ajax_wpi_get_theme_plugin', [__CLASS__, 'get_theme_plugin']);
+            add_action('wp_ajax_wpi_get_plugin_info', [__CLASS__, 'get_plugin_info']);
         }
     }
 
