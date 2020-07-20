@@ -36,13 +36,11 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
         $slug_url = sanitize_title($url);
 
         if (empty($url)) {
-            $data['url'] = $url;
             $data['info'] = 'error_url';
         }
 
         $real_url = 'https://' . $url;
         if (filter_var($real_url, FILTER_VALIDATE_URL) === false) {
-            $data['url'] = $real_url;
             $data['info'] = 'error_url';
         }
 
@@ -90,17 +88,6 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
         $data = $this->add_additional_fields_to_object($data, $request);
 
         $response = rest_ensure_response($data);
-
-        if (!empty($data)) {
-            if (isset($data['url'])) {
-                $response->header('AMP-Redirect-To', $data['url']);
-                $response->header('Access-Control-Expose-Headers', 'AMP-Redirect-To', false);
-            }
-
-            if (isset($data['info']) && $data['info'] == 'error_url') {
-                $response->set_status(400);
-            }
-        }
 
         return $response;
     }
