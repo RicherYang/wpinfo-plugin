@@ -25,9 +25,6 @@ class RY_WPI_SiteInfo
     {
         $url = get_post_meta($site_ID, 'url', true);
         $url = substr($url, 8);
-        if (substr($url, 0, 4) == 'www.') {
-            $url = substr($url, 4);
-        }
         preg_match_all('@' . preg_quote($url, '@') . '/[a-z0-9\-\_\./]*/themes/([a-z0-9\-\_]*)/@iU', $body, $matches, PREG_SET_ORDER);
 
         if (count($matches)) {
@@ -55,9 +52,6 @@ class RY_WPI_SiteInfo
     {
         $url = get_post_meta($site_ID, 'url', true);
         $url = substr($url, 8);
-        if (substr($url, 0, 4) == 'www.') {
-            $url = substr($url, 4);
-        }
         preg_match_all('@' . preg_quote($url, '@') . '/[a-z0-9\-\_\./]*/plugins/([a-z0-9\-\_]*)/@iU', $body, $matches);
 
         if (isset($matches[1])) {

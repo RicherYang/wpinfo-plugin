@@ -25,6 +25,8 @@ class RY_WPI
 
                 require_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
             } else {
+                require_once RY_WPI_PLUGIN_DIR . 'includes/seo.php';
+
                 remove_action('wp_head', 'rsd_link');
                 remove_action('wp_head', 'wlwmanifest_link');
                 remove_action('wp_head', 'feed_links_extra', 3);
@@ -40,10 +42,11 @@ class RY_WPI
                 add_filter('get_the_generator_html', [__CLASS__, 'hide_version']);
                 add_filter('get_the_generator_xhtml', [__CLASS__, 'hide_version']);
                 add_filter('get_the_generator_comment', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_atom', [__CLASS__, 'hide_version_rss']);
-                add_filter('get_the_generator_rss2', [__CLASS__, 'hide_version_rss']);
-                add_filter('get_the_generator_rdf', [__CLASS__, 'hide_version_rss']);
-                add_filter('get_the_generator_export', [__CLASS__, 'hide_version_rss']);
+                add_filter('get_the_generator_atom', [__CLASS__, 'hide_version']);
+                add_filter('get_the_generator_rss2', [__CLASS__, 'hide_version']);
+                add_filter('get_the_generator_rdf', [__CLASS__, 'hide_version']);
+                add_filter('get_the_generator_export', [__CLASS__, 'hide_version']);
+
                 add_filter('feed_links_show_comments_feed', '__return_false');
                 add_filter('show_admin_bar', '__return_false');
             }
@@ -132,15 +135,17 @@ class RY_WPI
         $controller->register_routes();
     }
 
-    public static function hide_version($meta)
+    public static function hide_version($gen)
     {
-        return str_replace(get_bloginfo('version'), '', $meta);
+        $version = get_bloginfo('version');
+
+        $gen = str_replace('?v=' . $version, '', $gen);
+        $gen = str_replace(' ' . $version, '', $gen);
+        $gen = str_replace($version, '', $gen);
+
+        return $gen;
     }
 
-    public static function hide_version_rss($meta)
-    {
-        return str_replace(get_bloginfo_rss('version'), '', $meta);
-    }
 
     public static function get_option($option, $default = false)
     {
