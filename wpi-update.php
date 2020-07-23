@@ -53,5 +53,27 @@ final class RY_WPI_update
         if (version_compare($now_version, '1.2.1', '<')) {
             RY_WPI::update_option('version', '1.2.1');
         }
+
+        if (version_compare($now_version, '1.2.2', '<')) {
+            set_time_limit(120);
+            ini_set('memory_limit', -1);
+            $post_query = new WP_Query();
+            $post_query->query([
+                'post_type' => 'website',
+                'post_status' => 'publish',
+                'posts_per_page' => -1
+            ]);
+            while ($post_query->have_posts()) {
+                $post_query->the_post();
+
+                $post_ID = get_the_ID();
+                wp_update_post([
+                    'ID' => $post_ID,
+                    'post_excerpt' => get_post_meta($post_ID, 'description', true)
+                ]);
+            }
+
+            RY_WPI::update_option('version', '1.2.2');
+        }
     }
 }

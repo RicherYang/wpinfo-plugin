@@ -48,7 +48,7 @@ class RY_WPI
                 add_filter('get_the_generator_export', [__CLASS__, 'hide_version']);
 
                 add_filter('feed_links_show_comments_feed', '__return_false');
-                add_filter('show_admin_bar', '__return_false');
+                //add_filter('show_admin_bar', '__return_false');
             }
 
             add_filter('xmlrpc_enabled', '__return_false');
@@ -71,7 +71,7 @@ class RY_WPI
             'hierarchical' => false,
             'has_archive' => true,
             'show_in_admin_bar' => false,
-            'supports' => ['title', 'custom-fields'],
+            'supports' => ['title', 'excerpt', 'custom-fields'],
             'taxonomies' => ['category', 'post_tag']
         ]);
 

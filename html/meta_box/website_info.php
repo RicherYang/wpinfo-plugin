@@ -3,7 +3,6 @@ $metadata = has_meta($post->ID);
 
 $list = [
     'url' => '網址',
-    'description' => '網站描述',
     'content_path' => 'content 網址',
     'rest_url' => 'REST 網址',
     'rest_api' => 'REST API'

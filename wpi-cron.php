@@ -49,7 +49,7 @@ class RY_WPI_Cron
             }
 
             if ($rest_url != 'not_use') {
-                $site_name = self::use_rest_get_site_name($rest_url, $site_ID);
+                list($site_name, $site_description) = self::use_rest_get_site_name($rest_url, $site_ID);
             }
 
             $domain = parse_url($url, PHP_URL_HOST);
@@ -84,7 +84,7 @@ class RY_WPI_Cron
         }
 
         if (empty($site_name)) {
-            $site_name = self::use_feed_get_site_name($url . '/feed', $site_ID);
+            list($site_name, $site_description) = self::use_feed_get_site_name($url . '/feed', $site_ID);
         }
 
         if (empty($site_name) && get_post_status($site_ID) == 'publish') {
@@ -92,11 +92,15 @@ class RY_WPI_Cron
         }
 
         if (!empty($site_name)) {
-            wp_update_post([
+            $update_data = [
                 'ID' => $site_ID,
                 'post_title' => $site_name,
                 'post_status' => 'publish'
-            ]);
+            ];
+            if (!empty($site_description)) {
+                $update_data['post_excerpt'] = $site_description;
+            }
+            wp_update_post($update_data);
 
             if ($auto_next) {
                 as_schedule_single_action(time(), 'wpi/get_website_theme_plugin', [$site_ID]);
@@ -111,11 +115,10 @@ class RY_WPI_Cron
             $data = @json_decode($body, true);
 
             if ($data) {
-                update_post_meta($site_ID, 'description', $data['description']);
                 update_post_meta($site_ID, 'rest_url', $rest_url);
                 update_post_meta($site_ID, 'rest_api', implode(',', $data['namespaces']));
 
-                return $data['name'];
+                return [$data['name'], $data['description']];
             }
         }
 
@@ -140,9 +143,7 @@ class RY_WPI_Cron
                 }
 
                 if ($use_wp) {
-                    update_post_meta($site_ID, 'description', (string) $xml->channel->description);
-
-                    return (string) $xml->channel->title;
+                    return [(string) $xml->channel->title, (string) $xml->channel->description];
                 }
             }
         }
