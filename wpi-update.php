@@ -50,10 +50,6 @@ final class RY_WPI_update
             RY_WPI::update_option('version', '1.1.1');
         }
 
-        if (version_compare($now_version, '1.2.1', '<')) {
-            RY_WPI::update_option('version', '1.2.1');
-        }
-
         if (version_compare($now_version, '1.2.2', '<')) {
             set_time_limit(120);
             ini_set('memory_limit', -1);
@@ -74,6 +70,10 @@ final class RY_WPI_update
             }
 
             RY_WPI::update_option('version', '1.2.2');
+        }
+
+        if (version_compare($now_version, '1.2.3', '<')) {
+            RY_WPI::update_option('version', '1.2.3');
         }
     }
 }
