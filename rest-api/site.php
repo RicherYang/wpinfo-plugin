@@ -32,6 +32,10 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
         if ($cat_pos !== false) {
             $url = substr($url, $cat_pos + 3);
         }
+        $cat_pos = strpos($url, '?');
+        if ($cat_pos !== false) {
+            $url = substr($url, 0, $cat_pos);
+        }
         $url = strtolower(rtrim($url, '/'));
         $slug_url = sanitize_title($url);
 
