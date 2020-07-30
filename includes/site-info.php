@@ -110,8 +110,11 @@ class RY_WPI_SiteInfo
         $list = array_count_values($list);
 
         if (count($list) == 0) {
-            delete_post_meta($site_ID, $type);
-            return ;
+            $now = get_post_meta($site_ID, $type);
+            if (count($now)) {
+                return delete_post_meta($site_ID, $type);
+            }
+            return false;
         }
 
         $type_query = new WP_Query();
@@ -142,19 +145,22 @@ class RY_WPI_SiteInfo
                 $type_list[] = $new_ID;
                 update_post_meta($new_ID, 'used_count', 0);
                 update_post_meta($new_ID, 'rest_key', '');
-                as_schedule_single_action(time(), 'wpi/get_' . $type . '_info', [$new_ID]);
+                as_schedule_single_action(time() + 10, 'wpi/get_' . $type . '_info', [$new_ID]);
             }
         }
 
         $added_list = [];
+        $do_update = false;
         $post_meta = has_meta($site_ID);
         foreach ($post_meta as $data) {
             if ($data['meta_key'] == $type) {
                 $key = array_search($data['meta_value'], $type_list);
                 if ($key === false) {
+                    $do_update = true;
                     delete_post_meta($site_ID, $type, $data['meta_value']);
                 } else {
                     if (in_array($data['meta_value'], $added_list)) {
+                        $do_update = true;
                         delete_metadata_by_mid('post', $data['meta_id']);
                     } else {
                         $added_list[] = $data['meta_value'];
@@ -165,6 +171,7 @@ class RY_WPI_SiteInfo
 
         foreach ($type_list as $type_ID) {
             if (!in_array($type_ID, $added_list)) {
+                $do_update = true;
                 add_post_meta($site_ID, $type, $type_ID);
             }
 
@@ -180,6 +187,8 @@ class RY_WPI_SiteInfo
             ]);
             update_post_meta($type_ID, 'used_count', count($used_list));
         }
+
+        return $do_update;
     }
 }
 

@@ -37,3 +37,7 @@ $list = [
 <p>
     外掛：<?php the_post_list(get_post_meta($post->ID, 'plugin'), '，'); ?>
 </p>
+
+<p>
+    資訊更新時間：<?=date_i18n('Y-m-d h:i:s', get_post_meta($post->ID, 'info_time', true)) ?>
+</p>

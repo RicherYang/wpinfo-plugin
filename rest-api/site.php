@@ -80,7 +80,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
             update_post_meta($site_ID, 'url', $real_url);
             update_post_meta($site_ID, 'rest_url', '');
 
-            do_action('wpi/get_info', $site_ID, false);
+            do_action('wpi/get_website_info', $site_ID, false);
             if (get_post_status($site_ID) == 'publish') {
                 do_action('wpi/get_website_theme_plugin', $site_ID);
                 $data['url'] = get_permalink($site_ID);
