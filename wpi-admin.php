@@ -118,6 +118,10 @@ class RY_WPI_Admin
         if (!as_next_scheduled_action('wpi/reget_website_info')) {
             as_schedule_recurring_action(time(), 300, 'wpi/reget_website_info');
         }
+
+        if (!as_next_scheduled_action('wpi/reget_website_tag')) {
+            as_schedule_recurring_action(time(), 600, 'wpi/reget_website_tag');
+        }
     }
 }
 
