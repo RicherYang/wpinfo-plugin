@@ -12,7 +12,7 @@ class RY_WPI_Cron
 
             add_action('wpi/get_website_info', [__CLASS__, 'get_website_info'], 10, 2);
             add_action('wpi/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            add_action('wpi/get_website_tag', [__CLASS__, 'get_website_tag']);
+            add_action('wpi/get_website_tag', [__CLASS__, 'get_website_tag'], 10, 2);
 
             add_action('wpi/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wpi/get_plugin_info', [__CLASS__, 'get_plugin_info']);
@@ -46,7 +46,12 @@ class RY_WPI_Cron
                     $rest_url = substr($rest_url, $link_cat + 5);
 
                     $end = substr($rest_url, 0, 1);
-                    $rest_url = substr($rest_url, 1, strpos($rest_url, $end, 1) - 1);
+                    $start = 1;
+                    if ($end != '"' || $end != "'") {
+                        $end = ' ';
+                        $start = 0;
+                    }
+                    $rest_url = substr($rest_url, $start, strpos($rest_url, $end, 1) - 1);
                 }
                 if (filter_var($rest_url, FILTER_VALIDATE_URL) === false) {
                     $rest_url = $url . '/wp-json';
@@ -83,7 +88,9 @@ class RY_WPI_Cron
                     }
                 }
                 if (!empty($content_path)) {
-                    $do_update = $do_update || update_post_meta($site_ID, 'content_path', 'https:' . $content_path);
+                    $content_path = 'https:' . $content_path;
+                    $content_path = rtrim($content_path, '/');
+                    $do_update = $do_update || update_post_meta($site_ID, 'content_path', $content_path);
                 }
             }
         }
@@ -187,7 +194,7 @@ class RY_WPI_Cron
         update_post_meta($site_ID, 'info_time', current_time('timestamp'));
     }
 
-    public static function get_website_tag($site_ID)
+    public static function get_website_tag($site_ID, $tag_page = 1)
     {
         if (get_post_type($site_ID) != 'website') {
             return;
@@ -197,6 +204,7 @@ class RY_WPI_Cron
         if ($rest_url == 'not_use') {
             return;
         }
+        $rest_url = rtrim($rest_url, '/');
 
         $rest_api = get_post_meta($site_ID, 'rest_api', true);
         $rest_api = explode(',', $rest_api);
@@ -205,29 +213,58 @@ class RY_WPI_Cron
         }
 
         set_time_limit(60);
-        $tag_list = [];
+        $tag_list = get_post_meta($site_ID, '_tmp_tag', true);
+        if (!is_array($tag_list)) {
+            $tag_list = [];
+        }
         $query_arg = [
             'hide_empty' => true,
             'per_page' => 100,
-            'page' => 1
+            'page' => $tag_page
         ];
+        $end = false;
+        $start_time = time();
         do {
             $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/tags'));
             if (!empty($body)) {
                 $data = @json_decode($body, true);
 
                 if ($data && count($data)) {
-                    $tag_list = array_merge($tag_list, array_column($data, 'name'));
+                    $new_tag = array_column($data, 'name');
+                    foreach ($new_tag as $term) {
+                        if ('' === trim($term)) {
+                            continue;
+                        }
+
+                        $term_info = term_exists($term, 'website-tag');
+                        if (!$term_info) {
+                            if (is_int($term)) {
+                                continue;
+                            }
+                            $term_info = wp_insert_term($term, 'website-tag');
+                        }
+                    }
+                    $tag_list = array_merge($tag_list, $new_tag);
                     $query_arg['page'] += 1;
                     if (count($data) < 100) {
+                        $end = true;
                         break;
                     }
+                } else {
+                    $end = true;
                 }
             }
-        } while (true);
+        } while (time() - $start_time < 20);
 
-        wp_set_post_terms($site_ID, $tag_list, 'website-tag');
-        update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
+
+        if ($end) {
+            update_post_meta($site_ID, '_tmp_tag', '');
+            wp_set_post_terms($site_ID, $tag_list, 'website-tag');
+            update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
+        } else {
+            update_post_meta($site_ID, '_tmp_tag', $tag_list);
+            as_schedule_single_action(time(), 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
+        }
     }
 
     public static function get_theme_info($theme_ID)
@@ -306,34 +343,60 @@ class RY_WPI_Cron
         }
     }
 
+    public static function get_meta_sql($args)
+    {
+        $args['join'] = str_replace('INNER JOIN', 'LEFT JOIN', $args['join']);
+        $args['join'] = str_replace(' )', $args['where'] . ' )', $args['join']);
+        $args['where'] = '';
+        return $args;
+    }
+
     public static function reget_website_info()
     {
+        add_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         $query = new WP_Query();
         $query->query([
             'post_type' => 'website',
             'post_status' => 'publish',
-            'meta_key' => 'info_time',
-            'orderby' => 'meta_value_num',
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'key' => 'info_time',
+                    'type' => 'NUMERIC'
+                ]
+            ],
+            'orderby' => 'meta_value',
             'order' => 'ASC',
             'posts_per_page' => 1
         ]);
+        remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         while ($query->have_posts()) {
             $query->the_post();
             do_action('wpi/get_website_info', get_the_ID());
         }
     }
 
+
+
     public static function reget_website_tag()
     {
+        add_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         $query = new WP_Query();
         $query->query([
             'post_type' => 'website',
             'post_status' => 'publish',
-            'meta_key' => 'tag_time',
-            'orderby' => 'meta_value_num',
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'key' => 'tag_time',
+                    'type' => 'NUMERIC'
+                ]
+            ],
+            'orderby' => 'meta_value',
             'order' => 'ASC',
             'posts_per_page' => 1
         ]);
+        remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         while ($query->have_posts()) {
             $query->the_post();
             do_action('wpi/get_website_tag', get_the_ID());
