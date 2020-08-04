@@ -227,34 +227,37 @@ class RY_WPI_Cron
         $start_time = time();
         do {
             $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/tags'));
-            if (!empty($body)) {
-                $data = @json_decode($body, true);
+            if (empty($body)) {
+                $end = true;
+                break;
+            }
 
-                if ($data && count($data)) {
-                    $new_tag = array_column($data, 'name');
-                    foreach ($new_tag as $term) {
-                        $tags = RY_WPI_SiteInfo::cat_tag($term);
-                        if (empty($tags)) {
-                            continue;
-                        }
-
-                        foreach ($tags as $tag) {
-                            $term_info = term_exists($tag, 'website-tag');
-                            if (!$term_info) {
-                                wp_insert_term($tag, 'website-tag');
-                            }
-                            $tag_list[] = $tag;
-                        }
+            $data = @json_decode($body, true);
+            if ($data && count($data)) {
+                $new_tag = array_column($data, 'name');
+                foreach ($new_tag as $term) {
+                    $tags = RY_WPI_SiteInfo::cat_tag($term);
+                    if (empty($tags)) {
+                        continue;
                     }
 
-                    $query_arg['page'] += 1;
-                    if (count($data) < 100) {
-                        $end = true;
-                        break;
+                    foreach ($tags as $tag) {
+                        $term_info = term_exists($tag, 'website-tag');
+                        if (!$term_info) {
+                            wp_insert_term($tag, 'website-tag');
+                        }
+                        $tag_list[] = $tag;
                     }
-                } else {
-                    $end = true;
                 }
+
+                $query_arg['page'] += 1;
+                if (count($data) < 100) {
+                    $end = true;
+                    break;
+                }
+            } else {
+                $end = true;
+                break;
             }
         } while (time() - $start_time < 20);
 
