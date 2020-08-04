@@ -213,6 +213,7 @@ class RY_WPI_Cron
         }
 
         set_time_limit(60);
+        wp_set_post_terms($site_ID, $tag_list, 'website-tag');
         $tag_list = get_post_meta($site_ID, '_tmp_tag', true);
         if (!is_array($tag_list)) {
             $tag_list = [];

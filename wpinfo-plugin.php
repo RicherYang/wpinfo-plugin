@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WPInfo plugin
-Version: 1.2.7
+Version: 1.2.8
 Author: Richer Yang
 Author URI: https://richer.tw/
 GitHub Plugin URI: RicherYang/wpinfo-plugin
@@ -9,7 +9,7 @@ GitHub Plugin URI: RicherYang/wpinfo-plugin
 
 function_exists('plugin_dir_url') or exit('No direct script access allowed');
 
-define('RY_WPI_VERSION', '1.2.7');
+define('RY_WPI_VERSION', '1.2.8');
 
 define('RY_WPI_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RY_WPI_PLUGIN_DIR', plugin_dir_path(__FILE__));
