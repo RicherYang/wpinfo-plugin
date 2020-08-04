@@ -190,6 +190,22 @@ class RY_WPI_SiteInfo
 
         return $do_update;
     }
+
+    public static function cat_tag($tag)
+    {
+        $tag = trim($tag);
+        if (empty($tag)) {
+            return [];
+        }
+
+        $cat_tag = str_replace(['（', '）', '｛', '｝', '〔', '〕', '【', '】', '《', '》', '〈', '〉', '「', '」', '『', '』', '(', ')', '[', ']', '{', '}', '<', '>'], '#', $tag);
+        $tag = array_merge([$tag], explode('#', $cat_tag));
+        $cat_tag = str_replace(['#', '/'], ' ', $cat_tag);
+        $tag = array_merge($tag, explode(' ', $cat_tag));
+
+        $tag = array_unique(array_filter($tag));
+        return $tag;
+    }
 }
 
 RY_WPI_SiteInfo::init();

@@ -232,19 +232,20 @@ class RY_WPI_Cron
                 if ($data && count($data)) {
                     $new_tag = array_column($data, 'name');
                     foreach ($new_tag as $term) {
-                        if ('' === trim($term)) {
+                        $tags = RY_WPI_SiteInfo::cat_tag($term);
+                        if (empty($tags)) {
                             continue;
                         }
 
-                        $term_info = term_exists($term, 'website-tag');
-                        if (!$term_info) {
-                            if (is_int($term)) {
-                                continue;
+                        foreach ($tags as $tag) {
+                            $term_info = term_exists($tag, 'website-tag');
+                            if (!$term_info) {
+                                wp_insert_term($tag, 'website-tag');
                             }
-                            $term_info = wp_insert_term($term, 'website-tag');
+                            $tag_list[] = $tag;
                         }
                     }
-                    $tag_list = array_merge($tag_list, $new_tag);
+
                     $query_arg['page'] += 1;
                     if (count($data) < 100) {
                         $end = true;
