@@ -199,12 +199,12 @@ class RY_WPI_SiteInfo
         if (empty($tag_string)) {
             return [];
         }
-        $tag_string = str_replace(['　', '／', '？', '！', '＠'], [' ', '/', '?', '!', '@'], $tag_string);
+        $tag_string = str_replace(['　', '／', '？', '！', '＠', '；', '：'], [' ', '/', '?', '!', '@', ';', ':'], $tag_string);
 
         $cat_tag = str_replace(['（', '）', '｛', '｝', '〔', '〕', '【', '】', '《', '》', '〈', '〉', '「', '」', '『', '』', '(', ')', '[', ']', '{', '}', '<', '>'], '#', $tag_string);
         $tags = array_merge([$tag_string], explode('#', $cat_tag));
 
-        $cat_tag = str_replace(['#', '/', '&', '~', ',', '，'], ' ', $cat_tag);
+        $cat_tag = str_replace(['#', '/', '&', '~', ';', ':', '|', ',', '，'], ' ', $cat_tag);
         $tags = array_merge($tags, explode(' ', $cat_tag));
         $tags = array_unique($tags);
 
