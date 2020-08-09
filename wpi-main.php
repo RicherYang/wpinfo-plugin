@@ -47,7 +47,7 @@ class RY_WPI
                 add_filter('get_the_generator_rdf', [__CLASS__, 'hide_version']);
                 add_filter('get_the_generator_export', [__CLASS__, 'hide_version']);
 
-                add_filter('action_scheduler_queue_runner_time_limit', [__CLASS__, 'as_to_60']);
+                add_filter('action_scheduler_queue_runner_time_limit', [__CLASS__, 'as_to_90']);
 
                 add_filter('rest_queried_resource_route', '__return_empty_string');
                 add_filter('wp_sitemaps_stylesheet_url', '__return_empty_string');
@@ -130,6 +130,13 @@ class RY_WPI
             'show_in_menu' => true,
             'hierarchical' => false
         ]);
+
+        register_taxonomy('remote_log-tag', ['remote_log'], [
+            'label' => '錯誤標籤',
+            'public' => false,
+            'show_admin_column' => true,
+            'hierarchical' => false
+        ]);
     }
 
     public static function initial_rest_routes()
@@ -151,9 +158,9 @@ class RY_WPI
         return $gen;
     }
 
-    public static function as_to_60()
+    public static function as_to_90()
     {
-        return 60;
+        return 90;
     }
 
     public static function remove_user_sitemap($provider, $name)

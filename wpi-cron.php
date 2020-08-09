@@ -29,7 +29,7 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(60);
+        set_time_limit(90);
         $site_name = '';
         $do_update = false;
         $url = get_post_meta($site_ID, 'url', true);
@@ -174,7 +174,7 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(60);
+        set_time_limit(90);
         $do_update = false;
         $url = get_post_meta($site_ID, 'url', true);
         $body = self::remote_get($url);
@@ -212,8 +212,8 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(60);
-        wp_set_post_terms($site_ID, $tag_list, 'website-tag');
+        set_time_limit(90);
+        $start_time = time();
         $tag_list = get_post_meta($site_ID, '_tmp_tag', true);
         if (!is_array($tag_list)) {
             $tag_list = [];
@@ -224,7 +224,6 @@ class RY_WPI_Cron
             'page' => $tag_page
         ];
         $end = false;
-        $start_time = time();
         do {
             $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/tags'));
             if (empty($body)) {
@@ -242,16 +241,24 @@ class RY_WPI_Cron
                     }
 
                     foreach ($tags as $tag) {
+                        $tag = trim($tag);
+                        if (empty($tag)) {
+                            continue;
+                        }
+
                         $term_info = term_exists($tag, 'website-tag');
                         if (!$term_info) {
-                            wp_insert_term($tag, 'website-tag');
+                            $term_info = wp_insert_term($tag, 'website-tag');
                         }
-                        $tag_list[] = $tag;
+                        if (!is_wp_error($term_info)) {
+                            $tag_list[] = (int) $term_info['term_id'];
+                        }
                     }
                 }
+                $tag_list = array_unique($tag_list);
 
                 $query_arg['page'] += 1;
-                if (count($data) < 100) {
+                if (count($data) < $query_arg['per_page']) {
                     $end = true;
                     break;
                 }
@@ -259,7 +266,8 @@ class RY_WPI_Cron
                 $end = true;
                 break;
             }
-        } while (time() - $start_time < 20);
+            sleep(1);
+        } while (time() - $start_time < 25);
 
 
         if ($end) {
@@ -268,7 +276,7 @@ class RY_WPI_Cron
             update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
         } else {
             update_post_meta($site_ID, '_tmp_tag', $tag_list);
-            as_schedule_single_action(time(), 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
+            as_schedule_single_action(time() + 2, 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
         }
     }
 
@@ -278,7 +286,7 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(60);
+        set_time_limit(90);
         $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
         $body = self::remote_get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug);
         if (empty($body)) {
@@ -316,7 +324,7 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(60);
+        set_time_limit(90);
         $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
         $body = self::remote_get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json');
         if (empty($body)) {
@@ -438,15 +446,26 @@ class RY_WPI_Cron
                     'post_type' => 'remote_log',
                     'post_title' => wp_remote_retrieve_response_code($response) . ' ' . $url,
                     'post_status' => 'publish',
-                    'post_content' => wp_remote_retrieve_body($response)
+                    'post_content' => wp_remote_retrieve_body($response),
+                    'tax_input' => [
+                        'remote_log-tag' => wp_remote_retrieve_response_code($response)
+                    ]
                 ]);
             }
         } else {
+            $tag_list = [];
+            $messages = $response->get_error_messages();
+            foreach ($messages as $message) {
+                $tag_list[] = strstr($message, ':', true);
+            }
             wp_insert_post([
                 'post_type' => 'remote_log',
                 'post_title' => 'Error ' . $url,
                 'post_status' => 'publish',
-                'post_content' => implode("\n", $response->get_error_messages())
+                'post_content' => implode("\n", $messages),
+                'tax_input' => [
+                    'remote_log-tag' => array_filter($tag_list)
+                ]
             ]);
         }
         return '';

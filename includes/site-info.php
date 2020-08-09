@@ -191,20 +191,41 @@ class RY_WPI_SiteInfo
         return $do_update;
     }
 
-    public static function cat_tag($tag)
+    public static function cat_tag($tag_string)
     {
-        $tag = trim($tag);
-        if (empty($tag)) {
+        $tag_string = trim($tag_string);
+        $tag_string = htmlspecialchars_decode($tag_string);
+        $tag_string = ltrim($tag_string, '#');
+        if (empty($tag_string)) {
             return [];
         }
+        $tag_string = str_replace(['　', '／', '？', '！', '＠'], [' ', '/', '?', '!', '@'], $tag_string);
 
-        $cat_tag = str_replace(['（', '）', '｛', '｝', '〔', '〕', '【', '】', '《', '》', '〈', '〉', '「', '」', '『', '』', '(', ')', '[', ']', '{', '}', '<', '>'], '#', $tag);
-        $tag = array_merge([$tag], explode('#', $cat_tag));
-        $cat_tag = str_replace(['#', '/'], ' ', $cat_tag);
-        $tag = array_merge($tag, explode(' ', $cat_tag));
+        $cat_tag = str_replace(['（', '）', '｛', '｝', '〔', '〕', '【', '】', '《', '》', '〈', '〉', '「', '」', '『', '』', '(', ')', '[', ']', '{', '}', '<', '>'], '#', $tag_string);
+        $tags = array_merge([$tag_string], explode('#', $cat_tag));
 
-        $tag = array_unique(array_filter($tag));
-        return $tag;
+        $cat_tag = str_replace(['#', '/', '&', '~', ',', '，'], ' ', $cat_tag);
+        $tags = array_merge($tags, explode(' ', $cat_tag));
+        $tags = array_unique($tags);
+
+        foreach ($tags as &$tag) {
+            $tag = trim($tag);
+            $tag = ltrim($tag, '#');
+        }
+        unset($tag);
+
+        $tags = array_unique($tags);
+        $tags = array_filter($tags, function ($tag) {
+            if (mb_strlen($tag) <= 1) {
+                return false;
+            }
+            if (preg_match('/^[0-9\.\-]*$/', $tag)) {
+                return false;
+            }
+            return true;
+        });
+
+        return $tags;
     }
 }
 
