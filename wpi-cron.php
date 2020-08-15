@@ -215,8 +215,10 @@ class RY_WPI_Cron
         set_time_limit(90);
         $start_time = time();
         $tag_list = get_post_meta($site_ID, '_tmp_tag', true);
+        $tag_list = @json_decode($tag_list, true);
         if (!is_array($tag_list)) {
             $tag_list = [];
+            update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
         }
         $query_arg = [
             'hide_empty' => true,
@@ -255,7 +257,7 @@ class RY_WPI_Cron
                         }
                     }
                 }
-                $tag_list = array_unique($tag_list);
+                $tag_list = array_values(array_unique($tag_list));
 
                 $query_arg['page'] += 1;
                 if (count($data) < $query_arg['per_page']) {
@@ -267,7 +269,7 @@ class RY_WPI_Cron
                 break;
             }
             sleep(1);
-        } while (time() - $start_time < 25);
+        } while (time() - $start_time < 30);
 
 
         if ($end) {
@@ -275,8 +277,8 @@ class RY_WPI_Cron
             wp_set_post_terms($site_ID, $tag_list, 'website-tag');
             update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
         } else {
-            update_post_meta($site_ID, '_tmp_tag', $tag_list);
-            as_schedule_single_action(time() + 2, 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
+            update_post_meta($site_ID, '_tmp_tag', json_encode($tag_list));
+            as_schedule_single_action(time() + 10, 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
         }
     }
 
@@ -435,7 +437,8 @@ class RY_WPI_Cron
     public static function remote_get($url)
     {
         $response = wp_remote_get($url, [
-            'timeout' => 15
+            'timeout' => 15,
+            'user-agent' => 'Mozilla/5.0 (CentOS; Linux x86_64; WordPress/' . get_bloginfo('version') . ') wpinfoShow/' . RY_WPI_VERSION
         ]);
 
         if (!is_wp_error($response)) {
