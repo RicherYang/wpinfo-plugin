@@ -112,15 +112,15 @@ class RY_WPI_Admin
         wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
 
         if (!as_next_scheduled_action('wpi/reget_theme_plugin_info')) {
-            as_schedule_recurring_action(time(), 600, 'wpi/reget_theme_plugin_info');
+            as_schedule_recurring_action(time() + 10, 600, 'wpi/reget_theme_plugin_info');
         }
 
         if (!as_next_scheduled_action('wpi/reget_website_info')) {
-            as_schedule_recurring_action(time(), 300, 'wpi/reget_website_info');
+            as_schedule_recurring_action(time() + 100, 300, 'wpi/reget_website_info');
         }
 
         if (!as_next_scheduled_action('wpi/reget_website_tag')) {
-            as_schedule_recurring_action(time(), 600, 'wpi/reget_website_tag');
+            as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_tag');
         }
     }
 }
