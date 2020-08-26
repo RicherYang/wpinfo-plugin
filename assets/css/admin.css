@@ -12,3 +12,10 @@
 #plugin_info table td:nth-of-type(1) {
     width: 10em;
 }
+
+.widefat.action-scheduler td ol {
+    margin: 0;
+}
+.widefat.action-scheduler td ul {
+    margin: 0;
+}

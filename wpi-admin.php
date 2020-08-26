@@ -10,6 +10,8 @@ class RY_WPI_Admin
         if (!self::$initiated) {
             self::$initiated = true;
 
+            require_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler/action-scheduler.php';
+
             add_action('init', [__CLASS__, 'check_schedule'], 20);
 
             add_action('post_submitbox_misc_actions', [__CLASS__, 'show_mod_time']);
@@ -48,7 +50,6 @@ class RY_WPI_Admin
 
     public static function website_meta_box()
     {
-        wp_enqueue_style('wpi-meta_box-script');
         wp_enqueue_script('wpi-meta_box-script');
 
         remove_meta_box('postcustom', null, 'normal');
@@ -58,7 +59,6 @@ class RY_WPI_Admin
 
     public static function plugin_meta_box()
     {
-        wp_enqueue_style('wpi-meta_box-script');
         wp_enqueue_script('wpi-meta_box-script');
 
         remove_meta_box('postcustom', null, 'normal');
@@ -108,7 +108,7 @@ class RY_WPI_Admin
 
     public static function check_schedule()
     {
-        wp_register_style('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/css/meta_box.css', [], RY_WPI_VERSION);
+        wp_enqueue_style('wpi-admin-style', RY_WPI_PLUGIN_URL . '/assets/css/admin.css', [], RY_WPI_VERSION);
         wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
 
         if (!as_next_scheduled_action('wpi/reget_theme_plugin_info')) {
