@@ -72,8 +72,8 @@ final class RY_WPI_update
             RY_WPI::update_option('version', '1.2.2');
         }
 
-        if (version_compare($now_version, '1.2.11', '<')) {
-            RY_WPI::update_option('version', '1.2.11');
+        if (version_compare($now_version, '1.2.12', '<')) {
+            RY_WPI::update_option('version', '1.2.12');
         }
     }
 }
