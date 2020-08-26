@@ -13,7 +13,6 @@ class RY_WPI
             self::$initiated = true;
 
             require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
-            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
             require_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
 
             require_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
@@ -64,6 +63,8 @@ class RY_WPI
 
             add_action('init', [__CLASS__, 'register_post_type'], 9);
             add_action('rest_api_init', [__CLASS__, 'initial_rest_routes'], 100);
+
+            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
         }
     }
 
@@ -134,6 +135,7 @@ class RY_WPI
         register_taxonomy('remote_log-tag', ['remote_log'], [
             'label' => '錯誤標籤',
             'public' => false,
+            'show_ui' => true,
             'show_admin_column' => true,
             'hierarchical' => false
         ]);

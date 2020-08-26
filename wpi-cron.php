@@ -3,6 +3,7 @@ defined('RY_WPI_VERSION') or exit('No direct script access allowed');
 
 class RY_WPI_Cron
 {
+    private static $action_id = null;
     private static $initiated = false;
 
     public static function init()
@@ -17,6 +18,7 @@ class RY_WPI_Cron
             add_action('wpi/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wpi/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
+            add_action('action_scheduler_begin_execute', [__CLASS__, 'set_as_action_id']);
             add_action('wpi/reget_website_info', [__CLASS__, 'reget_website_info']);
             add_action('wpi/reget_website_tag', [__CLASS__, 'reget_website_tag']);
             add_action('wpi/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
@@ -366,6 +368,11 @@ class RY_WPI_Cron
         return $args;
     }
 
+    public static function set_as_action_id($action_id)
+    {
+        self::$action_id = $action_id;
+    }
+
     public static function reget_website_info()
     {
         add_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
@@ -387,11 +394,14 @@ class RY_WPI_Cron
         remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         while ($query->have_posts()) {
             $query->the_post();
+
+            if (self::$action_id !== null) {
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'website:' . get_the_ID());
+            }
+
             do_action('wpi/get_website_info', get_the_ID());
         }
     }
-
-
 
     public static function reget_website_tag()
     {
@@ -414,6 +424,11 @@ class RY_WPI_Cron
         remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         while ($query->have_posts()) {
             $query->the_post();
+
+            if (self::$action_id !== null) {
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'website:' . get_the_ID());
+            }
+
             do_action('wpi/get_website_tag', get_the_ID());
         }
     }
@@ -445,15 +460,13 @@ class RY_WPI_Cron
             if (200 == wp_remote_retrieve_response_code($response)) {
                 return wp_remote_retrieve_body($response);
             } else {
-                wp_insert_post([
+                $log_ID = wp_insert_post([
                     'post_type' => 'remote_log',
                     'post_title' => wp_remote_retrieve_response_code($response) . ' ' . $url,
                     'post_status' => 'publish',
-                    'post_content' => wp_remote_retrieve_body($response),
-                    'tax_input' => [
-                        'remote_log-tag' => wp_remote_retrieve_response_code($response)
-                    ]
+                    'post_content' => wp_remote_retrieve_body($response)
                 ]);
+                wp_set_post_terms($log_ID, [(string) wp_remote_retrieve_response_code($response)], 'remote_log-tag');
             }
         } else {
             $tag_list = [];
@@ -461,15 +474,13 @@ class RY_WPI_Cron
             foreach ($messages as $message) {
                 $tag_list[] = strstr($message, ':', true);
             }
-            wp_insert_post([
+            $log_ID = wp_insert_post([
                 'post_type' => 'remote_log',
                 'post_title' => 'Error ' . $url,
                 'post_status' => 'publish',
-                'post_content' => implode("\n", $messages),
-                'tax_input' => [
-                    'remote_log-tag' => array_filter($tag_list)
-                ]
+                'post_content' => implode("\n", $messages)
             ]);
+            wp_set_post_terms($log_ID, array_filter($tag_list), 'remote_log-tag');
         }
         return '';
     }
