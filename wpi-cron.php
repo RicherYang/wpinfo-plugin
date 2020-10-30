@@ -460,13 +460,18 @@ class RY_WPI_Cron
             if (200 == wp_remote_retrieve_response_code($response)) {
                 return wp_remote_retrieve_body($response);
             } else {
+                $code = wp_remote_retrieve_response_code($response);
+                $content = wp_remote_retrieve_body($response);
+                if (in_array($code, [403, 404])) {
+                    $content = '';
+                }
                 $log_ID = wp_insert_post([
                     'post_type' => 'remote_log',
-                    'post_title' => wp_remote_retrieve_response_code($response) . ' ' . $url,
+                    'post_title' => $code . ' ' . $url,
                     'post_status' => 'publish',
-                    'post_content' => wp_remote_retrieve_body($response)
+                    'post_content' => $content
                 ]);
-                wp_set_post_terms($log_ID, [(string) wp_remote_retrieve_response_code($response)], 'remote_log-tag');
+                wp_set_post_terms($log_ID, [(string) $code], 'remote_log-tag');
             }
         } else {
             $tag_list = [];

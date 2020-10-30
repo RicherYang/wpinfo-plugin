@@ -199,6 +199,8 @@ class RY_WPI_SiteInfo
         if (empty($tag_string)) {
             return [];
         }
+        return [$tag_string];
+
         $tag_string = str_replace(['　', '／', '？', '！', '＠', '；', '：'], [' ', '/', '?', '!', '@', ';', ':'], $tag_string);
 
         $cat_tag = str_replace(['（', '）', '｛', '｝', '〔', '〕', '【', '】', '《', '》', '〈', '〉', '「', '」', '『', '』', '(', ')', '[', ']', '{', '}', '<', '>'], '#', $tag_string);
