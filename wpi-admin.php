@@ -10,7 +10,7 @@ class RY_WPI_Admin
         if (!self::$initiated) {
             self::$initiated = true;
 
-            require_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler/action-scheduler.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler/action-scheduler.php';
 
             add_action('init', [__CLASS__, 'check_schedule'], 20);
 
@@ -119,9 +119,11 @@ class RY_WPI_Admin
             as_schedule_recurring_action(time() + 100, 300, 'wpi/reget_website_info');
         }
 
+        /*
         if (!as_next_scheduled_action('wpi/reget_website_tag')) {
             as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_tag');
         }
+        */
     }
 }
 

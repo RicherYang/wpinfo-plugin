@@ -12,7 +12,7 @@ class RY_WPI_Ajax
 
             add_action('wp_ajax_wpi_get_website_info', [__CLASS__, 'get_website_info']);
             add_action('wp_ajax_wpi_get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            add_action('wp_ajax_wpi_get_website_tag', [__CLASS__, 'get_website_tag']);
+            //add_action('wp_ajax_wpi_get_website_tag', [__CLASS__, 'get_website_tag']);
 
             add_action('wp_ajax_wpi_get_plugin_info', [__CLASS__, 'get_plugin_info']);
         }

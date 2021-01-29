@@ -12,6 +12,7 @@ class RY_WPI_Site_Controller extends WP_REST_Controller
         register_rest_route($this->namespace, '/' . $this->rest_base . '/check_url', [
             [
                 'methods' => WP_REST_Server::CREATABLE,
+                'permission_callback' => '__return_true',
                 'callback' => [$this, 'check_url'],
                 'args' => [
                     'url' => [

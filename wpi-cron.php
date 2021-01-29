@@ -13,14 +13,14 @@ class RY_WPI_Cron
 
             add_action('wpi/get_website_info', [__CLASS__, 'get_website_info'], 10, 2);
             add_action('wpi/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            add_action('wpi/get_website_tag', [__CLASS__, 'get_website_tag'], 10, 2);
+            //add_action('wpi/get_website_tag', [__CLASS__, 'get_website_tag'], 10, 2);
 
             add_action('wpi/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wpi/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
             add_action('action_scheduler_begin_execute', [__CLASS__, 'set_as_action_id']);
             add_action('wpi/reget_website_info', [__CLASS__, 'reget_website_info']);
-            add_action('wpi/reget_website_tag', [__CLASS__, 'reget_website_tag']);
+            //add_action('wpi/reget_website_tag', [__CLASS__, 'reget_website_tag']);
             add_action('wpi/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
         }
     }

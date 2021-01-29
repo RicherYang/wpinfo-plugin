@@ -12,19 +12,19 @@ class RY_WPI
         if (!self::$initiated) {
             self::$initiated = true;
 
-            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
-            require_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
 
-            require_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
-            require_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
+            include_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
+            include_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
 
             if (is_admin()) {
-                require_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
+                include_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
                 add_action('init', ['RY_WPI_update', 'update']);
 
-                require_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
+                include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
             } else {
-                require_once RY_WPI_PLUGIN_DIR . 'includes/seo.php';
+                include_once RY_WPI_PLUGIN_DIR . 'includes/seo.php';
 
                 remove_action('wp_head', 'rsd_link');
                 remove_action('wp_head', 'wlwmanifest_link');
@@ -64,7 +64,7 @@ class RY_WPI
             add_action('init', [__CLASS__, 'register_post_type'], 9);
             add_action('rest_api_init', [__CLASS__, 'initial_rest_routes'], 100);
 
-            require_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
         }
     }
 
@@ -123,7 +123,7 @@ class RY_WPI
             'show_in_admin_bar' => false,
             'supports' => ['title', 'editor']
         ]);
-
+/*
         register_taxonomy('website-tag', ['website'], [
             'label' => '網站 標籤',
             'public' => false,
@@ -131,7 +131,7 @@ class RY_WPI
             'show_in_menu' => true,
             'hierarchical' => false
         ]);
-
+*/
         register_taxonomy('remote_log-tag', ['remote_log'], [
             'label' => '錯誤標籤',
             'public' => false,
