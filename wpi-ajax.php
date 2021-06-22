@@ -1,6 +1,4 @@
 <?php
-defined('RY_WPI_VERSION') or exit('No direct script access allowed');
-
 class RY_WPI_Ajax
 {
     private static $initiated = false;

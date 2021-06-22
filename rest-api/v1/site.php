@@ -1,5 +1,5 @@
 <?php
-class RY_WPI_Site_Controller extends WP_REST_Controller
+class RY_WPI_V1_Site_Controller extends WP_REST_Controller
 {
     public function __construct()
     {

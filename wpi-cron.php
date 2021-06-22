@@ -1,6 +1,4 @@
 <?php
-defined('RY_WPI_VERSION') or exit('No direct script access allowed');
-
 class RY_WPI_Cron
 {
     private static $action_id = null;
@@ -112,12 +110,13 @@ class RY_WPI_Cron
                 'post_title' => $site_name,
                 'post_status' => 'publish'
             ];
+            $do_update = $do_update || $update_data['post_title'] != $site_post->post_title;
+
             if (!empty($site_description)) {
                 $update_data['post_excerpt'] = $site_description;
+                $do_update = $do_update || $update_data['post_excerpt'] != $site_post->post_excerpt;
             }
 
-            $do_update = $do_update || $update_data['post_title'] != $site_post->post_title;
-            $do_update = $do_update || $update_data['post_excerpt'] != $site_post->post_excerpt;
             if ($do_update) {
                 wp_update_post($update_data);
             }
@@ -465,13 +464,6 @@ class RY_WPI_Cron
                 if (in_array($code, [403, 404])) {
                     $content = '';
                 }
-                $log_ID = wp_insert_post([
-                    'post_type' => 'remote_log',
-                    'post_title' => $code . ' ' . $url,
-                    'post_status' => 'publish',
-                    'post_content' => $content
-                ]);
-                wp_set_post_terms($log_ID, [(string) $code], 'remote_log-tag');
             }
         } else {
             $tag_list = [];
@@ -479,13 +471,6 @@ class RY_WPI_Cron
             foreach ($messages as $message) {
                 $tag_list[] = strstr($message, ':', true);
             }
-            $log_ID = wp_insert_post([
-                'post_type' => 'remote_log',
-                'post_title' => 'Error ' . $url,
-                'post_status' => 'publish',
-                'post_content' => implode("\n", $messages)
-            ]);
-            wp_set_post_terms($log_ID, array_filter($tag_list), 'remote_log-tag');
         }
         return '';
     }

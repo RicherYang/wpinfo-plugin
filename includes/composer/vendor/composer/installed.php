@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '463bdb18e0f512f63e4ec4aa74dad90494358df3',
+    'reference' => '725d610eadd01059c4fb66af6bd8c6f696f63685',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '463bdb18e0f512f63e4ec4aa74dad90494358df3',
+      'reference' => '725d610eadd01059c4fb66af6bd8c6f696f63685',
     ),
     'woocommerce/action-scheduler' => 
     array (
-      'pretty_version' => '3.1.6',
-      'version' => '3.1.6.0',
+      'pretty_version' => '3.2.1',
+      'version' => '3.2.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '275d0ba54b1c263dfc62688de2fa9a25a373edf8',
+      'reference' => '3c24064f115cd55e972d73d5d48f14133ac60b0d',
     ),
   ),
 );

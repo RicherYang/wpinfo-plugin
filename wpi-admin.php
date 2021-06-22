@@ -1,6 +1,4 @@
 <?php
-defined('RY_WPI_VERSION') or exit('No direct script access allowed');
-
 class RY_WPI_Admin
 {
     private static $initiated = false;
@@ -9,8 +7,6 @@ class RY_WPI_Admin
     {
         if (!self::$initiated) {
             self::$initiated = true;
-
-            include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler/action-scheduler.php';
 
             add_action('init', [__CLASS__, 'check_schedule'], 20);
 
@@ -27,11 +23,11 @@ class RY_WPI_Admin
 
     public static function show_mod_time($post)
     {
-        $date_format = _x('M j, Y', 'publish box date format');
-        $time_format = _x('H:i', 'publish box time format');
+        $date_format = _x('M j, Y', 'publish box date format', 'wpinfo-plugin');
+        $time_format = _x('H:i', 'publish box time format', 'wpinfo-plugin');
 
         $date = sprintf(
-            __('%1$s at %2$s'),
+            __('%1$s at %2$s', 'wpinfo-plugin'),
             date_i18n($date_format, strtotime($post->post_modified)),
             date_i18n($time_format, strtotime($post->post_modified))
         );
@@ -71,14 +67,14 @@ class RY_WPI_Admin
         $post_type = get_post_type($post_ID);
         $post_query = new WP_Query();
         $post_query->query([
-'post_type' => 'website',
-'post_status' => 'publish',
-'meta_key' => $post_type,
-'meta_value' => $post_ID,
-'orderby' => 'modified',
-'order' => 'DESC',
-'posts_per_page' => '-1'
-]);
+            'post_type' => 'website',
+            'post_status' => 'publish',
+            'meta_key' => $post_type,
+            'meta_value' => $post_ID,
+            'orderby' => 'modified',
+            'order' => 'DESC',
+            'posts_per_page' => '-1'
+        ]);
         while ($post_query->have_posts()) {
             $post_query->the_post();
 

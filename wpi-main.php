@@ -14,58 +14,61 @@ class RY_WPI
 
             include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/sitemap.php';
 
             include_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
             include_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
 
             if (is_admin()) {
+                include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler.php';
+
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
-                add_action('init', ['RY_WPI_update', 'update']);
-
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
-            } else {
-                include_once RY_WPI_PLUGIN_DIR . 'includes/seo.php';
 
-                remove_action('wp_head', 'rsd_link');
-                remove_action('wp_head', 'wlwmanifest_link');
-                remove_action('wp_head', 'feed_links_extra', 3);
-                remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
-                remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-                remove_action('wp_head', 'print_emoji_detection_script', 7);
-                remove_action('wp_head', 'wp_oembed_add_discovery_links');
-                remove_action('wp_head', 'wp_oembed_add_host_js');
-                remove_action('wp_print_styles', 'print_emoji_styles');
-                remove_action('template_redirect', 'wp_shortlink_header', 11, 0);
-                remove_action('template_redirect', 'rest_output_link_header', 11, 0);
-
-                add_filter('get_the_generator_html', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_xhtml', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_comment', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_atom', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_rss2', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_rdf', [__CLASS__, 'hide_version']);
-                add_filter('get_the_generator_export', [__CLASS__, 'hide_version']);
-
-                add_filter('action_scheduler_queue_runner_time_limit', [__CLASS__, 'as_to_90']);
-
-                add_filter('rest_queried_resource_route', '__return_empty_string');
-                add_filter('wp_sitemaps_stylesheet_url', '__return_empty_string');
-                add_filter('wp_sitemaps_stylesheet_index_url', '__return_empty_string');
-                add_filter('wp_sitemaps_add_provider', [__CLASS__, 'remove_user_sitemap'], 10, 2);
-                add_filter('wp_sitemaps_posts_entry', [__CLASS__, 'add_mod_time'], 10, 2);
-
-
-                add_filter('feed_links_show_comments_feed', '__return_false');
-                add_filter('show_admin_bar', '__return_false');
+                add_action('init', ['RY_WPI_update', 'update']);
             }
 
             add_filter('xmlrpc_enabled', '__return_false');
 
+            add_action('init', [__CLASS__, 'do_init'], 1);
             add_action('init', [__CLASS__, 'register_post_type'], 9);
+
             add_action('rest_api_init', [__CLASS__, 'initial_rest_routes'], 100);
 
             include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/woocommerce/action-scheduler/action-scheduler.php';
         }
+    }
+
+    public static function do_init()
+    {
+        load_plugin_textdomain('wpinfo-plugin', false, plugin_basename(RY_WPI_PLUGIN_DIR) . '/languages');
+
+        if (is_admin()) {
+            return ;
+        }
+
+        remove_action('wp_head', 'rsd_link');
+        remove_action('wp_head', 'wlwmanifest_link');
+        remove_action('wp_head', 'feed_links_extra', 3);
+        remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+        remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+        remove_action('wp_head', 'print_emoji_detection_script', 7);
+        remove_action('wp_head', 'wp_oembed_add_discovery_links');
+        remove_action('wp_head', 'wp_oembed_add_host_js');
+        remove_action('wp_print_styles', 'print_emoji_styles');
+        remove_action('template_redirect', 'wp_shortlink_header', 11, 0);
+        remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+
+        add_filter('get_the_generator_html', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_xhtml', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_comment', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_atom', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_rss2', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_rdf', [__CLASS__, 'hide_version']);
+        add_filter('get_the_generator_export', [__CLASS__, 'hide_version']);
+
+        add_filter('rest_queried_resource_route', '__return_empty_string');
+        add_filter('feed_links_show_comments_feed', '__return_false');
     }
 
     public static function register_post_type()
@@ -115,15 +118,7 @@ class RY_WPI
             'taxonomies' => ['category', 'post_tag']
         ]);
 
-        register_post_type('remote_log', [
-            'label' => '抓取紀錄',
-            'public' => false,
-            'hierarchical' => false,
-            'show_ui' => true,
-            'show_in_admin_bar' => false,
-            'supports' => ['title', 'editor']
-        ]);
-/*
+        /*
         register_taxonomy('website-tag', ['website'], [
             'label' => '網站 標籤',
             'public' => false,
@@ -131,21 +126,14 @@ class RY_WPI
             'show_in_menu' => true,
             'hierarchical' => false
         ]);
-*/
-        register_taxonomy('remote_log-tag', ['remote_log'], [
-            'label' => '錯誤標籤',
-            'public' => false,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'hierarchical' => false
-        ]);
+        */
     }
 
     public static function initial_rest_routes()
     {
-        include RY_WPI_PLUGIN_DIR . '/rest-api/site.php';
+        include RY_WPI_PLUGIN_DIR . '/rest-api/v1/site.php';
 
-        $controller = new RY_WPI_Site_Controller;
+        $controller = new RY_WPI_V1_Site_Controller;
         $controller->register_routes();
     }
 
@@ -158,25 +146,6 @@ class RY_WPI
         $gen = str_replace($version, '', $gen);
 
         return $gen;
-    }
-
-    public static function as_to_90()
-    {
-        return 90;
-    }
-
-    public static function remove_user_sitemap($provider, $name)
-    {
-        if ($name == 'users') {
-            return new stdClass;
-        }
-        return $provider;
-    }
-
-    public static function add_mod_time($sitemap_entry, $post)
-    {
-        $sitemap_entry['lastmod'] = get_post_modified_time('c', false, $post);
-        return $sitemap_entry;
     }
 
     public static function get_option($option, $default = false)

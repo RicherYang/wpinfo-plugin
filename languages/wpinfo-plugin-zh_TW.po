@@ -1,0 +1,2338 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ez2 WooCommerce\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ez2-woocommerce\n"
+"POT-Creation-Date: 2021-06-22 11:08+0800\n"
+"PO-Revision-Date: 2021-06-22 11:09+0800\n"
+"Last-Translator: Richer Yang\n"
+"Language-Team: Ez2.SHOP\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: includes/composer\n"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:18
+#, php-format
+msgid "%s year"
+msgid_plural "%s years"
+msgstr[0] "%s 年"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:23
+#, php-format
+msgid "%s month"
+msgid_plural "%s months"
+msgstr[0] "%s 月"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:28
+#, php-format
+msgid "%s week"
+msgid_plural "%s weeks"
+msgstr[0] "%s 週"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:33
+#, php-format
+msgid "%s day"
+msgid_plural "%s days"
+msgstr[0] "%s 天"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:38
+#, php-format
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] "%s 小時"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:43
+#, php-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s 分鐘"
+
+#. translators: %s: amount of time
+#: includes/action-scheduler/list-table.php:48
+#, php-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s 秒"
+
+#: wpi-admin.php:30
+msgctxt "publish box date format"
+msgid "M j, Y"
+msgstr "Y 年 n 月 j 日"
+
+#: wpi-admin.php:31
+msgctxt "publish box time format"
+msgid "H:i"
+msgstr "H:i"
+
+#: wpi-admin.php:34
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s 於 %2$s"
+
+#~ msgid "Ez2 WooCommerce 標準版"
+#~ msgstr "Ez2 WooCommerce 標準版"
+
+#~ msgid "Ez2.SHOP"
+#~ msgstr "Ez2.SHOP"
+
+#~ msgid "Select all"
+#~ msgstr "全部選取"
+
+#~ msgid "Select none"
+#~ msgstr "全部取消"
+
+#~ msgid "Created {post_type} \"{post_title}\""
+#~ msgstr "建立 {post_type} \"{post_title}\""
+
+#~ msgid "Trashed {post_type} \"{post_title}\""
+#~ msgstr "回收 {post_type} \"{post_title}\""
+
+#~ msgid "Updated {post_type} \"{post_title}\""
+#~ msgstr "更新 {post_type} \"{post_title}\""
+
+#~ msgid "Product"
+#~ msgstr "商品"
+
+#~ msgid "Quantity"
+#~ msgstr "數量"
+
+#~ msgid "Subtotal"
+#~ msgstr "小計"
+
+#~ msgid "Price"
+#~ msgstr "價格"
+
+#~ msgid "Available on backorder"
+#~ msgstr "允許無庫存下單"
+
+#~ msgid "Remove this item"
+#~ msgstr "移除這項商品"
+
+#~ msgid "Coupon code"
+#~ msgstr "折價券"
+
+#~ msgid "Apply coupon"
+#~ msgstr "使用折價券"
+
+#~ msgid "Different recipients"
+#~ msgstr "不同的收件人"
+
+#~ msgid ""
+#~ "Sorry, it seems that there are no available payment methods for your "
+#~ "state. Please contact us if you require assistance or wish to make "
+#~ "alternate arrangements."
+#~ msgstr ""
+#~ "很抱歉, 似乎沒有您的所在縣市可用的付款方式，如果需要協助或者其他替代方案請"
+#~ "聯絡我們客服人員."
+
+#~ msgid "Please fill in your details above to see available payment methods."
+#~ msgstr "請先填完上列表格後就會看到可用的付款方式。"
+
+#~ msgid "Checkout"
+#~ msgstr "結帳"
+
+#~ msgid "Total"
+#~ msgstr "總計"
+
+#~ msgid "Free shipping need %s"
+#~ msgstr "免運費還差 %s"
+
+#~ msgid ""
+#~ "The order includes more than two packages, which will be delivered at "
+#~ "different times."
+#~ msgstr "訂單包括兩個以上的包裹，將在不同的時間送達。"
+
+#~ msgid "Your order product has been sended to the convenience store."
+#~ msgstr "你訂購的商品已經送達超商門市。"
+
+#~ msgid "Invoice info"
+#~ msgstr "發票資訊"
+
+#~ msgid "Order details"
+#~ msgstr "訂單詳細資料"
+
+#~ msgid "Note:"
+#~ msgstr "備註"
+
+#~ msgid ""
+#~ "Unfortunately your order cannot be processed as the originating bank/"
+#~ "merchant has declined your transaction. Please attempt your purchase "
+#~ "again."
+#~ msgstr ""
+#~ "抱歉，本訂單因爲發起銀行/金流商拒絕交易而無法處理，請試著再購買一次。"
+
+#~ msgid "Pay"
+#~ msgstr "付款"
+
+#~ msgid "My account"
+#~ msgstr "我的帳號"
+
+#~ msgid "Thank you. Your order has been received."
+#~ msgstr "謝謝，我們已經收到您的訂單。"
+
+#~ msgid "Order number:"
+#~ msgstr "訂單編號:"
+
+#~ msgid "Date:"
+#~ msgstr "日期:"
+
+#~ msgid "Email:"
+#~ msgstr "電子郵件:"
+
+#~ msgid "Total:"
+#~ msgstr "總計:"
+
+#~ msgid "Payment method:"
+#~ msgstr "付款方式:"
+
+#~ msgid "Password change"
+#~ msgstr "變更密碼"
+
+#~ msgid "Current password (leave blank to leave unchanged)"
+#~ msgstr "目前的密碼(不需變更請留空)"
+
+#~ msgid "New password (leave blank to leave unchanged)"
+#~ msgstr "新密碼(不需變更請留空)"
+
+#~ msgid "Confirm new password"
+#~ msgstr "確認新密碼"
+
+#~ msgid "Save changes"
+#~ msgstr "儲存設定"
+
+#~ msgid "Verified"
+#~ msgstr "已驗證"
+
+#~ msgid "Unverified"
+#~ msgstr "未驗證"
+
+#~ msgid "status"
+#~ msgstr "狀態"
+
+#~ msgctxt "invoice type"
+#~ msgid "personal"
+#~ msgstr "個人"
+
+#~ msgctxt "invoice type"
+#~ msgid "phone_barcode"
+#~ msgstr "手機條碼"
+
+#~ msgctxt "invoice type"
+#~ msgid "MOICA"
+#~ msgstr "自然人憑證"
+
+#~ msgctxt "invoice type"
+#~ msgid "company"
+#~ msgstr "公司"
+
+#~ msgctxt "invoice type"
+#~ msgid "donate"
+#~ msgstr "捐贈"
+
+#~ msgid "Phone"
+#~ msgstr "聯絡電話"
+
+#~ msgid "Save Changes"
+#~ msgstr "儲存設定"
+
+#~ msgid "Store ID"
+#~ msgstr "門市編號"
+
+#~ msgid "Invoice type"
+#~ msgstr "發票類型"
+
+#~ msgid "Barcode number"
+#~ msgstr "手機條碼"
+
+#~ msgid "MOICA ID number"
+#~ msgstr "自然人憑證號碼"
+
+#~ msgid "Tax ID number"
+#~ msgstr "統一編號"
+
+#~ msgid "Company name"
+#~ msgstr "公司名稱"
+
+#~ msgid "Donate number"
+#~ msgstr "捐贈愛心碼"
+
+#~ msgctxt "invoice type"
+#~ msgid "paper"
+#~ msgstr "紙本"
+
+#~ msgid "Barcode number is not valid."
+#~ msgstr "無效的手機條碼。"
+
+#~ msgid "MOICA ID number is not valid."
+#~ msgstr "無效的自然人憑證號碼。"
+
+#~ msgid "Tax ID number is not valid."
+#~ msgstr "無效的統一編號。"
+
+#~ msgid "Donate number is not valid."
+#~ msgstr "無效的愛心碼。"
+
+#~ msgid "Taipei City"
+#~ msgstr "臺北市"
+
+#~ msgid "New Taipei City"
+#~ msgstr "新北市"
+
+#~ msgid "Taoyuan City"
+#~ msgstr "桃園市"
+
+#~ msgid "Taichung City"
+#~ msgstr "臺中市"
+
+#~ msgid "Tainan City"
+#~ msgstr "臺南市"
+
+#~ msgid "Kaohsiung City"
+#~ msgstr "高雄市"
+
+#~ msgid "Keelung City"
+#~ msgstr "基隆市"
+
+#~ msgid "Hsinchu City"
+#~ msgstr "新竹市"
+
+#~ msgid "Chiayi City"
+#~ msgstr "嘉義市"
+
+#~ msgid "Hsinchu County"
+#~ msgstr "新竹縣"
+
+#~ msgid "Miaoli County"
+#~ msgstr "苗栗縣"
+
+#~ msgid "Changhua County"
+#~ msgstr "彰化縣"
+
+#~ msgid "Nantou County"
+#~ msgstr "南投縣"
+
+#~ msgid "Yunlin County"
+#~ msgstr "雲林縣"
+
+#~ msgid "Chiayi County"
+#~ msgstr "嘉義縣"
+
+#~ msgid "Pingtung County"
+#~ msgstr "屏東縣"
+
+#~ msgid "Yilan County"
+#~ msgstr "宜蘭縣"
+
+#~ msgid "Hualien County"
+#~ msgstr "花蓮縣"
+
+#~ msgid "Taitung County"
+#~ msgstr "臺東縣"
+
+#~ msgid "Penghu County"
+#~ msgstr "澎湖縣"
+
+#~ msgid "Kinmen County"
+#~ msgstr "金門縣"
+
+#~ msgid "Lienchiang County"
+#~ msgstr "連江縣"
+
+#~ msgid "Select an option&hellip;"
+#~ msgstr "選擇一個選項&hellip;"
+
+#~ msgid "Name"
+#~ msgstr "姓名"
+
+#~ msgid "Your {site_title} order product send to CVS store"
+#~ msgstr "你在 {site_title} 訂購的商品送達超商門市"
+
+#~ msgid "Product Pickup Notice"
+#~ msgstr "商品取貨通知"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Zhongzheng Dist"
+#~ msgstr "中正區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Datong Dist"
+#~ msgstr "大同區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Zhongshan Dist"
+#~ msgstr "中山區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Songshan Dist"
+#~ msgstr "松山區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Daan Dist"
+#~ msgstr "大安區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Wanhua Dist"
+#~ msgstr "萬華區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Xinyi Dist"
+#~ msgstr "信義區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Shilin Dist"
+#~ msgstr "士林區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Beitou Dist"
+#~ msgstr "北投區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Neihu Dist"
+#~ msgstr "內湖區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Nangang Dist"
+#~ msgstr "南港區"
+
+#~ msgctxt "TW Taipei City"
+#~ msgid "Wenshan Dist"
+#~ msgstr "文山區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Renai Dist"
+#~ msgstr "仁愛區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Xinyi Dist"
+#~ msgstr "信義區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Zhongzheng Dist"
+#~ msgstr "中正區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Zhongshan Dist"
+#~ msgstr "中山區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Anle Dist"
+#~ msgstr "安樂區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Nuannuan Dist"
+#~ msgstr "暖暖區"
+
+#~ msgctxt "TW Keelung City"
+#~ msgid "Qidu Dist"
+#~ msgstr "七堵區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Wanli Dist"
+#~ msgstr "萬里區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Jinshan Dist"
+#~ msgstr "金山區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Banqiao Dist"
+#~ msgstr "板橋區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Xizhi Dist"
+#~ msgstr "汐止區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Shenkeng Dist"
+#~ msgstr "深坑區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Shiding Dist"
+#~ msgstr "石碇區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Ruifang Dist"
+#~ msgstr "瑞芳區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Pingxi Dist"
+#~ msgstr "平溪區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Shuangxi Dist"
+#~ msgstr "雙溪區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Gongliao Dist"
+#~ msgstr "貢寮區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Xindian Dist"
+#~ msgstr "新店區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Pinglin Dist"
+#~ msgstr "坪林區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Wulai Dist"
+#~ msgstr "烏來區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Yonghe Dist"
+#~ msgstr "永和區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Zhonghe Dist"
+#~ msgstr "中和區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Tucheng Dist"
+#~ msgstr "土城區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Sanxia Dist"
+#~ msgstr "三峽區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Shulin Dist"
+#~ msgstr "樹林區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Yingge Dist"
+#~ msgstr "鶯歌區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Sanchong Dist"
+#~ msgstr "三重區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Xinzhuang Dist"
+#~ msgstr "新莊區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Taishan Dist"
+#~ msgstr "泰山區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Linkou Dist"
+#~ msgstr "林口區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Luzhou Dist"
+#~ msgstr "蘆洲區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Wugu Dist"
+#~ msgstr "五股區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Bali Dist"
+#~ msgstr "八里區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Tamsui Dist"
+#~ msgstr "淡水區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Sanzhi Dist"
+#~ msgstr "三芝區"
+
+#~ msgctxt "TW New Taipei City"
+#~ msgid "Shimen Dist"
+#~ msgstr "石門區"
+
+#~ msgctxt "TW Lienchiang County"
+#~ msgid "Nangan Township"
+#~ msgstr "南竿鄉"
+
+#~ msgctxt "TW Lienchiang County"
+#~ msgid "Beigan Township"
+#~ msgstr "北竿鄉"
+
+#~ msgctxt "TW Lienchiang County"
+#~ msgid "Juguang Township"
+#~ msgstr "莒光鄉"
+
+#~ msgctxt "TW Lienchiang County"
+#~ msgid "Dongyin Township"
+#~ msgstr "東引鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Yilan City"
+#~ msgstr "宜蘭市"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Toucheng Township"
+#~ msgstr "頭城鎮"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Jiaoxi Township"
+#~ msgstr "礁溪鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Zhuangwei Township"
+#~ msgstr "壯圍鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Yuanshan Township"
+#~ msgstr "員山鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Luodong Township"
+#~ msgstr "羅東鎮"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Sanxing Township"
+#~ msgstr "三星鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Datong Township"
+#~ msgstr "大同鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Wujie Township"
+#~ msgstr "五結鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Dongshan Township"
+#~ msgstr "冬山鄉"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Suao Township"
+#~ msgstr "蘇澳鎮"
+
+#~ msgctxt "TW Yilan County"
+#~ msgid "Nanao Township"
+#~ msgstr "南澳鄉"
+
+#~ msgctxt "TW Hsinchu City"
+#~ msgid "East Dist"
+#~ msgstr "東區"
+
+#~ msgctxt "TW Hsinchu City"
+#~ msgid "North Dist"
+#~ msgstr "北區"
+
+#~ msgctxt "TW Hsinchu City"
+#~ msgid "Xiangshan Dist"
+#~ msgstr "香山區"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Zhubei City"
+#~ msgstr "竹北市"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Hukou Township"
+#~ msgstr "湖口鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Xinfeng Township"
+#~ msgstr "新豐鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Xinpu Township"
+#~ msgstr "新埔鎮"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Guanxi Township"
+#~ msgstr "關西鎮"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Qionglin Township"
+#~ msgstr "芎林鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Baoshan Township"
+#~ msgstr "寶山鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Zhudong Township"
+#~ msgstr "竹東鎮"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Wufeng Township"
+#~ msgstr "五峰鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Hengshan Township"
+#~ msgstr "橫山鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Jianshi Township"
+#~ msgstr "尖石鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Beipu Township"
+#~ msgstr "北埔鄉"
+
+#~ msgctxt "TW Hsinchu County"
+#~ msgid "Emei Township"
+#~ msgstr "峨眉鄉"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Zhongli Dist"
+#~ msgstr "中壢區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Pingzhen Dist"
+#~ msgstr "平鎮區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Longtan Dist"
+#~ msgstr "龍潭區"
+
+#~ msgctxt "TW Taoyuan City City"
+#~ msgid "Yangmei Dist"
+#~ msgstr "楊梅區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Xinwu Dist"
+#~ msgstr "新屋區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Guanyin Dist"
+#~ msgstr "觀音區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Taoyuan Dist"
+#~ msgstr "桃園區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Guishan Dist"
+#~ msgstr "龜山區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Bade Dist"
+#~ msgstr "八德區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Daxi Dist"
+#~ msgstr "大溪區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Fuxing Dist"
+#~ msgstr "復興區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Dayuan Dist"
+#~ msgstr "大園區"
+
+#~ msgctxt "TW Taoyuan City"
+#~ msgid "Luzhu Dist"
+#~ msgstr "蘆竹區"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Zhunan Township"
+#~ msgstr "竹南鎮"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Toufen City"
+#~ msgstr "頭份市"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Sanwan Township"
+#~ msgstr "三灣鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Nanzhuang Township"
+#~ msgstr "南庄鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Shitan Township"
+#~ msgstr "獅潭鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Houlong Township"
+#~ msgstr "後龍鎮"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Tongxiao Township"
+#~ msgstr "通霄鎮"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Yuanli Township"
+#~ msgstr "苑裡鎮"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Miaoli City"
+#~ msgstr "苗栗市"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Zaoqiao Township"
+#~ msgstr "造橋鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Touwu Township"
+#~ msgstr "頭屋鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Gongguan Township"
+#~ msgstr "公館鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Dahu Township"
+#~ msgstr "大湖鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Taian Township"
+#~ msgstr "泰安鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Tongluo Township"
+#~ msgstr "銅鑼鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Sanyi Township"
+#~ msgstr "三義鄉"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Xihu Township"
+#~ msgstr "西湖鎮"
+
+#~ msgctxt "TW Miaoli County"
+#~ msgid "Zhuolan Township"
+#~ msgstr "卓蘭鎮"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Central Dist"
+#~ msgstr "中區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "East Dist"
+#~ msgstr "東區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "South Dist"
+#~ msgstr "南區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "West Dist"
+#~ msgstr "西區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "North Dist"
+#~ msgstr "北區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Beitun Dist"
+#~ msgstr "北屯區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Xitun Dist"
+#~ msgstr "西屯區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Nantun Dist"
+#~ msgstr "南屯區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Taiping Dist"
+#~ msgstr "太平區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Dali Dist"
+#~ msgstr "大里區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Wufeng Dist"
+#~ msgstr "霧峰區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Wuri Dist"
+#~ msgstr "烏日區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Fengyuan Dist"
+#~ msgstr "豐原區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Houli Dist"
+#~ msgstr "后里區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Shigang Dist"
+#~ msgstr "石岡區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Dongshi Dist"
+#~ msgstr "東勢區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Heping Dist"
+#~ msgstr "和平區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Xinshe Dist"
+#~ msgstr "新社區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Tanzi Dist"
+#~ msgstr "潭子區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Daya Dist"
+#~ msgstr "大雅區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Shengang Dist"
+#~ msgstr "神岡區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Dadu Dist"
+#~ msgstr "大肚區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Shalu Dist"
+#~ msgstr "沙鹿區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Longjing Dist"
+#~ msgstr "龍井區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Wuqi Dist"
+#~ msgstr "梧棲區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Qingshui Dist"
+#~ msgstr "清水區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Dajia Dist"
+#~ msgstr "大甲區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Waipu Dist"
+#~ msgstr "外埔區"
+
+#~ msgctxt "TW Taichung City"
+#~ msgid "Daan Dist"
+#~ msgstr "大安區"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Changhua City"
+#~ msgstr "彰化市"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Fenyuan Township"
+#~ msgstr "芬園鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Huatan Township"
+#~ msgstr "花壇鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Xiushui Township"
+#~ msgstr "秀水鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Lukang Township"
+#~ msgstr "鹿港鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Fuxing Township"
+#~ msgstr "福興鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Xianxi Township"
+#~ msgstr "線西鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Hemei Township"
+#~ msgstr "和美鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Shengang Township"
+#~ msgstr "伸港鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Yuanlin City"
+#~ msgstr "員林市"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Shetou Township"
+#~ msgstr "社頭鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Yongjing Township"
+#~ msgstr "永靖鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Puxin Township"
+#~ msgstr "埔心鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Xihu Township"
+#~ msgstr "溪湖鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Dacun Township"
+#~ msgstr "大村鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Puyan Township"
+#~ msgstr "埔鹽鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Tianzhong Township"
+#~ msgstr "田中鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Beidou Township"
+#~ msgstr "北斗鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Tianwei Township"
+#~ msgstr "田尾鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Pitou Township"
+#~ msgstr "埤頭鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Xizhou Township"
+#~ msgstr "溪州鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Zhutang Township"
+#~ msgstr "竹塘鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Erlin Township"
+#~ msgstr "二林鎮"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Dacheng Township"
+#~ msgstr "大城鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Fangyuan Township"
+#~ msgstr "芳苑鄉"
+
+#~ msgctxt "TW Changhua County"
+#~ msgid "Ershui Township"
+#~ msgstr "二水鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Nantou City"
+#~ msgstr "南投市"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Zhongliao Township"
+#~ msgstr "中寮鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Caotun Township"
+#~ msgstr "草屯鎮"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Guoxing Township"
+#~ msgstr "國姓鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Puli Township"
+#~ msgstr "埔里鎮"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Renai Township"
+#~ msgstr "仁愛鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Mingjian Township"
+#~ msgstr "名間鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Jiji Township"
+#~ msgstr "集集鎮"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Shuili Township"
+#~ msgstr "水里鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Yuchi Township"
+#~ msgstr "魚池鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Xinyi Township"
+#~ msgstr "信義鄉"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Zhushan Township"
+#~ msgstr "竹山鎮"
+
+#~ msgctxt "TW Nantou County"
+#~ msgid "Lugu Township"
+#~ msgstr "鹿谷鄉"
+
+#~ msgctxt "TW Chiayi City"
+#~ msgid "East Dist"
+#~ msgstr "東區"
+
+#~ msgctxt "TW Chiayi City"
+#~ msgid "West Dist"
+#~ msgstr "西區"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Fanlu Township"
+#~ msgstr "番路鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Meishan Township"
+#~ msgstr "梅山鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Zhuqi Township"
+#~ msgstr "竹崎鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Alishan Township"
+#~ msgstr "阿里山鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Zhongpu Township"
+#~ msgstr "中埔鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Dapu Township"
+#~ msgstr "大埔鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Shuishang Township"
+#~ msgstr "水上鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Lucao Township"
+#~ msgstr "鹿草鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Taibao City"
+#~ msgstr "太保市"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Puzi City"
+#~ msgstr "朴子市"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Dongshi Township"
+#~ msgstr "東石鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Liujiao Township"
+#~ msgstr "六腳鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Xingang Township"
+#~ msgstr "新港鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Minxiong Township"
+#~ msgstr "民雄鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Dalin Township"
+#~ msgstr "大林鎮"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Xikou Township"
+#~ msgstr "溪口鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Yizhu Township"
+#~ msgstr "義竹鄉"
+
+#~ msgctxt "TW Chiayi County"
+#~ msgid "Budai Township"
+#~ msgstr "布袋鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Dounan Township"
+#~ msgstr "斗南鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Dapi Township"
+#~ msgstr "大埤鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Huwei Township"
+#~ msgstr "虎尾鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Tuku Township"
+#~ msgstr "土庫鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Baozhong Township"
+#~ msgstr "褒忠鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Dongshi Township"
+#~ msgstr "東石鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Taixi Township"
+#~ msgstr "臺西鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Lunbei Township"
+#~ msgstr "崙背鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Mailiao Township"
+#~ msgstr "麥寮鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Douliu City"
+#~ msgstr "斗六市"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Linnei Township"
+#~ msgstr "林內鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Gukeng Township"
+#~ msgstr "古坑鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Citong Township"
+#~ msgstr "莿桐鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Xiluo Township"
+#~ msgstr "西螺鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Erlun Township"
+#~ msgstr "二崙鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Beigang Township"
+#~ msgstr "北港鎮"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Shuilin Township"
+#~ msgstr "水林鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Kouhu Township"
+#~ msgstr "口湖鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Sihu Township"
+#~ msgstr "四湖鄉"
+
+#~ msgctxt "TW Yunlin County"
+#~ msgid "Yuanzhang Township"
+#~ msgstr "元長鄉"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "West Central Dist"
+#~ msgstr "中西區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "East Dist"
+#~ msgstr "東區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "South Dist"
+#~ msgstr "南區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "North Dist"
+#~ msgstr "北區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Anping Dist"
+#~ msgstr "安平區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Annan Dist"
+#~ msgstr "安南區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Yongkang Dist"
+#~ msgstr "永康區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Guiren Dist"
+#~ msgstr "歸仁區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xinhua Dist"
+#~ msgstr "新化區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Zuozhen Dist"
+#~ msgstr "左鎮區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Yujing Dist"
+#~ msgstr "玉井區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Nanxi Dist"
+#~ msgstr "楠西區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Nanhua Dist"
+#~ msgstr "南化區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Rende Dist"
+#~ msgstr "仁德區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Guanmiao Dist"
+#~ msgstr "關廟區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Longqi Dist"
+#~ msgstr "龍崎區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Guantian Dist"
+#~ msgstr "官田區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Madou Dist"
+#~ msgstr "麻豆區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Jiali Dist"
+#~ msgstr "佳里區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xigang Dist"
+#~ msgstr "西港區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Qigu Dist"
+#~ msgstr "七股區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Jiangjun Dist"
+#~ msgstr "將軍區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xuejia Dist"
+#~ msgstr "學甲區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Beimen Dist"
+#~ msgstr "北門區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xinying Dist"
+#~ msgstr "新營區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Houbi Dist"
+#~ msgstr "後壁區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Baihe Dist"
+#~ msgstr "白河區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Dongshan Dist"
+#~ msgstr "東山區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Liujia Dist"
+#~ msgstr "六甲區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xiaying Dist"
+#~ msgstr "下營區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Liuying Dist"
+#~ msgstr "柳營區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Yanshui Dist"
+#~ msgstr "鹽水區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Shanhua Dist"
+#~ msgstr "善化區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Danei Dist"
+#~ msgstr "大內區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Shanshang Dist"
+#~ msgstr "山上區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Xinshi Dist"
+#~ msgstr "新市區"
+
+#~ msgctxt "TW Tainan City"
+#~ msgid "Anding Dist"
+#~ msgstr "安定區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Xinxing Dist"
+#~ msgstr "新興區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qianjin Dist"
+#~ msgstr "前金區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Lingya Dist"
+#~ msgstr "苓雅區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Yancheng Dist"
+#~ msgstr "鹽埕區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Gushan Dist"
+#~ msgstr "鼓山區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qijin Dist"
+#~ msgstr "旗津區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qianzhen Dist"
+#~ msgstr "前鎮區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Sanmin Dist"
+#~ msgstr "三民區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Nanzi Dist"
+#~ msgstr "楠梓區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Xiaogang Dist"
+#~ msgstr "小港區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Zuoying Dist"
+#~ msgstr "左營區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Renwu Dist"
+#~ msgstr "仁武區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Dashe Dist"
+#~ msgstr "大社區"
+
+#~ msgctxt "TW Nanhai Islands"
+#~ msgid "Dongsha Islands"
+#~ msgstr "東沙群島"
+
+#~ msgctxt "TW Nanhai Islands"
+#~ msgid "Nansha Islands"
+#~ msgstr "南沙群島"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Gangshan Dist"
+#~ msgstr "岡山區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Luzhu Dist"
+#~ msgstr "路竹區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Alian Dist"
+#~ msgstr "阿蓮區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Tianliao Dist"
+#~ msgstr "田寮區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Yanchao Dist"
+#~ msgstr "燕巢區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qiaotou Dist"
+#~ msgstr "橋頭區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Ziguan Dist"
+#~ msgstr "梓官區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Mituo Dist"
+#~ msgstr "彌陀區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Yongan Dist"
+#~ msgstr "永安區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Hunei Dist"
+#~ msgstr "湖內區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Fengshan Dist"
+#~ msgstr "鳳山區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Daliao Dist"
+#~ msgstr "大寮區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Linyuan Dist"
+#~ msgstr "林園區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Niaosong Dist"
+#~ msgstr "鳥松區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Dashu Dist"
+#~ msgstr "大樹區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qishan Dist"
+#~ msgstr "旗山區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Meinong Dist"
+#~ msgstr "美濃區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Liugui Dist"
+#~ msgstr "六龜區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Neimen Dist"
+#~ msgstr "內門區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Shanlin Dist"
+#~ msgstr "杉林區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Jiaxian Dist"
+#~ msgstr "甲仙區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Taoyuan Dist"
+#~ msgstr "桃園區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Namaxia Dist"
+#~ msgstr "那瑪夏區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Maolin Dist"
+#~ msgstr "茂林區"
+
+#~ msgctxt "TW Kaohsiung City"
+#~ msgid "Qieding Dist"
+#~ msgstr "茄萣區"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Magong City"
+#~ msgstr "馬公市"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Xiyu Township"
+#~ msgstr "西嶼鄉"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Wangan Township"
+#~ msgstr "望安鄉"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Qimei Township"
+#~ msgstr "七美鄉"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Baisha Township"
+#~ msgstr "白沙鄉"
+
+#~ msgctxt "TW Penghu County"
+#~ msgid "Huxi Township"
+#~ msgstr "湖西鄉"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Jinsha Township"
+#~ msgstr "金沙鎮"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Jinhu Township"
+#~ msgstr "金湖鎮"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Jinning Township"
+#~ msgstr "金寧鄉"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Jincheng Township"
+#~ msgstr "金城鎮"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Lieyu Township"
+#~ msgstr "烈嶼鄉"
+
+#~ msgctxt "TW Kinmen County"
+#~ msgid "Wuqiu Township"
+#~ msgstr "烏坵鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Pingtung City"
+#~ msgstr "屏東市"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Sandimen Township"
+#~ msgstr "三地門鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Wutai Township"
+#~ msgstr "霧臺鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Majia Township"
+#~ msgstr "瑪家鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Jiuru Township"
+#~ msgstr "九如鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Ligang Township"
+#~ msgstr "里港鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Gaoshu Township"
+#~ msgstr "高樹鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Yanpu Township"
+#~ msgstr "鹽埔鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Changzhi Township"
+#~ msgstr "長治鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Linluo Township"
+#~ msgstr "麟洛鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Zhutian Township"
+#~ msgstr "竹田鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Neipu Township"
+#~ msgstr "內埔鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Wandan Township"
+#~ msgstr "萬丹鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Chaozhou Township"
+#~ msgstr "潮州鎮"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Taiwu Township"
+#~ msgstr "泰武鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Laiyi Township"
+#~ msgstr "來義鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Wanluan Township"
+#~ msgstr "萬巒鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Kanding Township"
+#~ msgstr "崁頂鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Xinpi Township"
+#~ msgstr "新埤鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Nanzhou Township"
+#~ msgstr "南州鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Linbian Township"
+#~ msgstr "林邊鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Donggang Township"
+#~ msgstr "東港鎮"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Liuqiu Township"
+#~ msgstr "琉球鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Jiadong Township"
+#~ msgstr "佳冬鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Xinyuan Township"
+#~ msgstr "新園鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Fangliao Township"
+#~ msgstr "枋寮鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Fangshan Township"
+#~ msgstr "枋山鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Chunri Township"
+#~ msgstr "春日鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Shizi Township"
+#~ msgstr "獅子鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Checheng Township"
+#~ msgstr "車城鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Mudan Township"
+#~ msgstr "牡丹鄉"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Hengchun Township"
+#~ msgstr "恆春鎮"
+
+#~ msgctxt "TW Pingtung County"
+#~ msgid "Manzhou Township"
+#~ msgstr "滿州鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Taitung City"
+#~ msgstr "臺東市"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Ludao Township"
+#~ msgstr "綠島鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Lanyu Township"
+#~ msgstr "蘭嶼鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Yanping Township"
+#~ msgstr "延平鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Beinan Township"
+#~ msgstr "卑南鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Luye Township"
+#~ msgstr "鹿野鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Guanshan Township"
+#~ msgstr "關山鎮"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Haiduan Township"
+#~ msgstr "海端鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Chishang Township"
+#~ msgstr "池上鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Donghe Township"
+#~ msgstr "東河鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Chenggong Township"
+#~ msgstr "成功鎮"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Changbin Township"
+#~ msgstr "長濱鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Taimali Township"
+#~ msgstr "太麻里鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Jinfeng Township"
+#~ msgstr "金峰鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Dawu Township"
+#~ msgstr "大武鄉"
+
+#~ msgctxt "TW Taitung County"
+#~ msgid "Daren Township"
+#~ msgstr "達仁鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Hualien City"
+#~ msgstr "花蓮市"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Xincheng Township"
+#~ msgstr "新城鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Xiulin Township"
+#~ msgstr "秀林鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Jian Township"
+#~ msgstr "吉安鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Shoufeng Township"
+#~ msgstr "壽豐鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Fenglin Township"
+#~ msgstr "鳳林鎮"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Guangfu Township"
+#~ msgstr "光復鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Fengbin Township"
+#~ msgstr "豐濱鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Ruisui Township"
+#~ msgstr "瑞穗鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Wanrong Township"
+#~ msgstr "萬榮鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Yuli Township"
+#~ msgstr "玉里鎮"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Zhuoxi Township"
+#~ msgstr "卓溪鄉"
+
+#~ msgctxt "TW Hualien County"
+#~ msgid "Fuli Township"
+#~ msgstr "富里鄉"
+
+#~ msgid "shipping fee"
+#~ msgstr "運費"
+
+#~ msgid "ECPay"
+#~ msgstr "綠界科技"
+
+#~ msgid "Payment failed within paid order"
+#~ msgstr "已付款的訂單收到付款失敗訊息"
+
+#~ msgid "Payment failed (%s)"
+#~ msgstr "付款失敗 (%s)"
+
+#~ msgid "Enable/Disable"
+#~ msgstr "啓用/停用"
+
+#~ msgid "Enable %s"
+#~ msgstr "啟用 %s"
+
+#~ msgid "Payment deadline"
+#~ msgstr "付款截止日"
+
+#~ msgid "Payment deadline (minutes)"
+#~ msgstr "付款截止日 (分)"
+
+#~ msgid "Payment details"
+#~ msgstr "付款詳細資料"
+
+#~ msgid "Bank"
+#~ msgstr "銀行"
+
+#~ msgid "Bank code"
+#~ msgstr "銀行代碼"
+
+#~ msgid "ATM Bank account"
+#~ msgstr "ATM 繳費帳號"
+
+#~ msgid "Barcode 1"
+#~ msgstr "Barcode 1"
+
+#~ msgid "Barcode 2"
+#~ msgstr "Barcode 2"
+
+#~ msgid "Barcode 3"
+#~ msgstr "Barcode 3"
+
+#~ msgctxt "Datetime"
+#~ msgid "%1$s %2$s"
+#~ msgstr "%2$s %1$s"
+
+#~ msgid "CVS code"
+#~ msgstr "繳費代碼"
+
+#~ msgid "Store Name"
+#~ msgstr "門市名稱"
+
+#~ msgid "Store Address"
+#~ msgstr "門市地址"
+
+#~ msgid "Store Telephone"
+#~ msgstr "門市電話"
+
+#~ msgid "Product sended to cvs store"
+#~ msgstr "商品送達超商門市"
+
+#~ msgid ""
+#~ "This is an order notification sent to customers after the product send to "
+#~ "CVS store with ECPay shipping."
+#~ msgstr "這是在商品經由綠界物流送達超商門市時給通知訂購人。"
+
+#~ msgid "%1$s shipping status from %2$s to %3$s"
+#~ msgstr "%1$s 運送狀態從 %2$s 變更為 %3$s"
+
+#~ msgid "Select shipping methods"
+#~ msgstr "選擇運送方式"
+
+#~ msgid "Shipping available"
+#~ msgstr "可否運送"
+
+#~ msgid ""
+#~ "These shipping available based on the <a href=\"%s\">product shipping "
+#~ "class</a>."
+#~ msgstr "這些可否運送是基於<a href=\"%s\">商品運送類別</a>。"
+
+#~ msgid "\"%s\" available"
+#~ msgstr "\"%s\" 可運送"
+
+#~ msgid "Choose convenience store"
+#~ msgstr "選擇超商門市"
+
+#~ msgid "Full free gift"
+#~ msgstr "滿額贈禮"
+
+#~ msgid "Next full gitf need %s"
+#~ msgstr "滿額贈還差 %s"
+
+#~ msgid "Total points of products in cart exceed own points."
+#~ msgstr "購物車內的商品合計點數超過了現有點數。"
+
+#~ msgid ""
+#~ "Sorry, \"%s\" exceed own points. Please remove some item from your cart."
+#~ msgstr "抱歉，\"%s\" 點數超過你持有的點數。請移除部分商品。"
+
+#~ msgid "Points"
+#~ msgstr "紅利點數"
+
+#~ msgid "User only. <a href=\"%s\">Please login</a> to change."
+#~ msgstr "會員專屬，請<a href=\"%s\">登入</a>兌換。"
+
+#~ msgid "Use \"%s\" change product"
+#~ msgstr "使用「%s」兌換商品"
+
+#~ msgid "Not enough point"
+#~ msgstr "點數不足，無法兌換"
+
+#~ msgid "Sorry, this product is unavailable pay by point."
+#~ msgstr "抱歉，此商品無法以點數兌換"
+
+#~ msgctxt "points action type"
+#~ msgid "Admin action"
+#~ msgstr "管理員調整"
+
+#~ msgctxt "points action type"
+#~ msgid "Birthday"
+#~ msgstr "生日贈點"
+
+#~ msgctxt "points action type"
+#~ msgid "Login"
+#~ msgstr "登入"
+
+#~ msgctxt "points action type"
+#~ msgid "Login continuous days"
+#~ msgstr "連續登入"
+
+#~ msgctxt "points action type"
+#~ msgid "New member"
+#~ msgstr "新會員贈點"
+
+#~ msgctxt "points action type"
+#~ msgid "Comment"
+#~ msgstr "留言"
+
+#~ msgctxt "points action type"
+#~ msgid "Comment rating"
+#~ msgstr "留言評分"
+
+#~ msgctxt "points action type"
+#~ msgid "Comment delete"
+#~ msgstr "刪除留言"
+
+#~ msgctxt "points action type"
+#~ msgid "Comment rating delete"
+#~ msgstr "刪除留言評分"
+
+#~ msgctxt "points action type"
+#~ msgid "Order completed"
+#~ msgstr "訂單完成"
+
+#~ msgctxt "points action type"
+#~ msgid "Order cancelled"
+#~ msgstr "訂單取消"
+
+#~ msgctxt "points action type"
+#~ msgid "Order refund"
+#~ msgstr "訂單退貨"
+
+#~ msgctxt "points action type"
+#~ msgid "Order refund delete"
+#~ msgstr "訂單退貨取消"
+
+#~ msgctxt "points action type"
+#~ msgid "Points products"
+#~ msgstr "兌換商品"
+
+#~ msgctxt "points action type"
+#~ msgid "Refund points products"
+#~ msgstr "取消兌換商品"
+
+#~ msgctxt "points action type"
+#~ msgid "Share"
+#~ msgstr "分享贈點"
+
+#~ msgctxt "points action type"
+#~ msgid "Game"
+#~ msgstr "遊戲贈點"
+
+#~ msgid "Used \"%s\""
+#~ msgstr "使用「%s」"
+
+#~ msgid "My %s:"
+#~ msgstr "我的%s："
+
+#~ msgid "points record"
+#~ msgstr "點數紀錄"
+
+#~ msgid "Date"
+#~ msgstr "日期"
+
+#~ msgid "Action"
+#~ msgstr "動作"
+
+#~ msgid "Points change"
+#~ msgstr "點數變化"
+
+#~ msgid "Related link"
+#~ msgstr "相關連結"
+
+#~ msgid "Order"
+#~ msgstr "訂單"
+
+#~ msgid "Comment"
+#~ msgstr "留言"
+
+#~ msgid "Previous"
+#~ msgstr "上一頁"
+
+#~ msgid "Next"
+#~ msgstr "下一頁"
+
+#~ msgid "Payment failed:  %1$s (%2$d)"
+#~ msgstr "付款失敗: %1$s (%2$d)"
+
+#~ msgid "TapPay"
+#~ msgstr "TapPay"
+
+#~ msgctxt "TapPay placeholder"
+#~ msgid "Card number"
+#~ msgstr "請輸入卡號"
+
+#~ msgctxt "TapPay placeholder"
+#~ msgid "Card expiration date"
+#~ msgstr "MM / YY"
+
+#~ msgctxt "TapPay placeholder"
+#~ msgid "Card ccv"
+#~ msgstr "CCV"
+
+#~ msgid "Please wait.<br>Getting checkout info."
+#~ msgstr "請等待。<br>取得付款資訊中。"
+
+#~ msgid "Unknow"
+#~ msgstr "未知"
+
+#~ msgctxt "TapPay"
+#~ msgid "Card number"
+#~ msgstr "卡號"
+
+#~ msgctxt "TapPay"
+#~ msgid "Expiration date"
+#~ msgstr "到期日"
+
+#~ msgctxt "TapPay"
+#~ msgid "CCV"
+#~ msgstr "安全碼"
+
+#~ msgctxt "Order status"
+#~ msgid "Wait pickup (cvs)"
+#~ msgstr "等待取貨（便利商店）"
+
+#~ msgid "Wait pickup (cvs) <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Wait pickup (cvs) <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "等待取貨（便利商店）<span class=\"count\">(%s)</span>"
+
+#~ msgctxt "Order status"
+#~ msgid "Overdue return (cvs)"
+#~ msgstr "逾時退貨（便利商店）"
+
+#~ msgid "Overdue return (cvs) <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Overdue return (cvs) <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "逾時退貨（便利商店）<span class=\"count\">(%s)</span>"
+
+#~ msgid "Invoice number"
+#~ msgstr "發票號碼"
+
+#~ msgid "Invoice random number"
+#~ msgstr "發票隨機碼"
+
+#~ msgid "Add & Checkout"
+#~ msgstr "立即購物"
+
+#~ msgid "Error processing checkout. Please try again."
+#~ msgstr "處理結帳時發生錯誤，請再試一遍"
+
+#~ msgid "required must be"
+#~ msgstr "這是必填欄位。"
+
+#~ msgid "phone barcode must be"
+#~ msgstr ""
+#~ "手機條碼應為 / 開頭，加上 7 位由數字、大寫英文字母與符號 + - . 所組成之內"
+#~ "容。"
+
+#~ msgid "moica no must be"
+#~ msgstr ""
+#~ "自然人憑證號碼應為兩位大寫英文字母開頭，加上 14 位數字所組成之內容。"
+
+#~ msgid "company no must be"
+#~ msgstr "統一編號應為 8 位數字所組成之內容。"
+
+#~ msgid "donate no must be"
+#~ msgstr "捐贈愛心碼應為 3 到 7 位數字所組成之內容。"
+
+#~ msgid "required"
+#~ msgstr "必要欄位"
+
+#~ msgid "optional"
+#~ msgstr "選填"
+
+#~ msgctxt "Bank code"
+#~ msgid "004"
+#~ msgstr "臺灣銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "005"
+#~ msgstr "土地銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "006"
+#~ msgstr "合作金庫銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "007"
+#~ msgstr "第一銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "008"
+#~ msgstr "華南銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "009"
+#~ msgstr "彰化銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "011"
+#~ msgstr "上海銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "012"
+#~ msgstr "台北富邦銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "013"
+#~ msgstr "國泰世華銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "016"
+#~ msgstr "高雄銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "017"
+#~ msgstr "兆豐銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "018"
+#~ msgstr "農業金庫"
+
+#~ msgctxt "Bank code"
+#~ msgid "021"
+#~ msgstr "花旗(台灣)銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "022"
+#~ msgstr "美國銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "025"
+#~ msgstr "首都銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "039"
+#~ msgstr "澳商澳盛銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "048"
+#~ msgstr "王道銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "050"
+#~ msgstr "臺灣企銀"
+
+#~ msgctxt "Bank code"
+#~ msgid "052"
+#~ msgstr "渣打銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "053"
+#~ msgstr "台中銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "054"
+#~ msgstr "京城銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "072"
+#~ msgstr "德意志銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "075"
+#~ msgstr "東亞銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "081"
+#~ msgstr "匯豐(台灣)銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "082"
+#~ msgstr "巴黎銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "101"
+#~ msgstr "瑞興銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "102"
+#~ msgstr "華泰銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "103"
+#~ msgstr "新光銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "108"
+#~ msgstr "陽信銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "118"
+#~ msgstr "板信銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "147"
+#~ msgstr "三信銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "700"
+#~ msgstr "中華郵政"
+
+#~ msgctxt "Bank code"
+#~ msgid "803"
+#~ msgstr "聯邦銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "805"
+#~ msgstr "遠東銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "806"
+#~ msgstr "元大銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "807"
+#~ msgstr "永豐銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "808"
+#~ msgstr "玉山銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "809"
+#~ msgstr "凱基銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "810"
+#~ msgstr "星展(台灣)銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "812"
+#~ msgstr "台新銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "815"
+#~ msgstr "日盛銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "816"
+#~ msgstr "安泰銀行"
+
+#~ msgctxt "Bank code"
+#~ msgid "822"
+#~ msgstr "中國信託銀行"
+
+#~ msgid "Email address"
+#~ msgstr "電子郵件地址"
+
+#~ msgid "Display name"
+#~ msgstr "顯示名稱"
+
+#~ msgid "Birthday"
+#~ msgstr "生日"
+
+#~ msgctxt "points action type"
+#~ msgid "Expire"
+#~ msgstr "點數到期"
