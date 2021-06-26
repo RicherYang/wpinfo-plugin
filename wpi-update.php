@@ -34,5 +34,9 @@ final class RY_WPI_update
 
             RY_WPI::update_option('version', '1.3.0');
         }
+
+        if (version_compare($now_version, '1.3.1', '<')) {
+            RY_WPI::update_option('version', '1.3.1');
+        }
     }
 }

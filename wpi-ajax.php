@@ -10,7 +10,7 @@ class RY_WPI_Ajax
 
             add_action('wp_ajax_wpi_get_website_info', [__CLASS__, 'get_website_info']);
             add_action('wp_ajax_wpi_get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            //add_action('wp_ajax_wpi_get_website_tag', [__CLASS__, 'get_website_tag']);
+            add_action('wp_ajax_wpi_get_website_category', [__CLASS__, 'get_website_category']);
 
             add_action('wp_ajax_wpi_get_plugin_info', [__CLASS__, 'get_plugin_info']);
         }
@@ -32,12 +32,12 @@ class RY_WPI_Ajax
         }
     }
 
-    public static function get_website_tag()
+    public static function get_website_category()
     {
         $site_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $post_type = get_post_type($site_ID);
         if (in_array($post_type, ['website'])) {
-            do_action('wpi/get_website_tag', $site_ID);
+            do_action('wpi/get_website_category', $site_ID);
         }
     }
 

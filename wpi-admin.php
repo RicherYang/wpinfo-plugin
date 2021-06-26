@@ -116,41 +116,11 @@ class RY_WPI_Admin
         }
 
         /*
-        if (!as_next_scheduled_action('wpi/reget_website_tag')) {
-            as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_tag');
+        if (!as_next_scheduled_action('wpi/reget_website_category')) {
+            as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_category');
         }
         */
     }
 }
 
 RY_WPI_Admin::init();
-
-/*
-
-DELETE FROM wp_term_taxonomy WHERE taxonomy = 'website-tag';
-DELETE FROM wp_term_relationships WHERE term_taxonomy_id NOT IN (SELECT term_taxonomy_id FROM wp_term_taxonomy);
-DELETE FROM wp_terms WHERE term_id NOT IN (SELECT term_id FROM wp_term_taxonomy);
-
-ALTER TABLE wp_term_taxonomy ADD CONSTRAINT fk_term_id FOREIGN KEY(term_id) REFERENCES wp_terms(term_id) ON DELETE cascade ON UPDATE cascade;
-ALTER TABLE wp_term_relationships ADD CONSTRAINT fk_term_taxonomy_id FOREIGN KEY(term_taxonomy_id) REFERENCES wp_term_taxonomy(term_taxonomy_id) ON DELETE cascade ON UPDATE cascade;
-
-SET @num := 0;
-UPDATE wp_terms SET term_id = @num := (@num+1) ORDER BY term_id ASC;
-SET @num := 0;
-UPDATE wp_term_taxonomy SET term_taxonomy_id = @num := (@num+1) ORDER BY term_taxonomy_id ASC;
-
-ALTER TABLE wp_term_taxonomy DROP FOREIGN KEY fk_term_id;
-ALTER TABLE wp_term_relationships DROP FOREIGN KEY fk_term_taxonomy_id;
-
-SELECT @max := MAX(term_id) + 1 FROM wp_terms;
-SET @alter_statement = concat('ALTER TABLE wp_terms AUTO_INCREMENT = ', @max);
-PREPARE stmt FROM @alter_statement;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
-
-SELECT @max := MAX(term_taxonomy_id) + 1 FROM wp_term_taxonomy;
-SET @alter_statement = concat('ALTER TABLE wp_term_taxonomy AUTO_INCREMENT = ', @max);
-PREPARE stmt FROM @alter_statement;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
-*/

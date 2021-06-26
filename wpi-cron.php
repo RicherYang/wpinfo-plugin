@@ -11,14 +11,14 @@ class RY_WPI_Cron
 
             add_action('wpi/get_website_info', [__CLASS__, 'get_website_info'], 10, 2);
             add_action('wpi/get_website_theme_plugin', [__CLASS__, 'get_website_theme_plugin']);
-            //add_action('wpi/get_website_tag', [__CLASS__, 'get_website_tag'], 10, 2);
+            add_action('wpi/get_website_category', [__CLASS__, 'get_website_category']);
 
             add_action('wpi/get_theme_info', [__CLASS__, 'get_theme_info']);
             add_action('wpi/get_plugin_info', [__CLASS__, 'get_plugin_info']);
 
             add_action('action_scheduler_begin_execute', [__CLASS__, 'set_as_action_id']);
             add_action('wpi/reget_website_info', [__CLASS__, 'reget_website_info']);
-            //add_action('wpi/reget_website_tag', [__CLASS__, 'reget_website_tag']);
+            add_action('wpi/reget_website_category', [__CLASS__, 'reget_website_category']);
             add_action('wpi/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);
         }
     }
@@ -134,7 +134,7 @@ class RY_WPI_Cron
         if (empty($body)) {
             return '';
         }
-        $data = @json_decode($body, true);
+        $data = json_decode($body, true);
         if ($data) {
             $rest_url = rtrim($rest_url, '/');
             $do_update = $do_update || update_post_meta($site_ID, 'rest_url', $rest_url);
@@ -195,7 +195,7 @@ class RY_WPI_Cron
         update_post_meta($site_ID, 'info_time', current_time('timestamp'));
     }
 
-    public static function get_website_tag($site_ID, $tag_page = 1)
+    public static function get_website_category($site_ID)
     {
         if (get_post_type($site_ID) != 'website') {
             return;
@@ -213,74 +213,40 @@ class RY_WPI_Cron
             return;
         }
 
-        set_time_limit(90);
-        $start_time = time();
-        $tag_list = get_post_meta($site_ID, '_tmp_tag', true);
-        $tag_list = @json_decode($tag_list, true);
-        if (!is_array($tag_list)) {
-            $tag_list = [];
-            update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
-        }
+        set_time_limit(120);
         $query_arg = [
             'hide_empty' => true,
-            'per_page' => 100,
-            'page' => $tag_page
+            'page' => 1,
+            'per_page' => 100
         ];
-        $end = false;
+        $all_category = [];
         do {
-            $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/tags'));
+            $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'));
             if (empty($body)) {
-                $end = true;
                 break;
             }
 
-            $data = @json_decode($body, true);
+            $data = json_decode($body, true);
             if ($data && count($data)) {
-                $new_tag = array_column($data, 'name');
-                foreach ($new_tag as $term) {
-                    $tags = RY_WPI_SiteInfo::cat_tag($term);
-                    if (empty($tags)) {
-                        continue;
+                $list = array_column($data, 'name');
+                foreach ($list as $category) {
+                    $term_info = term_exists($category, 'website-category');
+                    if (!$term_info) {
+                        $term_info = wp_insert_term($category, 'website-category');
                     }
-
-                    foreach ($tags as $tag) {
-                        $tag = trim($tag);
-                        if (empty($tag)) {
-                            continue;
-                        }
-
-                        $term_info = term_exists($tag, 'website-tag');
-                        if (!$term_info) {
-                            $term_info = wp_insert_term($tag, 'website-tag');
-                        }
-                        if (!is_wp_error($term_info)) {
-                            $tag_list[] = (int) $term_info['term_id'];
-                        }
+                    if (!is_wp_error($term_info)) {
+                        $all_category[] = (int) $term_info['term_id'];
                     }
                 }
-                $tag_list = array_values(array_unique($tag_list));
 
                 $query_arg['page'] += 1;
-                if (count($data) < $query_arg['per_page']) {
-                    $end = true;
-                    break;
-                }
             } else {
-                $end = true;
                 break;
             }
-            sleep(1);
-        } while (time() - $start_time < 30);
+        } while (true);
 
-
-        if ($end) {
-            update_post_meta($site_ID, '_tmp_tag', '');
-            wp_set_post_terms($site_ID, $tag_list, 'website-tag');
-            update_post_meta($site_ID, 'tag_time', current_time('timestamp'));
-        } else {
-            update_post_meta($site_ID, '_tmp_tag', json_encode($tag_list));
-            as_schedule_single_action(time() + 10, 'wpi/get_website_tag', [$site_ID, $query_arg['page']]);
-        }
+        wp_set_post_terms($site_ID, $all_category, 'website-category');
+        update_post_meta($site_ID, 'category_time', current_time('timestamp'));
     }
 
     public static function get_theme_info($theme_ID)
@@ -295,7 +261,7 @@ class RY_WPI_Cron
         if (empty($body)) {
             return;
         }
-        $data = @json_decode($body, true);
+        $data = json_decode($body, true);
         if ($data && isset($data['name'])) {
             $do_update = false;
 
@@ -333,7 +299,7 @@ class RY_WPI_Cron
         if (empty($body)) {
             return;
         }
-        $data = @json_decode($body, true);
+        $data = json_decode($body, true);
         if ($data && isset($data['name'])) {
             $do_update = false;
 
@@ -402,7 +368,7 @@ class RY_WPI_Cron
         }
     }
 
-    public static function reget_website_tag()
+    public static function reget_website_category()
     {
         add_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         $query = new WP_Query();
@@ -412,7 +378,7 @@ class RY_WPI_Cron
             'meta_query' => [
                 'relation' => 'OR',
                 [
-                    'key' => 'tag_time',
+                    'key' => 'category_time',
                     'type' => 'NUMERIC'
                 ]
             ],
@@ -425,10 +391,10 @@ class RY_WPI_Cron
             $query->the_post();
 
             if (self::$action_id !== null) {
-                ActionScheduler_Logger::instance()->log(self::$action_id, 'website:' . get_the_ID());
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'reget:' . get_the_ID());
             }
 
-            do_action('wpi/get_website_tag', get_the_ID());
+            do_action('wpi/get_website_category', get_the_ID());
         }
     }
 
@@ -444,6 +410,11 @@ class RY_WPI_Cron
         ]);
         while ($query->have_posts()) {
             $query->the_post();
+
+            if (self::$action_id !== null) {
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'reget:' . get_the_ID());
+            }
+
             do_action('wpi/get_' . get_post_type() . '_info', get_the_ID());
         }
     }
@@ -458,18 +429,6 @@ class RY_WPI_Cron
         if (!is_wp_error($response)) {
             if (200 == wp_remote_retrieve_response_code($response)) {
                 return wp_remote_retrieve_body($response);
-            } else {
-                $code = wp_remote_retrieve_response_code($response);
-                $content = wp_remote_retrieve_body($response);
-                if (in_array($code, [403, 404])) {
-                    $content = '';
-                }
-            }
-        } else {
-            $tag_list = [];
-            $messages = $response->get_error_messages();
-            foreach ($messages as $message) {
-                $tag_list[] = strstr($message, ':', true);
             }
         }
         return '';

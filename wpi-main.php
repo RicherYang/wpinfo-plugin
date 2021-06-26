@@ -26,6 +26,8 @@ class RY_WPI
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
 
                 add_action('init', ['RY_WPI_update', 'update']);
+            } else {
+                include_once RY_WPI_PLUGIN_DIR . 'includes/seo.php';
             }
 
             add_filter('xmlrpc_enabled', '__return_false');
@@ -118,15 +120,13 @@ class RY_WPI
             'taxonomies' => ['category', 'post_tag']
         ]);
 
-        /*
-        register_taxonomy('website-tag', ['website'], [
-            'label' => '網站 標籤',
+        register_taxonomy('website-category', ['website'], [
+            'label' => '網站 分類',
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => true,
             'hierarchical' => false
         ]);
-        */
     }
 
     public static function initial_rest_routes()

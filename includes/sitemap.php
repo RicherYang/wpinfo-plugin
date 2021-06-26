@@ -8,18 +8,9 @@ class RY_WPI_Sitemap
         if (!self::$initiated) {
             self::$initiated = true;
 
-            add_filter('wp_sitemaps_stylesheet_url', '__return_empty_string');
-            add_filter('wp_sitemaps_stylesheet_index_url', '__return_empty_string');
-
-            add_filter('wp_sitemaps_max_urls', [__CLASS__, 'set_1000']);
             add_filter('wp_sitemaps_add_provider', [__CLASS__, 'remove_user_sitemap'], 10, 2);
             add_filter('wp_sitemaps_posts_entry', [__CLASS__, 'add_mod_time'], 10, 2);
         }
-    }
-
-    public static function set_1000()
-    {
-        return 1000;
     }
 
     public static function remove_user_sitemap($provider, $name)
