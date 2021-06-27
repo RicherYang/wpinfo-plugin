@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '725d610eadd01059c4fb66af6bd8c6f696f63685',
+    'reference' => '50e09517f9a05514912a24c8de762675d4a68fd8',
     'name' => '__root__',
   ),
   'versions' => 
@@ -31,7 +31,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '725d610eadd01059c4fb66af6bd8c6f696f63685',
+      'reference' => '50e09517f9a05514912a24c8de762675d4a68fd8',
     ),
     'woocommerce/action-scheduler' => 
     array (

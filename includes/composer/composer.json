@@ -1,10 +1,5 @@
 {
 	"require": {
       "woocommerce/action-scheduler": "3.*"
-	},
-   "config": {
-      "platform": {
-         "php": "7.4.20"
-      }
-   }
+	}
 }

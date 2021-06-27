@@ -35,7 +35,7 @@ class RY_WPI_Cron
         $url = get_post_meta($site_ID, 'url', true);
         $rest_url = get_post_meta($site_ID, 'rest_url', true);
 
-        $body = self::remote_get($url);
+        $body = RY_WPI_Remote::get($url);
         if (!empty($body)) {
             if (empty($rest_url)) {
                 $link_cat = strpos($body, 'https://api.w.org/');
@@ -130,7 +130,7 @@ class RY_WPI_Cron
 
     protected static function use_rest_get_site_name($rest_url, $site_ID, &$do_update)
     {
-        $body = self::remote_get($rest_url);
+        $body = RY_WPI_Remote::get($rest_url);
         if (empty($body)) {
             return '';
         }
@@ -148,7 +148,7 @@ class RY_WPI_Cron
     protected static function use_feed_get_site_name($feed_url, $site_ID)
     {
         $post_status = get_post_status($site_ID);
-        $body = self::remote_get($feed_url);
+        $body = RY_WPI_Remote::get($feed_url);
         if (empty($body)) {
             return '';
         }
@@ -178,7 +178,7 @@ class RY_WPI_Cron
         set_time_limit(90);
         $do_update = false;
         $url = get_post_meta($site_ID, 'url', true);
-        $body = self::remote_get($url);
+        $body = RY_WPI_Remote::get($url);
         if (!empty($body)) {
             $themes = apply_filters('wpi/add_theme', [], $site_ID, $body);
             $do_update = $do_update || RY_WPI_SiteInfo::add_site_info($site_ID, 'theme', $themes);
@@ -221,13 +221,14 @@ class RY_WPI_Cron
         ];
         $all_category = [];
         do {
-            $body = self::remote_get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'));
+            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'));
             if (empty($body)) {
                 break;
             }
 
             $data = json_decode($body, true);
             if ($data && count($data)) {
+                $try_next = false;
                 $list = array_column($data, 'name');
                 foreach ($list as $category) {
                     $term_info = term_exists($category, 'website-category');
@@ -235,17 +236,25 @@ class RY_WPI_Cron
                         $term_info = wp_insert_term($category, 'website-category');
                     }
                     if (!is_wp_error($term_info)) {
-                        $all_category[] = (int) $term_info['term_id'];
+                        $term_id = (int) $term_info['term_id'];
+                        if (!$all_category[$term_id]) {
+                            $all_category[$term_id] = 1;
+                            $try_next = true;
+                        }
                     }
                 }
 
-                $query_arg['page'] += 1;
+                if ($try_next) {
+                    $query_arg['page'] += 1;
+                } else {
+                    break;
+                }
             } else {
                 break;
             }
         } while (true);
 
-        wp_set_post_terms($site_ID, $all_category, 'website-category');
+        wp_set_post_terms($site_ID, array_keys($all_category), 'website-category');
         update_post_meta($site_ID, 'category_time', current_time('timestamp'));
     }
 
@@ -257,7 +266,7 @@ class RY_WPI_Cron
 
         set_time_limit(90);
         $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
-        $body = self::remote_get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug);
+        $body = RY_WPI_Remote::get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug);
         if (empty($body)) {
             return;
         }
@@ -295,7 +304,7 @@ class RY_WPI_Cron
 
         set_time_limit(90);
         $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
-        $body = self::remote_get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json');
+        $body = RY_WPI_Remote::get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json');
         if (empty($body)) {
             return;
         }
@@ -357,7 +366,7 @@ class RY_WPI_Cron
             'posts_per_page' => 1
         ]);
         remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
-        while ($query->have_posts()) {
+        if ($query->have_posts()) {
             $query->the_post();
 
             if (self::$action_id !== null) {
@@ -387,7 +396,7 @@ class RY_WPI_Cron
             'posts_per_page' => 1
         ]);
         remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
-        while ($query->have_posts()) {
+        if ($query->have_posts()) {
             $query->the_post();
 
             if (self::$action_id !== null) {
@@ -408,7 +417,7 @@ class RY_WPI_Cron
             'order' => 'ASC',
             'posts_per_page' => 1
         ]);
-        while ($query->have_posts()) {
+        if ($query->have_posts()) {
             $query->the_post();
 
             if (self::$action_id !== null) {
@@ -417,21 +426,6 @@ class RY_WPI_Cron
 
             do_action('wpi/get_' . get_post_type() . '_info', get_the_ID());
         }
-    }
-
-    public static function remote_get($url)
-    {
-        $response = wp_remote_get($url, [
-            'timeout' => 15,
-            'user-agent' => 'Mozilla/5.0 (CentOS; Linux x86_64; WordPress/' . get_bloginfo('version') . ') wpinfoShow/' . RY_WPI_VERSION
-        ]);
-
-        if (!is_wp_error($response)) {
-            if (200 == wp_remote_retrieve_response_code($response)) {
-                return wp_remote_retrieve_body($response);
-            }
-        }
-        return '';
     }
 }
 

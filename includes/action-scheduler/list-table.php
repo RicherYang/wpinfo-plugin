@@ -64,7 +64,7 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
     protected function get_log_entry_html(ActionScheduler_LogEntry $log_entry, DateTimezone $timezone)
     {
         $date = $log_entry->get_date();
-        $date->setTimezone($timezone);
+        $date->setTimezone(self::$timezone);
         return sprintf('<li><strong>%s</strong><br/>%s</li>', esc_html($date->format('Y-m-d H:i:s')), esc_html($log_entry->get_message()));
     }
 
@@ -77,7 +77,7 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
         }
 
         $next_timestamp = $schedule->get_date()->getTimestamp();
-        $schedule_display_string .= $schedule->get_date()->format('Y-m-d H:i:s');
+        $schedule_display_string .= $schedule->get_date()->setTimezone(self::$timezone)->format('Y-m-d H:i:s');
         $schedule_display_string .= '<br>';
 
         if (gmdate('U') > $next_timestamp) {

@@ -1,6 +1,4 @@
 <?php
-defined('RY_WPI_VERSION') or exit('No direct script access allowed');
-
 class RY_WPI
 {
     public static $option_prefix = 'RY_WPI_';
@@ -13,6 +11,7 @@ class RY_WPI
             self::$initiated = true;
 
             include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/remote.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/sitemap.php';
 
