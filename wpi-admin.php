@@ -8,17 +8,21 @@ class RY_WPI_Admin
         if (!self::$initiated) {
             self::$initiated = true;
 
-            add_action('init', [__CLASS__, 'check_schedule'], 20);
+            add_action('init', [__CLASS__, 'load_script_style'], 20);
 
             add_action('post_submitbox_misc_actions', [__CLASS__, 'show_mod_time']);
 
-            add_action('save_post_plugin', [__CLASS__, 'set_theme_plugin_info'], 10, 3);
-            add_action('save_post_theme', [__CLASS__, 'set_theme_plugin_info'], 10, 3);
             add_action('add_meta_boxes_website', [__CLASS__, 'website_meta_box']);
             add_action('add_meta_boxes_plugin', [__CLASS__, 'plugin_meta_box']);
-            add_action('add_meta_boxes_theme', [__CLASS__, 'plugin_meta_box']);
+            add_action('add_meta_boxes_theme', [__CLASS__, 'theme_meta_box']);
             add_action('delete_post', [__CLASS__, 'delete_post_info']);
         }
+    }
+
+    public static function load_script_style()
+    {
+        wp_enqueue_style('wpi-admin-style', RY_WPI_PLUGIN_URL . '/assets/css/admin.css', [], RY_WPI_VERSION);
+        wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
     }
 
     public static function show_mod_time($post)
@@ -36,20 +40,11 @@ class RY_WPI_Admin
             . '</div>';
     }
 
-    public static function set_theme_plugin_info($post_ID, $post, $update)
-    {
-        if (!$update) {
-            update_post_meta($post_ID, 'used_count', 0);
-            update_post_meta($post_ID, 'rest_key', '');
-        }
-    }
-
     public static function website_meta_box()
     {
         wp_enqueue_script('wpi-meta_box-script');
 
         remove_meta_box('postcustom', null, 'normal');
-        add_meta_box('website_info', '網站資訊', [__CLASS__, 'website_info'], null, 'normal');
         add_meta_box('website_action', 'WPI 操作', [__CLASS__, 'website_action'], null, 'side');
     }
 
@@ -58,8 +53,15 @@ class RY_WPI_Admin
         wp_enqueue_script('wpi-meta_box-script');
 
         remove_meta_box('postcustom', null, 'normal');
-        add_meta_box('plugin_info', '基本資訊', [__CLASS__, 'plugin_info'], null, 'normal');
         add_meta_box('plugin_action', 'WEI 操作', [__CLASS__, 'plugin_action'], null, 'side');
+    }
+
+    public static function theme_meta_box()
+    {
+        wp_enqueue_script('wpi-meta_box-script');
+
+        remove_meta_box('postcustom', null, 'normal');
+        add_meta_box('theme_action', 'WEI 操作', [__CLASS__, 'theme_action'], null, 'side');
     }
 
     public static function delete_post_info($post_ID)
@@ -82,42 +84,19 @@ class RY_WPI_Admin
         }
     }
 
-    public static function website_info($post)
-    {
-        include RY_WPI_PLUGIN_DIR . 'html/meta_box/website_info.php';
-    }
-
-    public static function website_action($post)
+    public static function website_action()
     {
         include RY_WPI_PLUGIN_DIR . 'html/meta_box/website_action.php';
     }
 
-    public static function plugin_info($post)
-    {
-        include RY_WPI_PLUGIN_DIR . 'html/meta_box/plugin_info.php';
-    }
-
-    public static function plugin_action($post)
+    public static function plugin_action()
     {
         include RY_WPI_PLUGIN_DIR . 'html/meta_box/plugin_action.php';
     }
 
-    public static function check_schedule()
+    public static function theme_action()
     {
-        wp_enqueue_style('wpi-admin-style', RY_WPI_PLUGIN_URL . '/assets/css/admin.css', [], RY_WPI_VERSION);
-        wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
-
-        if (!as_next_scheduled_action('wpi/reget_theme_plugin_info')) {
-            as_schedule_recurring_action(time() + 10, 600, 'wpi/reget_theme_plugin_info');
-        }
-
-        if (!as_next_scheduled_action('wpi/reget_website_info')) {
-            as_schedule_recurring_action(time() + 100, 300, 'wpi/reget_website_info');
-        }
-
-        if (!as_next_scheduled_action('wpi/reget_website_category')) {
-            as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_category');
-        }
+        include RY_WPI_PLUGIN_DIR . 'html/meta_box/theme_action.php';
     }
 }
 

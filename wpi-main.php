@@ -10,16 +10,24 @@ class RY_WPI
         if (!self::$initiated) {
             self::$initiated = true;
 
+            if (!WP_DEBUG) {
+                include_once RY_WPI_PLUGIN_DIR . 'includes/acf-fields.php';
+            }
+
             include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
+
+            include_once RY_WPI_PLUGIN_DIR . 'includes/plugin.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/remote.php';
-            include_once RY_WPI_PLUGIN_DIR . 'includes/site-info.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/sitemap.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/theme.php';
+            include_once RY_WPI_PLUGIN_DIR . 'includes/website.php';
 
             include_once RY_WPI_PLUGIN_DIR . 'wpi-cron.php';
             include_once RY_WPI_PLUGIN_DIR . 'wpi-ajax.php';
 
             if (is_admin()) {
                 include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler.php';
+                include_once RY_WPI_PLUGIN_DIR . 'includes/admin/tool.php';
 
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
@@ -117,6 +125,14 @@ class RY_WPI
             'show_in_admin_bar' => false,
             'supports' => ['title', 'custom-fields'],
             'taxonomies' => ['category', 'post_tag']
+        ]);
+
+        register_taxonomy('plugin-rest', ['website', 'plugin'], [
+            'label' => '外掛 REST',
+            'public' => false,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            'hierarchical' => false
         ]);
 
         register_taxonomy('website-category', ['website'], [

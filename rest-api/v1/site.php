@@ -70,7 +70,7 @@ class RY_WPI_V1_Site_Controller extends WP_REST_Controller
         }
 
         if (empty($data)) {
-            $site_ID = wp_insert_post([
+            $website_ID = wp_insert_post([
                 'post_type' => 'website',
                 'post_title' => $real_url,
                 'post_name' => $slug_url,
@@ -78,13 +78,12 @@ class RY_WPI_V1_Site_Controller extends WP_REST_Controller
                 'comment_status' => 'closed',
                 'ping_status' => 'closed'
             ]);
-            update_post_meta($site_ID, 'url', $real_url);
-            update_post_meta($site_ID, 'rest_url', '');
 
-            do_action('wpi/get_website_info', $site_ID, false);
-            if (get_post_status($site_ID) == 'publish') {
-                do_action('wpi/get_website_theme_plugin', $site_ID);
-                $data['url'] = get_permalink($site_ID);
+            update_field('url', $real_url, $website_ID);
+            RY_WPI_Website::get_basic_info($website_ID);
+
+            if (get_post_status($website_ID) == 'publish') {
+                $data['url'] = get_permalink($website_ID);
             } else {
                 $data['info'] = 'confirming';
             }

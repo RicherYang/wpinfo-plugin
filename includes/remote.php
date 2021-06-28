@@ -1,17 +1,10 @@
 <?php
 class RY_WPI_Remote
 {
-    private static $initiated = false;
-
-    public static function init()
-    {
-        if (!self::$initiated) {
-            self::$initiated = true;
-        }
-    }
-
     public static function get($url)
     {
+        set_time_limit(60);
+
         $response = wp_remote_get($url, [
             'timeout' => 5,
             'user-agent' => 'Mozilla/5.0 (CentOS; Linux x86_64; WordPress/' . get_bloginfo('version') . ') wpinfoShow/' . RY_WPI_VERSION
@@ -25,5 +18,3 @@ class RY_WPI_Remote
         return '';
     }
 }
-
-RY_WPI_Remote::init();
