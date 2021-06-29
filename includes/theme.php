@@ -7,9 +7,21 @@ class RY_WPI_Theme
             return;
         }
 
+        $at_org = get_field('at_org', $theme_ID);
+        if ($at_org === false) {
+            wp_update_post([
+                'ID' => $theme_ID
+            ]);
+            return;
+        }
+
         $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
         $json = RY_WPI_Remote::get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug, $theme_ID);
         if (empty($json)) {
+            update_field('at_org', false, $theme_ID);
+            wp_update_post([
+                'ID' => $theme_ID
+            ]);
             return;
         }
 
@@ -27,7 +39,11 @@ class RY_WPI_Theme
                 'ID' => $theme_ID,
                 'post_title' => $json_data->name,
             ]);
+            return ;
         }
+        wp_update_post([
+            'ID' => $theme_ID
+        ]);
     }
 
     public static function update_used_count($theme_ID)

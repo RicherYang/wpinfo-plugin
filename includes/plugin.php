@@ -7,9 +7,21 @@ class RY_WPI_Plugin
             return;
         }
 
+        $at_org = get_field('at_org', $plugin_ID);
+        if ($at_org === false) {
+            wp_update_post([
+                'ID' => $plugin_ID
+            ]);
+            return;
+        }
+
         $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
         $json = RY_WPI_Remote::get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json', $plugin_ID);
         if (empty($json)) {
+            update_field('at_org', false, $plugin_ID);
+            wp_update_post([
+                'ID' => $plugin_ID
+            ]);
             return;
         }
 
@@ -27,7 +39,11 @@ class RY_WPI_Plugin
                 'ID' => $plugin_ID,
                 'post_title' => $json_data->name,
             ]);
+            return ;
         }
+        wp_update_post([
+            'ID' => $plugin_ID
+        ]);
     }
 
     public static function update_used_count($plugin_ID)

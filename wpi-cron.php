@@ -43,7 +43,7 @@ class RY_WPI_Cron
             'post_status' => 'publish',
             'orderby' => 'modified',
             'order' => 'ASC',
-            'posts_per_page' => 1
+            'posts_per_page' => 3
         ]);
         while ($query->have_posts()) {
             $query->the_post();
