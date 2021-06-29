@@ -28,6 +28,7 @@ class RY_WPI
             if (is_admin()) {
                 include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler.php';
                 include_once RY_WPI_PLUGIN_DIR . 'includes/admin/tool.php';
+                include_once RY_WPI_PLUGIN_DIR . 'includes/admin/error-log.php';
 
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-update.php';
                 include_once RY_WPI_PLUGIN_DIR . 'wpi-admin.php';
@@ -161,6 +162,24 @@ class RY_WPI
         $gen = str_replace($version, '', $gen);
 
         return $gen;
+    }
+
+    public static function create_table()
+    {
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}remote_error (
+            remote_error_id BIGINT UNSIGNED NOT NULL auto_increment,
+            post_id BIGINT UNSIGNED NOT NULL,
+            get_url VARCHAR(250) NOT NULL default '',
+            http_code VARCHAR(3) NOT NULL default '',
+            error_content TEXT NOT NULL,
+            get_date DATETIME NOT NULL default '0000-00-00 00:00:00',
+            PRIMARY KEY  (remote_error_id),
+            KEY post_id (post_id)
+        ) $charset_collate");
     }
 
     public static function get_option($option, $default = false)

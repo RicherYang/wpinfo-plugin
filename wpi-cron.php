@@ -89,7 +89,7 @@ class RY_WPI_Cron
         ];
         $all_category = [];
         do {
-            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'));
+            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'), $website_ID);
             if (empty($body)) {
                 break;
             }

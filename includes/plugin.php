@@ -8,7 +8,7 @@ class RY_WPI_Plugin
         }
 
         $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
-        $json = RY_WPI_Remote::get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json');
+        $json = RY_WPI_Remote::get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json', $plugin_ID);
         if (empty($json)) {
             return;
         }

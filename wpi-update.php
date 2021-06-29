@@ -15,8 +15,10 @@ final class RY_WPI_update
 
         global $wpdb;
 
-        if (version_compare($now_version, '2.0.2', '<')) {
-            RY_WPI::update_option('version', '2.0.2');
+        if (version_compare($now_version, '2.0.5', '<')) {
+            RY_WPI::create_table();
+
+            RY_WPI::update_option('version', '2.0.5');
         }
     }
 }

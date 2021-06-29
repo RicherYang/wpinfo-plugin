@@ -182,13 +182,40 @@
                 "placeholder": ""
             },
             {
+                "key": "field_60dadd998afa2",
+                "label": "確認 WordPress",
+                "name": "is_wp",
+                "type": "true_false",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "確認",
+                "ui_off_text": "否"
+            },
+            {
                 "key": "field_60d9f4ac40cc5",
                 "label": "支援 REST",
                 "name": "support_rest",
                 "type": "true_false",
                 "instructions": "",
                 "required": 0,
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_60dadd998afa2",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
                 "wrapper": {
                     "width": "",
                     "class": "",
@@ -225,13 +252,45 @@
                 "placeholder": ""
             },
             {
+                "key": "field_60dae00d93801",
+                "label": "RSS 網址",
+                "name": "rss_url",
+                "type": "url",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_60dadd998afa2",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": ""
+            },
+            {
                 "key": "field_60d9f4f140cc7",
                 "label": "佈景主題",
                 "name": "themes",
                 "type": "post_object",
                 "instructions": "",
                 "required": 0,
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_60dadd998afa2",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
                 "wrapper": {
                     "width": "",
                     "class": "",
@@ -253,7 +312,15 @@
                 "type": "post_object",
                 "instructions": "",
                 "required": 0,
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_60dadd998afa2",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
                 "wrapper": {
                     "width": "",
                     "class": "",

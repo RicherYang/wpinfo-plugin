@@ -80,6 +80,8 @@ class RY_WPI_V1_Site_Controller extends WP_REST_Controller
             ]);
 
             update_field('url', $real_url, $website_ID);
+            update_field('is_wp', false, $website_ID);
+            update_field('support_rest', false, $website_ID);
             RY_WPI_Website::get_basic_info($website_ID);
 
             if (get_post_status($website_ID) == 'publish') {

@@ -8,7 +8,7 @@ class RY_WPI_Theme
         }
 
         $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
-        $json = RY_WPI_Remote::get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug);
+        $json = RY_WPI_Remote::get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug, $theme_ID);
         if (empty($json)) {
             return;
         }

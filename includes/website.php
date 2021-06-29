@@ -4,10 +4,18 @@ class RY_WPI_Website
     public static function get_basic_info($website_ID)
     {
         $url = get_field('url', $website_ID, false);
-        $support_rest = get_field('support_rest', $website_ID);
+        $is_wp = get_field('is_wp', $website_ID);
         $rest_url = get_field('rest_url', $website_ID, false);
-        $html = RY_WPI_Remote::get($url);
-        if (!empty($html) && empty($rest_url)) {
+        $html = RY_WPI_Remote::get($url, $website_ID);
+
+        if (empty($html)) {
+            wp_update_post([
+                'ID' => $website_ID
+            ]);
+            return;
+        }
+
+        if ($is_wp === false && empty($rest_url)) {
             $link_cat = strpos($html, 'https://api.w.org/');
             if ($link_cat !== false) {
                 $rest_url = substr($html, 0, strpos($html, '>', $link_cat));
@@ -23,23 +31,40 @@ class RY_WPI_Website
                     $end = ' ';
                 }
                 $rest_url = substr($rest_url, 0, strpos($rest_url, $end));
+                if (substr($rest_url, 0, 2) == '//') {
+                    $rest_url = 'https:' . $rest_url;
+                }
             } else {
                 $rest_url = $url . '/wp-json';
             }
 
             $rest_url = filter_var($rest_url, FILTER_VALIDATE_URL);
-            if (empty($rest_url)) {
-                $rest_url = '';
-            }
         }
 
-        if (!empty($rest_url)) {
-            $rest = RY_WPI_Remote::get($rest_url);
+        if (empty($rest_url)) {
+            if ($is_wp === true) {
+                $rss_url = get_field('rss_url', $website_ID, false);
+                $rss = RY_WPI_Remote::get($rss_url, $website_ID);
+                $xml = @simplexml_load_string($rss);
+                if ($xml) {
+                    self::get_website_theme_plugin($website_ID, $html, FILE_APPEND);
+                    wp_update_post([
+                        'ID' => $website_ID,
+                        'post_title' => (string) $xml->channel->title,
+                        'post_excerpt' => (string) $xml->channel->description,
+                        'post_status' => 'publish'
+                    ]);
+                    return;
+                }
+            }
+        } else {
+            $rest = RY_WPI_Remote::get($rest_url, $website_ID);
             $rest_data = json_decode($rest);
-            if (empty($rest)) {
-                $rest_url = '';
-            } else {
-                $support_rest = true;
+            if (!empty($rest)) {
+                update_field('is_wp', true, $website_ID);
+                update_field('support_rest', true, $website_ID);
+                update_field('rest_url', $rest_url, $website_ID);
+
                 $rest_namespaces = [];
                 foreach ($rest_data->namespaces as $namespace) {
                     $term_info = term_exists($namespace, 'plugin-rest');
@@ -60,11 +85,13 @@ class RY_WPI_Website
                     'post_excerpt' => $rest_data->description,
                     'post_status' => 'publish'
                 ]);
+                return;
             }
         }
-
-        update_field('support_rest', $support_rest, $website_ID);
-        update_field('rest_url', $rest_url, $website_ID);
+        wp_update_post([
+            'ID' => $website_ID
+        ]);
+        return;
     }
 
     public static function get_website_theme_plugin($website_ID, $html)
@@ -72,7 +99,7 @@ class RY_WPI_Website
         $url = get_field('url', $website_ID, false);
 
         if (empty($html)) {
-            $html = RY_WPI_Remote::get($url);
+            $html = RY_WPI_Remote::get($url, $website_ID);
         }
         if (empty($html)) {
             return '';
@@ -142,7 +169,7 @@ class RY_WPI_Website
     /*
         protected static function get_feed_site_name($feed_url, $website_ID)
         {
-            $body = RY_WPI_Remote::get($feed_url);
+            $body = RY_WPI_Remote::get($feed_url, $website_ID);
             if (empty($body)) {
                 return '';
             }
