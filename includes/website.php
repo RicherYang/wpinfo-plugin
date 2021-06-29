@@ -10,18 +10,19 @@ class RY_WPI_Website
         if (!empty($html) && empty($rest_url)) {
             $link_cat = strpos($html, 'https://api.w.org/');
             if ($link_cat !== false) {
-                $rest_url = substr($html, $link_cat + 18, strpos($html, '>', $link_cat) - $link_cat - 18);
+                $rest_url = substr($html, 0, strpos($html, '>', $link_cat));
+                $rest_url = substr($rest_url, strrpos($rest_url, '<'));
 
                 $link_cat = strpos($rest_url, 'href=');
                 $rest_url = substr($rest_url, $link_cat + 5);
 
                 $end = substr($rest_url, 0, 1);
-                $start = 1;
-                if ($end != '"' || $end != "'") {
+                if ($end == '"' || $end == "'") {
+                    $rest_url = substr($rest_url, 1);
+                } else {
                     $end = ' ';
-                    $start = 0;
                 }
-                $rest_url = substr($rest_url, $start, strpos($rest_url, $end, 1) - 1);
+                $rest_url = substr($rest_url, 0, strpos($rest_url, $end));
             } else {
                 $rest_url = $url . '/wp-json';
             }
