@@ -10,12 +10,14 @@ class RY_WPI_Admin
 
             add_action('init', [__CLASS__, 'load_script_style'], 20);
 
+            add_filter('display_post_states', [__CLASS__, 'add_title_post_states'], 10, 2);
             add_action('post_submitbox_misc_actions', [__CLASS__, 'show_mod_time']);
 
             add_action('add_meta_boxes_website', [__CLASS__, 'website_meta_box']);
             add_action('add_meta_boxes_plugin', [__CLASS__, 'plugin_meta_box']);
             add_action('add_meta_boxes_theme', [__CLASS__, 'theme_meta_box']);
-            add_action('delete_post', [__CLASS__, 'delete_post_info']);
+
+            add_action('post_action_abandoned', [__CLASS__, 'abandoned_website']);
         }
     }
 
@@ -23,6 +25,14 @@ class RY_WPI_Admin
     {
         wp_enqueue_style('wpi-admin-style', RY_WPI_PLUGIN_URL . '/assets/css/admin.css', [], RY_WPI_VERSION);
         wp_register_script('wpi-meta_box-script', RY_WPI_PLUGIN_URL . '/assets/js/meta_box.js', ['jquery'], RY_WPI_VERSION, true);
+    }
+
+    public static function add_title_post_states($post_states, $post)
+    {
+        if ('abandoned' === $post->post_status) {
+            $post_states['abandoned'] = '廢站';
+        }
+        return $post_states;
     }
 
     public static function show_mod_time($post)
@@ -64,28 +74,12 @@ class RY_WPI_Admin
         add_meta_box('theme_action', 'WEI 操作', [__CLASS__, 'theme_action'], null, 'side');
     }
 
-    public static function delete_post_info($post_ID)
+    public static function website_action($post)
     {
-        $post_type = get_post_type($post_ID);
-        $post_query = new WP_Query();
-        $post_query->query([
-            'post_type' => 'website',
-            'post_status' => 'publish',
-            'meta_key' => $post_type,
-            'meta_value' => $post_ID,
-            'orderby' => 'modified',
-            'order' => 'DESC',
-            'posts_per_page' => '-1'
-        ]);
-        while ($post_query->have_posts()) {
-            $post_query->the_post();
+        $post_type_object = get_post_type_object($post->post_type);
+        $abandoned_link = add_query_arg('action', 'abandoned', admin_url(sprintf($post_type_object->_edit_link, $post->ID)));
+        $abandoned_link = wp_nonce_url($abandoned_link, 'abandoned-post_' . $post->ID);
 
-            delete_post_meta(get_the_ID(), $post_type, $post_ID);
-        }
-    }
-
-    public static function website_action()
-    {
         include RY_WPI_PLUGIN_DIR . 'html/meta_box/website_action.php';
     }
 
@@ -97,6 +91,22 @@ class RY_WPI_Admin
     public static function theme_action()
     {
         include RY_WPI_PLUGIN_DIR . 'html/meta_box/theme_action.php';
+    }
+
+    public static function abandoned_website($post_ID)
+    {
+        check_admin_referer('abandoned-post_' . $post_ID);
+
+        if (get_post_type($post_ID) == 'website') {
+            wp_update_post([
+                'ID' => $post_ID,
+                'post_status' => 'abandoned',
+            ]);
+            wp_redirect(admin_url('edit.php?post_status=abandoned&post_type=website'));
+        } else {
+            wp_redirect(admin_url('post.php?post=' . $post_ID . '&action=edit'));
+        }
+        exit;
     }
 }
 

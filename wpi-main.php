@@ -143,6 +143,15 @@ class RY_WPI
             'show_in_menu' => true,
             'hierarchical' => false
         ]);
+
+        register_post_status('abandoned', [
+            'label' => '廢站',
+            'public' => false,
+            'show_in_admin_all_list' => false,
+            'show_in_admin_status_list' => true,
+            /* translators: %s: number of orders */
+            'label_count' => _n_noop('廢站 <span class="count">(%s)</span>', '廢站 <span class="count">(%s)</span>'),
+        ]);
     }
 
     public static function initial_rest_routes()

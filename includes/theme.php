@@ -29,4 +29,13 @@ class RY_WPI_Theme
             ]);
         }
     }
+
+    public static function update_used_count($theme_ID)
+    {
+        global $wpdb;
+
+        $count = $wpdb->get_var("SELECT COUNT(meta_id) FROM $wpdb->postmeta
+            WHERE meta_key = 'themes' AND meta_value LIKE '%:\"{$theme_ID}\";%'");
+        update_field('used_count', (int) $count, $theme_ID);
+    }
 }

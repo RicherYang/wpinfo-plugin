@@ -47,13 +47,13 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
         global $wpdb;
 
         $url = admin_url('admin.php?page=wpi-error-log');
-        $status = wp_unslash($_REQUEST['status'] ?? '');
+        $hcode = wp_unslash($_REQUEST['hcode'] ?? '');
 
         $views = [];
         $views['all'] = sprintf(
             '<a href="%1$s"%2$s>全部</a>',
             $url,
-            $status == '' ? ' class="current"' : '',
+            $hcode == '' ? ' class="current"' : '',
         );
 
         $list = $wpdb->get_results("SELECT count(remote_error_id) AS items, http_code FROM {$wpdb->prefix}remote_error
@@ -62,10 +62,10 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
         foreach ($list as $info) {
             $views[$info->http_code] = sprintf(
                 '<a href="%1$s"%2$s>%4$s <span class="count">(%3$s)</span></a>',
-                add_query_arg('status', $info->http_code, $url),
-                $status == $info->http_code ? ' class="current"' : '',
+                add_query_arg('hcode', $info->http_code, $url),
+                $hcode == $info->http_code ? ' class="current"' : '',
                 $info->items,
-                $this->get_status_string($info)
+                $info->http_code
             );
         }
 

@@ -12,6 +12,7 @@ class RY_WPI_Plugin
         if (empty($json)) {
             return;
         }
+
         $json_data = json_decode($json);
         if ($json_data && isset($json_data->name)) {
             update_field('at_org', true, $plugin_ID);
@@ -27,5 +28,14 @@ class RY_WPI_Plugin
                 'post_title' => $json_data->name,
             ]);
         }
+    }
+
+    public static function update_used_count($plugin_ID)
+    {
+        global $wpdb;
+
+        $count = $wpdb->get_var("SELECT COUNT(meta_id) FROM $wpdb->postmeta
+            WHERE meta_key = 'plugins' AND meta_value LIKE '%:\"{$plugin_ID}\";%'");
+        update_field('used_count', (int) $count, $plugin_ID);
     }
 }

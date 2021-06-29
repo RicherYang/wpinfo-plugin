@@ -11,31 +11,23 @@ class RY_WPI_Cron
 
             add_action('action_scheduler_begin_execute', [__CLASS__, 'set_as_action_id']);
 
-            add_action('wpi/get_website_basic_info', ['RY_WPI_Website', 'get_basic_info']);
-
+            add_action('wpi/get_website_info', ['RY_WPI_Website', 'get_basic_info']);
             add_action('wpi/get_plugin_info', ['RY_WPI_Plugin', 'get_basic_info']);
             add_action('wpi/get_theme_info', ['RY_WPI_Theme', 'get_basic_info']);
 
-            add_action('wpi/reget_website_info', [__CLASS__, 'reget_website_info']);
+            add_action('wpi/reget_info', [__CLASS__, 'reget_info']);
             /*
             add_action('wpi/get_website_category', [__CLASS__, 'get_website_category']);
-
             add_action('wpi/reget_website_category', [__CLASS__, 'reget_website_category']);
-            add_action('wpi/reget_theme_plugin_info', [__CLASS__, 'reget_theme_plugin_info']);*/
+            */
         }
     }
 
     public static function set_scheduled_job()
     {
-        if (!as_next_scheduled_action('wpi/reget_website_info')) {
-            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_website_info');
+        if (!as_next_scheduled_action('wpi/reget_info')) {
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_info');
         }
-
-        /*
-        if (!as_next_scheduled_action('wpi/reget_website_category')) {
-            as_schedule_recurring_action(time() + 190, 600, 'wpi/reget_website_category');
-        }
-        */
     }
 
     public static function set_as_action_id($action_id)
@@ -43,27 +35,28 @@ class RY_WPI_Cron
         self::$action_id = $action_id;
     }
 
-    public static function reget_website_info()
+    public static function reget_info()
     {
         $query = new WP_Query();
         $query->query([
-            'post_type' => 'website',
+            'post_type' => ['website', 'plugin', 'theme'],
             'post_status' => 'publish',
             'orderby' => 'modified',
             'order' => 'ASC',
             'posts_per_page' => 1
         ]);
-        if ($query->have_posts()) {
+        while ($query->have_posts()) {
             $query->the_post();
 
             if (self::$action_id !== null) {
-                ActionScheduler_Logger::instance()->log(self::$action_id, 'website:' . get_the_ID());
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . get_post_type() . ' :' . get_the_ID());
             }
 
-            RY_WPI_Website::get_basic_info(get_the_ID());
+            do_action('wpi/get_' . get_post_type() . '_info', (int) get_the_ID());
         }
     }
 
+    /*
     public static function get_website_category($website_ID)
     {
         if (get_post_type($website_ID) != 'website') {
@@ -155,27 +148,7 @@ class RY_WPI_Cron
             do_action('wpi/get_website_category', get_the_ID());
         }
     }
-
-    public static function reget_theme_plugin_info()
-    {
-        $query = new WP_Query();
-        $query->query([
-            'post_type' => ['theme', 'plugin'],
-            'post_status' => 'publish',
-            'orderby' => 'modified',
-            'order' => 'ASC',
-            'posts_per_page' => 1
-        ]);
-        if ($query->have_posts()) {
-            $query->the_post();
-
-            if (self::$action_id !== null) {
-                ActionScheduler_Logger::instance()->log(self::$action_id, 'reget:' . get_the_ID());
-            }
-
-            do_action('wpi/get_' . get_post_type() . '_info', get_the_ID());
-        }
-    }
+    */
 }
 
 RY_WPI_Cron::init();

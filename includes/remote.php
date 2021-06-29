@@ -11,7 +11,8 @@ class RY_WPI_Remote
         self::$http_code = '';
         $response = wp_remote_get($url, [
             'timeout' => 10,
-            'user-agent' => 'Mozilla/5.0 (CentOS; Linux x86_64; WordPress/' . get_bloginfo('version') . ') wpinfoShow/' . RY_WPI_VERSION
+            'httpversion' => '1.1',
+            'user-agent' => 'Mozilla/5.0 (X11; CentOS; Linux x86_64) WordPress/' . get_bloginfo('version') . ' wpinfoShow/' . RY_WPI_VERSION
         ]);
 
         $error_data = [

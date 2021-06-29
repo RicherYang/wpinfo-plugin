@@ -115,7 +115,6 @@ class RY_WPI_Website
             }
         }
         $plugins = array_unique($plugins);
-
         self::add_use_info($website_ID, 'plugin', $plugins);
 
         $themes = [];
@@ -164,7 +163,9 @@ class RY_WPI_Website
             }
         }
 
+        $type_list = array_filter(array_unique($type_list));
         update_field($type . 's', $type_list, $website_ID);
+        array_walk($type_list, ['RY_WPI_' . ucfirst($type), 'update_used_count']);
     }
     /*
         protected static function get_feed_site_name($feed_url, $website_ID)
