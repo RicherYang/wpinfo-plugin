@@ -306,6 +306,11 @@
                             "field": "field_60dadd998afa2",
                             "operator": "==",
                             "value": "1"
+                        },
+                        {
+                            "field": "field_60d9f4ac40cc5",
+                            "operator": "!=",
+                            "value": "1"
                         }
                     ]
                 ],

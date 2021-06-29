@@ -312,6 +312,11 @@ if (function_exists('acf_add_local_field_group')):
                             'operator' => '==',
                             'value' => '1',
                         ),
+                        array(
+                            'field' => 'field_60d9f4ac40cc5',
+                            'operator' => '!=',
+                            'value' => '1',
+                        ),
                     ),
                 ),
                 'wrapper' => array(

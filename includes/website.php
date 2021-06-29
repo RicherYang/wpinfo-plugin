@@ -6,6 +6,10 @@ class RY_WPI_Website
         $url = get_field('url', $website_ID, false);
         $is_wp = get_field('is_wp', $website_ID);
         $rest_url = get_field('rest_url', $website_ID, false);
+
+        if (is_null($is_wp)) {
+            $is_wp = false;
+        }
         $html = RY_WPI_Remote::get($url, $website_ID);
 
         if (empty($html)) {
