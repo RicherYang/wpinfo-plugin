@@ -38,21 +38,22 @@ class RY_WPI_Cron
     public static function reget_info()
     {
         $query = new WP_Query();
-        $query->query([
-            'post_type' => ['website', 'plugin', 'theme'],
-            'post_status' => 'publish',
-            'orderby' => 'modified',
-            'order' => 'ASC',
-            'posts_per_page' => 3
-        ]);
-        while ($query->have_posts()) {
-            $query->the_post();
+        foreach (['website', 'plugin', 'theme'] as $post_type) {
+            $posts_ID = $query->query([
+                'post_type' => $post_type,
+                'post_status' => 'publish',
+                'orderby' => 'modified',
+                'order' => 'ASC',
+                'fields' => 'ids',
+                'posts_per_page' => 1
+            ]);
+            foreach ($posts_ID as $post_ID) {
+                if (self::$action_id !== null) {
+                    ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . $post_type . ' :' . $post_ID);
+                }
 
-            if (self::$action_id !== null) {
-                ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . get_post_type() . ' :' . get_the_ID());
+                do_action('wpi/get_' . $post_type . '_info', (int) $post_ID);
             }
-
-            do_action('wpi/get_' . get_post_type() . '_info', (int) get_the_ID());
         }
     }
 

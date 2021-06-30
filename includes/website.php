@@ -12,10 +12,16 @@ class RY_WPI_Website
         }
         $html = RY_WPI_Remote::get($url, $website_ID);
 
+        $update_data = [
+            'ID' => $website_ID
+        ];
         if (empty($html)) {
-            wp_update_post([
-                'ID' => $website_ID
-            ]);
+            if (count(RY_WPI_Remote::$error_messages) == 1) {
+                if (substr(RY_WPI_Remote::$error_messages[0], 0, 37) == 'cURL error 6: Could not resolve host:') {
+                    $update_data['post_status'] = 'abandoned';
+                }
+            }
+            wp_update_post($update_data);
             return;
         }
 
@@ -52,19 +58,17 @@ class RY_WPI_Website
                 $xml = @simplexml_load_string($rss);
                 if ($xml) {
                     self::get_website_theme_plugin($website_ID, $html, FILE_APPEND);
-                    wp_update_post([
-                        'ID' => $website_ID,
-                        'post_title' => (string) $xml->channel->title,
-                        'post_excerpt' => (string) $xml->channel->description,
-                        'post_status' => 'publish'
-                    ]);
+                    $update_data['post_title'] = (string) $xml->channel->title;
+                    $update_data['post_excerpt'] = (string) $xml->channel->description;
+                    $update_data['post_status'] = 'publish';
+                    wp_update_post($update_data);
                     return;
                 }
             }
         } else {
             $rest = RY_WPI_Remote::get($rest_url, $website_ID);
             $rest_data = json_decode($rest);
-            if (!empty($rest)) {
+            if (!empty($rest_data)) {
                 update_field('is_wp', true, $website_ID);
                 update_field('support_rest', true, $website_ID);
                 update_field('rest_url', $rest_url, $website_ID);
@@ -83,18 +87,14 @@ class RY_WPI_Website
                 wp_set_post_terms($website_ID, $rest_namespaces, 'plugin-rest');
 
                 self::get_website_theme_plugin($website_ID, $html);
-                wp_update_post([
-                    'ID' => $website_ID,
-                    'post_title' => $rest_data->name,
-                    'post_excerpt' => $rest_data->description,
-                    'post_status' => 'publish'
-                ]);
+                $update_data['post_title'] = $rest_data->name;
+                $update_data['post_excerpt'] = $rest_data->description;
+                $update_data['post_status'] = 'publish';
+                wp_update_post($update_data);
                 return;
             }
         }
-        wp_update_post([
-            'ID' => $website_ID
-        ]);
+        wp_update_post($update_data);
         return;
     }
 

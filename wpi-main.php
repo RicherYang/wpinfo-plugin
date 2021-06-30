@@ -51,8 +51,6 @@ class RY_WPI
 
     public static function do_init()
     {
-        load_plugin_textdomain('wpinfo-plugin', false, plugin_basename(RY_WPI_PLUGIN_DIR) . '/languages');
-
         if (is_admin()) {
             return ;
         }

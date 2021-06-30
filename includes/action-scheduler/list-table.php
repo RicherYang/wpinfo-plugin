@@ -15,37 +15,37 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
             [
                 'seconds' => YEAR_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s year', '%s years', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s year', '%s years', 'action-scheduler'),
             ],
             [
                 'seconds' => MONTH_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s month', '%s months', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s month', '%s months', 'action-scheduler'),
             ],
             [
                 'seconds' => WEEK_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s week', '%s weeks', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s week', '%s weeks', 'action-scheduler'),
             ],
             [
                 'seconds' => DAY_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s day', '%s days', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s day', '%s days', 'action-scheduler'),
             ],
             [
                 'seconds' => HOUR_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s hour', '%s hours', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s hour', '%s hours', 'action-scheduler'),
             ],
             [
                 'seconds' => MINUTE_IN_SECONDS,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s minute', '%s minutes', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s minute', '%s minutes', 'action-scheduler'),
             ],
             [
                 'seconds' => 1,
                 /* translators: %s: amount of time */
-                'names'   => _n_noop('%s second', '%s seconds', 'wpinfo-plugin'),
+                'names'   => _n_noop('%s second', '%s seconds', 'action-scheduler'),
             ],
         ];
     }
@@ -104,7 +104,7 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
                 if (! empty($output)) {
                     $output .= ' ';
                 }
-                $output .= sprintf(_n(self::$time_periods[ $time_period_index ]['names'][0], self::$time_periods[ $time_period_index ]['names'][1], $periods_in_interval, 'wpinfo-plugin'), $periods_in_interval);
+                $output .= sprintf(_n(self::$time_periods[ $time_period_index ]['names'][0], self::$time_periods[ $time_period_index ]['names'][1], $periods_in_interval, 'action-scheduler'), $periods_in_interval);
                 $seconds_remaining -= $periods_in_interval * self::$time_periods[ $time_period_index ]['seconds'];
                 $periods_included++;
             }

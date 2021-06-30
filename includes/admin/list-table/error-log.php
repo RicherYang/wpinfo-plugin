@@ -1,6 +1,8 @@
 <?php
 class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
 {
+    public $get_args = [];
+
     public function __construct()
     {
         parent::__construct([
@@ -9,21 +11,22 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
             'ajax' => false,
             'screen' => 'error-logs',
         ]);
+
+        $this->get_args['page'] = 'wpi-error-log';
     }
 
     public function prepare_items()
     {
         global $wpdb;
 
-        $per_page = 15;
+        $per_page = 20;
         $offset = ($this->get_pagenum() - 1) * $per_page;
 
         $where_sql = [];
-        if (!empty($_REQUEST['pid'])) {
-            $where_sql[] = $wpdb->prepare("post_id = %d", $_REQUEST['pid']);
-        }
-        if (!empty($_REQUEST['hcode'])) {
-            $where_sql[] = $wpdb->prepare("http_code = %s", $_REQUEST['hcode']);
+        if (isset($_GET['hcode']) && $_GET['hcode'] != '') {
+            $hcode = wp_unslash($_GET['hcode']);
+            $this->get_args['hcode'] = $hcode;
+            $where_sql[] = $wpdb->prepare("http_code = %s", $hcode);
         }
 
         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}remote_error";
@@ -75,7 +78,8 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
     public function get_columns()
     {
         return [
-            'id' => '',
+            'cb'  => '<input type="checkbox" />',
+            'post' => '對應資訊',
             'url' => '遠端網址',
             'http' => 'HTTP 狀態碼',
             'content' => '錯誤訊息',
@@ -95,12 +99,22 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
 
     protected function get_bulk_actions()
     {
-        return [];
+        return [
+            'delete' => '刪除'
+        ];
     }
 
-    protected function column_id($item)
+    public function column_cb($item)
     {
-        echo $item->remote_error_id;
+        echo '<input id="cb-select-' . $item->remote_error_id . '" type="checkbox" name="ids[]" value="' . $item->remote_error_id . '" />';
+    }
+
+    protected function column_post($item)
+    {
+        $post = get_post($item->post_id);
+        if (!empty($post)) {
+            echo '<a href="' . get_edit_post_link($post) . '">' . $post->post_title . '</a>';
+        }
     }
 
     protected function column_url($item)
@@ -115,7 +129,7 @@ class RY_WPI_Admin_ListTable_ErrorLog extends WP_List_Table
 
     protected function column_content($item)
     {
-        echo $item->error_content;
+        echo nl2br($item->error_content);
     }
 
     protected function column_time($item)

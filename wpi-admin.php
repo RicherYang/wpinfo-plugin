@@ -37,17 +37,21 @@ class RY_WPI_Admin
 
     public static function show_mod_time($post)
     {
-        $date_format = _x('M j, Y', 'publish box date format', 'wpinfo-plugin');
-        $time_format = _x('H:i', 'publish box time format', 'wpinfo-plugin');
+        $date_format = _x('M j, Y', 'publish box date format');
+        $time_format = _x('H:i', 'publish box time format');
 
         $date = sprintf(
-            __('%1$s at %2$s', 'wpinfo-plugin'),
+            __('%1$s at %2$s'),
             date_i18n($date_format, strtotime($post->post_modified)),
             date_i18n($time_format, strtotime($post->post_modified))
         );
         echo '<div class="misc-pub-section curtime misc-pub-curtime">'
             . '<span id="timestamp">編輯時間: ' . '<b>' . $date . '</b>'
             . '</div>';
+
+        if ($post->post_status == 'abandoned') {
+            echo '<strong>已廢站</strong>';
+        }
     }
 
     public static function website_meta_box()

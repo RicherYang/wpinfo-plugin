@@ -2,6 +2,7 @@
 class RY_WPI_Remote
 {
     public static $http_code;
+    public static $error_messages;
 
     public static function get($url, $post_ID)
     {
@@ -9,6 +10,7 @@ class RY_WPI_Remote
         set_time_limit(60);
 
         self::$http_code = '';
+        self::$error_messages = [];
         $response = wp_remote_get($url, [
             'timeout' => 10,
             'httpversion' => '1.1',
@@ -27,7 +29,9 @@ class RY_WPI_Remote
                 $error_data['http_code'] = wp_remote_retrieve_response_code($response);
             }
         } else {
-            $error_data['error_content'] = implode("\n\n", $response->get_error_messages());
+            self::$error_messages = $response->get_error_messages();
+            $error_data['http_code'] = 0;
+            $error_data['error_content'] = implode("\n\n", self::$error_messages);
         }
         $error_data['get_date'] = current_time('mysql');
         RY_WPI::create_table();
