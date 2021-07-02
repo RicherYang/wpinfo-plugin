@@ -66,6 +66,7 @@ class RY_WPI_Website
                 }
             }
         } else {
+            $rest_url = rtrim($rest_url, '/');
             $rest = RY_WPI_Remote::get($rest_url, $website_ID);
             $rest_data = json_decode($rest);
             if (!empty($rest_data)) {
@@ -100,13 +101,20 @@ class RY_WPI_Website
 
     public static function get_website_theme_plugin($website_ID, $html)
     {
+        if (get_post_type($website_ID) != 'website') {
+            return;
+        }
+        if (get_field('is_wp', $website_ID) !== true) {
+            return;
+        }
+
         $url = get_field('url', $website_ID, false);
 
         if (empty($html)) {
             $html = RY_WPI_Remote::get($url, $website_ID);
         }
         if (empty($html)) {
-            return '';
+            return;
         }
 
         $url = substr($url, 8);
@@ -171,69 +179,88 @@ class RY_WPI_Website
         update_field($type . 's', $type_list, $website_ID);
         array_walk($type_list, ['RY_WPI_' . ucfirst($type), 'update_used_count']);
     }
-    /*
-        protected static function get_feed_site_name($feed_url, $website_ID)
-        {
-            $body = RY_WPI_Remote::get($feed_url, $website_ID);
+
+    public static function get_category_list($website_ID)
+    {
+        if (get_post_type($website_ID) != 'website') {
+            return;
+        }
+        if (get_field('support_rest', $website_ID) !== true) {
+            return;
+        }
+
+        $rest_url = get_field('rest_url', $website_ID, false);
+
+        $query_arg = [
+            'hide_empty' => false,
+            'page' => 1,
+            'per_page' => 100
+        ];
+        $all_category = [];
+        $category_map = [];
+        do {
+            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'), $website_ID);
             if (empty($body)) {
-                return '';
+                break;
             }
-            $xml = @simplexml_load_string($body);
-            if ($xml && isset($xml->channel)) {
-                $use_wp = get_post_status($website_ID) === 'publish';
-                if ($use_wp === false) {
-                    if (isset($xml->channel->generator)) {
-                        $generator = (string) $xml->channel->generator;
-                        $use_wp = strpos($generator, 'https://wordpress.org') === 0;
+
+            $data = json_decode($body);
+            if ($data && count($data)) {
+                $try_next = false;
+                foreach ($data as $category) {
+                    $term_info = term_exists($category->name, 'website-category');
+                    if (!$term_info) {
+                        $term_info = wp_insert_term($category->name, 'website-category');
+                    }
+                    if (!is_wp_error($term_info)) {
+                        $term_id = (int) $term_info['term_id'];
+                        if (!isset($all_category[$term_id])) {
+                            $category_map[$category->id] = $term_id;
+                            $all_category[$term_id] = [
+                                'id' => $term_id,
+                                'desc' => $category->description,
+                                'url' => $category->link,
+                                'count' => $category->count,
+                                'parent' => $category->parent,
+                            ];
+                            $try_next = true;
+                        }
                     }
                 }
 
-                if ($use_wp) {
-                    return [(string) $xml->channel->title, (string) $xml->channel->description];
+                if ($try_next) {
+                    $query_arg['page'] += 1;
+                } else {
+                    break;
                 }
+            } else {
+                break;
             }
-            return '';
-        }
+        } while (true);
 
-    public static function plugin_from_rest($plugins, $website_ID)
-    {
-        static $rest_namespace_map = null;
-
-        if ($rest_namespace_map === null) {
-            $rest_namespace_map = [];
-            $post_query = new WP_Query();
-            $post_query->query([
-                'post_type' => 'plugin',
-                'post_status' => 'publish',
-                'meta_query' => [
-                    [
-                        'key' => 'rest_key',
-                        'compare' => '!=',
-                        'value' => ''
-                    ]
-                ],
-                'posts_per_page' => -1
-            ]);
-            while ($post_query->have_posts()) {
-                $post_query->the_post();
-
-                $rest_key = get_post_meta(get_the_ID(), 'rest_key', true);
-                $rest_namespace_map[$rest_key] = get_post_field('post_name');
+        foreach ($all_category as $key => $category) {
+            if ($category['parent'] != 0) {
+                $all_category[$key]['parent'] = $category_map[$category['parent']] ?? 0;
             }
         }
 
-        $rest_api = get_post_meta($website_ID, 'rest_api', true);
-        $rest_api = explode(',', $rest_api);
-
-        foreach ($rest_api as $rest_namespace) {
-            $namespace = explode('/', $rest_namespace);
-            if (isset($namespace[0])) {
-                if (isset($rest_namespace_map[$namespace[0]])) {
-                    $plugins[] = $rest_namespace_map[$namespace[0]];
+        usort($all_category, function ($a, $b) {
+            if ($a['parent'] == $b['parent']) {
+                if ($a['count'] == $b['count']) {
+                    return $a['id'] <=> $b['id'];
                 }
+                return $a['count'] < $b['count'] ? 1 : -1;
+            }
+            return $a['parent'] > $b['parent'] ? 1 : -1;
+        });
+        foreach ($all_category as $key => $category) {
+            if ($category['parent'] == 0) {
+                $all_category[$key]['parent'] = '';
             }
         }
-        return $plugins;
+
+        wp_set_post_terms($website_ID, array_column($all_category, 'id'), 'website-category');
+        update_field('cat_update', current_time('mysql'), $website_ID);
+        update_field('cat', $all_category, $website_ID);
     }
-*/
 }

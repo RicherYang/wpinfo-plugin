@@ -16,17 +16,18 @@ class RY_WPI_Cron
             add_action('wpi/get_theme_info', ['RY_WPI_Theme', 'get_basic_info']);
 
             add_action('wpi/reget_info', [__CLASS__, 'reget_info']);
-            /*
-            add_action('wpi/get_website_category', [__CLASS__, 'get_website_category']);
             add_action('wpi/reget_website_category', [__CLASS__, 'reget_website_category']);
-            */
         }
     }
 
     public static function set_scheduled_job()
     {
         if (!as_next_scheduled_action('wpi/reget_info')) {
-            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_info');
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, MINUTE_IN_SECONDS, 'wpi/reget_info');
+        }
+
+        if (!as_next_scheduled_action('wpi/reget_website_category')) {
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_website_category');
         }
     }
 
@@ -37,108 +38,50 @@ class RY_WPI_Cron
 
     public static function reget_info()
     {
+        $post_type = ['website', 'plugin', 'theme'];
+        $minute = new DateTime();
+        $minute = (int) $minute->format('i');
+        $post_type = $post_type[$minute % 3];
+
         $query = new WP_Query();
-        foreach (['website', 'plugin', 'theme'] as $post_type) {
-            $posts_ID = $query->query([
-                'post_type' => $post_type,
-                'post_status' => 'publish',
-                'orderby' => 'modified',
-                'order' => 'ASC',
-                'fields' => 'ids',
-                'posts_per_page' => 1
-            ]);
-            foreach ($posts_ID as $post_ID) {
-                if (self::$action_id !== null) {
-                    ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . $post_type . ' :' . $post_ID);
-                }
-
-                do_action('wpi/get_' . $post_type . '_info', (int) $post_ID);
-            }
-        }
-    }
-
-    /*
-    public static function get_website_category($website_ID)
-    {
-        if (get_post_type($website_ID) != 'website') {
-            return;
-        }
-
-        $rest_url = get_post_meta($website_ID, 'rest_url', true);
-        if ($rest_url == 'not_use') {
-            return;
-        }
-        $rest_url = rtrim($rest_url, '/');
-
-        $rest_api = get_post_meta($website_ID, 'rest_api', true);
-        $rest_api = explode(',', $rest_api);
-        if (!in_array('wp/v2', $rest_api)) {
-            return;
-        }
-
-        $query_arg = [
-            'hide_empty' => true,
-            'page' => 1,
-            'per_page' => 100
-        ];
-        $all_category = [];
-        do {
-            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'), $website_ID);
-            if (empty($body)) {
-                break;
+        $post_list = $query->query([
+            'post_type' => $post_type,
+            'post_status' => 'publish',
+            'orderby' => 'modified',
+            'order' => 'ASC',
+            'fields' => 'ids',
+            'posts_per_page' => 1
+        ]);
+        foreach ($post_list as $post_ID) {
+            if (self::$action_id !== null) {
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . $post_type . ': ' . $post_ID);
             }
 
-            $data = json_decode($body, true);
-            if ($data && count($data)) {
-                $try_next = false;
-                $list = array_column($data, 'name');
-                foreach ($list as $category) {
-                    $term_info = term_exists($category, 'website-category');
-                    if (!$term_info) {
-                        $term_info = wp_insert_term($category, 'website-category');
-                    }
-                    if (!is_wp_error($term_info)) {
-                        $term_id = (int) $term_info['term_id'];
-                        if (!$all_category[$term_id]) {
-                            $all_category[$term_id] = 1;
-                            $try_next = true;
-                        }
-                    }
-                }
-
-                if ($try_next) {
-                    $query_arg['page'] += 1;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        } while (true);
-
-        wp_set_post_terms($website_ID, array_keys($all_category), 'website-category');
-        update_post_meta($website_ID, 'category_time', current_time('timestamp'));
+            do_action('wpi/get_' . $post_type . '_info', (int) $post_ID);
+        }
     }
 
     public static function reget_website_category()
     {
-        add_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         $query = new WP_Query();
         $query->query([
             'post_type' => 'website',
             'post_status' => 'publish',
             'meta_query' => [
-                'relation' => 'OR',
                 [
-                    'key' => 'category_time',
-                    'type' => 'NUMERIC'
+                    'key' => 'cat_update',
+                    'compare' => 'NOT EXISTS'
+                ],
+                [
+                    'key' => 'support_rest',
+                    'value' => '1'
                 ]
             ],
-            'orderby' => 'meta_value',
-            'order' => 'ASC',
+            //'meta_key' => 'cat_update',
+            //'orderby' => 'meta_value',
+            //'order' => 'ASC',
             'posts_per_page' => 1
         ]);
-        remove_filter('get_meta_sql', [__CLASS__, 'get_meta_sql']);
         if ($query->have_posts()) {
             $query->the_post();
 
@@ -146,10 +89,9 @@ class RY_WPI_Cron
                 ActionScheduler_Logger::instance()->log(self::$action_id, 'reget:' . get_the_ID());
             }
 
-            do_action('wpi/get_website_category', get_the_ID());
+            RY_WPI_Website::get_category_list(get_the_ID());
         }
     }
-    */
 }
 
 RY_WPI_Cron::init();

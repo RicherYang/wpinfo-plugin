@@ -98,10 +98,11 @@ class RY_WPI
 
         register_post_type('plugin', [
             'labels' => [
-                'name' => '網站 外掛',
+                'name' => '外掛',
                 'add_new' => '新增外掛',
                 'add_new_item' => '新增外掛',
                 'search_items' => '搜尋外掛',
+                'edit_item' => '編輯外掛資訊'
             ],
             'public' => true,
             'hierarchical' => false,
@@ -113,10 +114,11 @@ class RY_WPI
 
         register_post_type('theme', [
             'labels' => [
-                'name' => '網站 佈景主題',
+                'name' => '佈景主題',
                 'add_new' => '新增佈景主題',
                 'add_new_item' => '新增佈景主題',
                 'search_items' => '搜尋佈景主題',
+                'edit_item' => '編輯佈景主題資訊'
             ],
             'public' => true,
             'hierarchical' => false,

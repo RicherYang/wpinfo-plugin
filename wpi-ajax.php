@@ -29,7 +29,7 @@ class RY_WPI_Ajax
         $website_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $post_type = get_post_type($website_ID);
         if (in_array($post_type, ['website'])) {
-            do_action('wpi/get_website_category', $website_ID);
+            RY_WPI_Website::get_category_list($website_ID);
         }
     }
 

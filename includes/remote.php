@@ -7,12 +7,12 @@ class RY_WPI_Remote
     public static function get($url, $post_ID)
     {
         global $wpdb;
-        set_time_limit(60);
+        set_time_limit(90);
 
         self::$http_code = '';
         self::$error_messages = [];
         $response = wp_remote_get($url, [
-            'timeout' => 10,
+            'timeout' => 30,
             'httpversion' => '1.1',
             'user-agent' => 'Mozilla/5.0 (X11; CentOS; Linux x86_64) WordPress/' . get_bloginfo('version') . ' wpinfoShow/' . RY_WPI_VERSION
         ]);
