@@ -19,7 +19,7 @@ class RY_WPI_ActionScheduler
 
         add_filter('action_scheduler_admin_view_class', [__CLASS__, 'change_adminview']);
 
-        add_filter('action_scheduler_queue_runner_time_limit', [__CLASS__, 'set_90']);
+        add_filter('action_scheduler_queue_runner_time_limit', [__CLASS__, 'set_180']);
     }
 
     public static function change_adminview()
@@ -27,9 +27,9 @@ class RY_WPI_ActionScheduler
         return 'RY_WPI_ActionScheduler_AdminView';
     }
 
-    public static function set_90()
+    public static function set_180()
     {
-        return 90;
+        return 180;
     }
 }
 

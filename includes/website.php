@@ -66,7 +66,7 @@ class RY_WPI_Website
                 }
             }
         } else {
-            $rest_url = rtrim($rest_url, '/');
+            $rest_url = RY_WPI_Remote::build_rest_url($rest_url, '/');
             $rest = RY_WPI_Remote::get($rest_url, $website_ID);
             $rest_data = json_decode($rest);
             if (!empty($rest_data)) {
@@ -199,7 +199,7 @@ class RY_WPI_Website
         $all_category = [];
         $category_map = [];
         do {
-            $body = RY_WPI_Remote::get(add_query_arg($query_arg, $rest_url . '/wp/v2/categories'), $website_ID);
+            $body = RY_WPI_Remote::get(RY_WPI_Remote::build_rest_url($rest_url, '/wp/v2/categories', $query_arg), $website_ID);
             if (empty($body)) {
                 break;
             }

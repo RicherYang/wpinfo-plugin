@@ -7,12 +7,13 @@ class RY_WPI_Remote
     public static function get($url, $post_ID)
     {
         global $wpdb;
-        set_time_limit(90);
+        ini_set('memory_limit', '512M');
+        set_time_limit(180);
 
         self::$http_code = '';
         self::$error_messages = [];
         $response = wp_remote_get($url, [
-            'timeout' => 30,
+            'timeout' => 25,
             'httpversion' => '1.1',
             'user-agent' => 'Mozilla/5.0 (X11; CentOS; Linux x86_64) WordPress/' . get_bloginfo('version') . ' wpinfoShow/' . RY_WPI_VERSION
         ]);
@@ -37,5 +38,20 @@ class RY_WPI_Remote
         RY_WPI::create_table();
         $wpdb->insert($wpdb->prefix . 'remote_error', $error_data);
         return '';
+    }
+
+    public static function build_rest_url(string $rest_url, string $rest_path, $args = [])
+    {
+        if (strpos($rest_url, '?') === false) {
+            $rest_url = rtrim($rest_url, '/') . $rest_path;
+        } else {
+            $rest_url = remove_query_arg('rest_route', $rest_url);
+            $rest_url = add_query_arg(['rest_route' => $rest_path], $rest_url);
+        }
+        if (!empty($args)) {
+            $rest_url = add_query_arg($args, $rest_url);
+        }
+
+        return $rest_url;
     }
 }

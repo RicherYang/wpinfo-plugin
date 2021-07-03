@@ -138,10 +138,11 @@ class RY_WPI
 
         register_taxonomy('website-category', ['website'], [
             'label' => '網站 分類',
-            'public' => false,
+            'public' => true,
             'show_ui' => true,
             'show_in_menu' => true,
-            'hierarchical' => false
+            'hierarchical' => false,
+            'meta_box_cb' => false
         ]);
 
         register_post_status('abandoned', [
