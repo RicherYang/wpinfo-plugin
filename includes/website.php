@@ -126,6 +126,25 @@ class RY_WPI_Website
                 $plugins[] = sanitize_title(strtolower($plugin[1]));
             }
         }
+        $plugin_rest = get_the_terms($website_ID, 'plugin-rest');
+        if (!empty($plugin_rest)) {
+            $plugin_query = new WP_Query([
+                'post_type' => 'plugin',
+                'post_status' => ['publish'],
+                'tax_query' => [[
+                    'taxonomy' => 'plugin-rest',
+                    'field' => 'term_id',
+                    'terms' => array_column($plugin_rest, 'term_id'),
+                ]],
+                'posts_per_page' => -1
+            ]);
+
+            while ($plugin_query->have_posts()) {
+                $plugin_query->the_post();
+                $plugin = get_post();
+                $plugins[] = $plugin->post_name;
+            }
+        }
         $plugins = array_unique($plugins);
         self::add_use_info($website_ID, 'plugin', $plugins);
 

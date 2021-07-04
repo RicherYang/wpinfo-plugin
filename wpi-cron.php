@@ -23,12 +23,14 @@ class RY_WPI_Cron
     public static function set_scheduled_job()
     {
         if (!as_next_scheduled_action('wpi/reget_info')) {
-            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, MINUTE_IN_SECONDS, 'wpi/reget_info');
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 2 * MINUTE_IN_SECONDS, 'wpi/reget_info');
         }
 
+        /*
         if (!as_next_scheduled_action('wpi/reget_website_category')) {
             as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_website_category');
         }
+        */
     }
 
     public static function set_as_action_id($action_id)

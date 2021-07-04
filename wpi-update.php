@@ -21,8 +21,12 @@ final class RY_WPI_update
             RY_WPI::update_option('version', '2.0.5');
         }
 
-        if (version_compare($now_version, '2.0.14', '<')) {
-            RY_WPI::update_option('version', '2.0.14');
+        if (version_compare($now_version, '2.0.15', '<')) {
+            as_unschedule_all_actions('wpi/reget_info');
+            as_unschedule_all_actions('wpi/reget_website_category');
+
+            RY_WPI_Cron::set_scheduled_job();
+            RY_WPI::update_option('version', '2.0.15');
         }
     }
 }

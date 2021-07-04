@@ -18,6 +18,9 @@ class RY_WPI_Admin
             add_action('add_meta_boxes_theme', [__CLASS__, 'theme_meta_box']);
 
             add_action('post_action_abandoned', [__CLASS__, 'abandoned_website']);
+
+            add_action('manage_edit-plugin-rest_columns', [__CLASS__, 'add_plugin_rest_col']);
+            add_action('manage_plugin-rest_custom_column', [__CLASS__, 'show_plugin_rest_col'], 10, 3);
         }
     }
 
@@ -111,6 +114,46 @@ class RY_WPI_Admin
             wp_redirect(admin_url('post.php?post=' . $post_ID . '&action=edit'));
         }
         exit;
+    }
+
+    public static function add_plugin_rest_col($columns)
+    {
+        unset($columns['posts']);
+        $columns['plugin'] = '對應外掛';
+        $columns['posts'] = _x('Count', 'Number/count of items');
+        return $columns;
+    }
+
+    public static function show_plugin_rest_col($html, $column_name, $term_id)
+    {
+        static $plugin_query = null;
+        if ($plugin_query === null) {
+            $plugin_query = new WP_Query();
+        }
+
+        if ($column_name == 'plugin') {
+            $plugin_query->query([
+                'post_type' => 'plugin',
+                'post_status' => ['publish'],
+                'tax_query' => [[
+                    'taxonomy' => 'plugin-rest',
+                    'field' => 'term_id',
+                    'terms' => $term_id,
+                ]],
+                'posts_per_page' => -1
+            ]);
+            $list = [];
+            while ($plugin_query->have_posts()) {
+                $plugin_query->the_post();
+                $list[] = sprintf(
+                    '<a href="%s">%s</a>',
+                    get_edit_post_link(get_the_ID()),
+                    get_the_title()
+                );
+            }
+            echo implode('<br>', $list);
+        }
+        return $html;
     }
 }
 
