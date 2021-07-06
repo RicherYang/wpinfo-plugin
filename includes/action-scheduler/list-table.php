@@ -65,7 +65,7 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
     {
         $date = $log_entry->get_date();
         $date->setTimezone(self::$timezone);
-        return sprintf('<li><strong>%s</strong><br/>%s</li>', esc_html($date->format('Y-m-d H:i:s')), esc_html($log_entry->get_message()));
+        return sprintf('<li><strong>%s</strong> %s</li>', esc_html($date->format('Y-m-d H:i:s')), esc_html($log_entry->get_message()));
     }
 
     protected function get_schedule_display_string(ActionScheduler_Schedule $schedule)

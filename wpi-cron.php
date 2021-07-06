@@ -40,10 +40,12 @@ class RY_WPI_Cron
 
     public static function reget_info()
     {
-        $post_type = ['website', 'plugin', 'theme'];
-        $minute = new DateTime();
-        $minute = (int) $minute->format('i');
-        $post_type = $post_type[$minute % 3];
+        $post_type = ['website', 'plugin', '', 'website', 'theme', ''];
+        $time = floor(time() / 60);
+        $post_type = $post_type[$time % 6];
+        if (empty($post_type)) {
+            return;
+        }
 
         $query = new WP_Query();
         $post_list = $query->query([
