@@ -77,6 +77,23 @@
                 "min": 0,
                 "max": "",
                 "step": 1
+            },
+            {
+                "key": "field_60e5cbd9a6960",
+                "label": "更新時間",
+                "name": "info_update",
+                "type": "date_time_picker",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "Y-m-d H:i:s",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
             }
         ],
         "location": [
@@ -183,6 +200,23 @@
                 "min": 0,
                 "max": "",
                 "step": 1
+            },
+            {
+                "key": "field_60e5ce99d7f68",
+                "label": "更新時間",
+                "name": "info_update",
+                "type": "date_time_picker",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "Y-m-d H:i:s",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
             }
         ],
         "location": [
@@ -208,10 +242,24 @@
         "title": "網站 分類資訊",
         "fields": [
             {
-                "key": "field_60ddbf0f7d73a",
-                "label": "分類詳細資訊",
-                "name": "cat",
-                "type": "repeater",
+                "key": "field_60e56aba4644a",
+                "label": "分類資訊",
+                "name": "cat_list",
+                "type": "webcat",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                }
+            },
+            {
+                "key": "field_60e55487dffb2",
+                "label": "支援 REST 抓取",
+                "name": "support_cat",
+                "type": "true_false",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
@@ -220,113 +268,11 @@
                     "class": "",
                     "id": ""
                 },
-                "collapsed": "",
-                "min": 0,
-                "max": 0,
-                "layout": "table",
-                "button_label": "",
-                "sub_fields": [
-                    {
-                        "key": "field_60ddbf6b7d73b",
-                        "label": "分類",
-                        "name": "id",
-                        "type": "taxonomy",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "taxonomy": "website-category",
-                        "field_type": "select",
-                        "allow_null": 0,
-                        "add_term": 0,
-                        "save_terms": 0,
-                        "load_terms": 0,
-                        "return_format": "id",
-                        "multiple": 0
-                    },
-                    {
-                        "key": "field_60ddbfae7d73c",
-                        "label": "說明",
-                        "name": "desc",
-                        "type": "textarea",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "maxlength": "",
-                        "rows": 3,
-                        "new_lines": ""
-                    },
-                    {
-                        "key": "field_60dddeaee4453",
-                        "label": "網址",
-                        "name": "url",
-                        "type": "url",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": ""
-                    },
-                    {
-                        "key": "field_60dde25fe743d",
-                        "label": "文章數",
-                        "name": "count",
-                        "type": "number",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "8",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "min": "",
-                        "max": "",
-                        "step": ""
-                    },
-                    {
-                        "key": "field_60dde272e743e",
-                        "label": "上層分類",
-                        "name": "parent",
-                        "type": "taxonomy",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "taxonomy": "website-category",
-                        "field_type": "select",
-                        "allow_null": 0,
-                        "add_term": 0,
-                        "save_terms": 0,
-                        "load_terms": 0,
-                        "return_format": "id",
-                        "multiple": 0
-                    }
-                ]
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "支援",
+                "ui_off_text": "否"
             },
             {
                 "key": "field_60ddbdd6116a7",
@@ -542,6 +488,23 @@
                 "multiple": 1,
                 "return_format": "object",
                 "ui": 1
+            },
+            {
+                "key": "field_60e5c3ef165e3",
+                "label": "更新時間",
+                "name": "info_update",
+                "type": "date_time_picker",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "Y-m-d H:i:s",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
             }
         ],
         "location": [

@@ -29,11 +29,6 @@ class RY_WPI_Seo
                 $list['og:title'] = single_post_title('', false);
                 $list['og:url'] = esc_url(get_permalink());
                 $list['article:published_time'] = get_post_time('c', true);
-                $list['article:modified_time'] = get_post_modified_time('c', true);
-                $tags = get_the_tags();
-                if (is_array($tags)) {
-                    $list['article:tag'] = array_column($tags, 'name');
-                }
             }
         } else {
             if (is_post_type_archive()) {

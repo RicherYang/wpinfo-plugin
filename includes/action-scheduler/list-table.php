@@ -50,6 +50,15 @@ class RY_WPI_ActionScheduler_ListTable extends ActionScheduler_ListTable
         ];
     }
 
+    protected function get_table_classes()
+    {
+        $mode = get_user_setting('posts_list_mode', 'list');
+
+        $mode_class = esc_attr('table-view-' . $mode);
+
+        return array( 'widefat', 'striped', $mode_class, $this->_args['plural'] );
+    }
+
     public function column_log_entries(array $row)
     {
         $log_entries_html = '<ol>';

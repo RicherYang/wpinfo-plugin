@@ -9,9 +9,6 @@ class RY_WPI_Plugin
 
         $at_org = get_field('at_org', $plugin_ID);
         if ($at_org === false) {
-            wp_update_post([
-                'ID' => $plugin_ID
-            ]);
             return;
         }
 
@@ -27,23 +24,25 @@ class RY_WPI_Plugin
 
         $json_data = json_decode($json);
         if ($json_data && isset($json_data->name)) {
+            $update_data = [
+                'ID' => $plugin_ID,
+                'post_title' => $json_data->name,
+            ];
+            if (get_field('version', $plugin_ID) != $json_data->version) {
+                update_field('version', $json_data->version, $plugin_ID);
+                $update_data['post_modified'] = current_time('mysql');
+            }
+
             update_field('at_org', true, $plugin_ID);
             update_field('url', $json_data->homepage, $plugin_ID);
-            update_field('version', $json_data->version, $plugin_ID);
 
             if (isset($json_data->tags)) {
                 wp_set_post_tags($plugin_ID, (array) $json_data->tags);
             }
 
-            wp_update_post([
-                'ID' => $plugin_ID,
-                'post_title' => $json_data->name,
-            ]);
-            return ;
+            check_and_update_post($update_data);
+            update_field('info_update', current_time('mysql'), $plugin_ID);
         }
-        wp_update_post([
-            'ID' => $plugin_ID
-        ]);
     }
 
     public static function update_used_count($plugin_ID)

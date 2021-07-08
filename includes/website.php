@@ -12,16 +12,15 @@ class RY_WPI_Website
         }
         $html = RY_WPI_Remote::get($url, $website_ID);
 
-        $update_data = [
-            'ID' => $website_ID
-        ];
         if (empty($html)) {
             if (count(RY_WPI_Remote::$error_messages) == 1) {
                 if (substr(RY_WPI_Remote::$error_messages[0], 0, 37) == 'cURL error 6: Could not resolve host:') {
-                    $update_data['post_status'] = 'abandoned';
+                    wp_update_post([
+                        'ID' => $website_ID,
+                        'post_status' => 'abandoned'
+                    ]);
                 }
             }
-            wp_update_post($update_data);
             return;
         }
 
@@ -58,11 +57,13 @@ class RY_WPI_Website
                 $xml = @simplexml_load_string($rss);
                 if ($xml) {
                     self::get_website_theme_plugin($website_ID, $html, FILE_APPEND);
-                    $update_data['post_title'] = (string) $xml->channel->title;
-                    $update_data['post_excerpt'] = (string) $xml->channel->description;
-                    $update_data['post_status'] = 'publish';
-                    wp_update_post($update_data);
-                    return;
+                    check_and_update_post([
+                        'ID' => $website_ID,
+                        'post_title' => (string) $xml->channel->title,
+                        'post_excerpt' => (string) $xml->channel->description,
+                        'post_status' => 'publish'
+                    ]);
+                    update_field('info_update', current_time('mysql'), $website_ID);
                 }
             }
         } else {
@@ -73,6 +74,7 @@ class RY_WPI_Website
                 update_field('is_wp', true, $website_ID);
                 update_field('support_rest', true, $website_ID);
                 update_field('rest_url', $rest_url, $website_ID);
+                update_field('support_cat', true, $website_ID);
 
                 $rest_namespaces = [];
                 foreach ($rest_data->namespaces as $namespace) {
@@ -88,15 +90,15 @@ class RY_WPI_Website
                 wp_set_post_terms($website_ID, $rest_namespaces, 'plugin-rest');
 
                 self::get_website_theme_plugin($website_ID, $html);
-                $update_data['post_title'] = $rest_data->name;
-                $update_data['post_excerpt'] = $rest_data->description;
-                $update_data['post_status'] = 'publish';
-                wp_update_post($update_data);
-                return;
+                check_and_update_post([
+                    'ID' => $website_ID,
+                    'post_title' => (string) $rest_data->name,
+                    'post_excerpt' => (string) $rest_data->description,
+                    'post_status' => 'publish'
+                ]);
+                update_field('info_update', current_time('mysql'), $website_ID);
             }
         }
-        wp_update_post($update_data);
-        return;
     }
 
     public static function get_website_theme_plugin($website_ID, $html)
@@ -204,7 +206,7 @@ class RY_WPI_Website
         if (get_post_type($website_ID) != 'website') {
             return;
         }
-        if (get_field('support_rest', $website_ID) !== true) {
+        if (get_field('support_cat', $website_ID) !== true) {
             return;
         }
 
@@ -213,10 +215,14 @@ class RY_WPI_Website
         $query_arg = [
             'hide_empty' => false,
             'page' => 1,
-            'per_page' => 100
+            'per_page' => 50,
+            'orderby' => 'id',
+            'order' => 'asc'
         ];
         $all_category = [];
-        $category_map = [];
+        $category_map = [
+            0 => 0
+        ];
         do {
             $body = RY_WPI_Remote::get(RY_WPI_Remote::build_rest_url($rest_url, '/wp/v2/categories', $query_arg), $website_ID);
             if (empty($body)) {
@@ -225,7 +231,6 @@ class RY_WPI_Website
 
             $data = json_decode($body);
             if ($data && count($data)) {
-                $try_next = false;
                 foreach ($data as $category) {
                     $term_info = term_exists($category->name, 'website-category');
                     if (!$term_info) {
@@ -233,53 +238,44 @@ class RY_WPI_Website
                     }
                     if (!is_wp_error($term_info)) {
                         $term_id = (int) $term_info['term_id'];
-                        if (!isset($all_category[$term_id])) {
-                            $category_map[$category->id] = $term_id;
-                            $all_category[$term_id] = [
-                                'id' => $term_id,
-                                'desc' => $category->description,
-                                'url' => $category->link,
-                                'count' => $category->count,
-                                'parent' => $category->parent,
-                            ];
-                            $try_next = true;
+                        if (isset($all_category[$term_id])) {
+                            break;
                         }
+
+                        $category_map[$category->id] = $term_id;
+                        $all_category[$term_id] = [
+                            'parent_category_id' => $category->parent,
+                            'url' => $category->link,
+                            'description' => $category->description,
+                            'count' => $category->count
+                        ];
                     }
                 }
 
-                if ($try_next) {
-                    $query_arg['page'] += 1;
-                } else {
-                    break;
-                }
+                $query_arg['page'] += 1;
             } else {
                 break;
             }
         } while (true);
 
-        foreach ($all_category as $key => $category) {
-            if ($category['parent'] != 0) {
-                $all_category[$key]['parent'] = $category_map[$category['parent']] ?? 0;
+        global $wpdb;
+        $website_category_map =$wpdb->get_results("SELECT website_category_id, category_id FROM {$wpdb->prefix}website_category
+            WHERE website_id = $website_ID");
+        $website_category_map = array_column($website_category_map, 'website_category_id', 'category_id');
+        foreach ($all_category as $category_id => $category) {
+            $category['parent_category_id'] = $category_map[$category['parent_category_id']] ?? 0;
+            if (isset($website_category_map[$category_id])) {
+                $wpdb->update($wpdb->prefix . 'website_category', $category, [
+                    'website_category_id' => $website_category_map[$category_id]
+                ]);
+            } else {
+                $category['website_id'] = $website_ID;
+                $category['category_id'] = $category_id;
+                $wpdb->insert($wpdb->prefix . 'website_category', $category);
             }
         }
 
-        usort($all_category, function ($a, $b) {
-            if ($a['parent'] == $b['parent']) {
-                if ($a['count'] == $b['count']) {
-                    return $a['id'] <=> $b['id'];
-                }
-                return $a['count'] < $b['count'] ? 1 : -1;
-            }
-            return $a['parent'] > $b['parent'] ? 1 : -1;
-        });
-        foreach ($all_category as $key => $category) {
-            if ($category['parent'] == 0) {
-                $all_category[$key]['parent'] = '';
-            }
-        }
-
-        wp_set_post_terms($website_ID, array_column($all_category, 'id'), 'website-category');
+        wp_set_post_terms($website_ID, array_keys($all_category), 'website-category');
         update_field('cat_update', current_time('mysql'), $website_ID);
-        update_field('cat', $all_category, $website_ID);
     }
 }

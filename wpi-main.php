@@ -16,6 +16,7 @@ class RY_WPI
 
             include_once RY_WPI_PLUGIN_DIR . 'includes/composer/vendor/autoload.php';
 
+            include_once RY_WPI_PLUGIN_DIR . 'includes/functions.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/plugin.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/remote.php';
             include_once RY_WPI_PLUGIN_DIR . 'includes/sitemap.php';
@@ -27,6 +28,8 @@ class RY_WPI
 
             if (is_admin()) {
                 include_once RY_WPI_PLUGIN_DIR . 'includes/action-scheduler.php';
+                include_once RY_WPI_PLUGIN_DIR . 'includes/acf.php';
+
                 include_once RY_WPI_PLUGIN_DIR . 'includes/admin/tool.php';
                 include_once RY_WPI_PLUGIN_DIR . 'includes/admin/error-log.php';
 
@@ -138,7 +141,7 @@ class RY_WPI
 
         register_taxonomy('website-category', ['website'], [
             'label' => '網站 分類',
-            'public' => true,
+            'public' => false,
             'show_ui' => true,
             'show_in_menu' => true,
             'hierarchical' => false,
@@ -189,6 +192,18 @@ class RY_WPI
             get_date DATETIME NOT NULL default '0000-00-00 00:00:00',
             PRIMARY KEY  (remote_error_id),
             KEY post_id (post_id)
+        ) $charset_collate");
+
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}website_category (
+            website_category_id BIGINT UNSIGNED NOT NULL auto_increment,
+            website_id BIGINT UNSIGNED NOT NULL default 0,
+            category_id BIGINT UNSIGNED NOT NULL default 0,
+            parent_category_id BIGINT UNSIGNED NOT NULL default 0,
+            url VARCHAR(250) NOT NULL default '',
+            description TEXT NOT NULL,
+            count INT UNSIGNED NOT NULL,
+            PRIMARY KEY  (website_category_id),
+            KEY website_id (website_id)
         ) $charset_collate");
     }
 

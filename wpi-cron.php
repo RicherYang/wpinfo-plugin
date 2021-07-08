@@ -41,7 +41,7 @@ class RY_WPI_Cron
     public static function reget_info()
     {
         $post_type = ['website', 'plugin', '', 'website', 'theme', ''];
-        $time = floor(time() / 60);
+        $time = floor(time() / 120);
         $post_type = $post_type[$time % 6];
         if (empty($post_type)) {
             return;
@@ -51,7 +51,14 @@ class RY_WPI_Cron
         $post_list = $query->query([
             'post_type' => $post_type,
             'post_status' => 'publish',
-            'orderby' => 'modified',
+            'meta_query' => [
+                [
+                    'key' => 'info_update',
+                    'type' => 'DATETIME'
+                ]
+            ],
+            'meta_key' => 'info_update',
+            'orderby' => 'meta_value',
             'order' => 'ASC',
             'fields' => 'ids',
             'posts_per_page' => 1
