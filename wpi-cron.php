@@ -15,15 +15,19 @@ class RY_WPI_Cron
             add_action('wpi/get_plugin_info', ['RY_WPI_Plugin', 'get_basic_info']);
             add_action('wpi/get_theme_info', ['RY_WPI_Theme', 'get_basic_info']);
 
-            add_action('wpi/reget_info', [__CLASS__, 'reget_info']);
-            add_action('wpi/reget_website_category', [__CLASS__, 'reget_website_category']);
+            add_action('wpi/reget_website_info', [__CLASS__, 'reget_website_info']);
+            add_action('wpi/reget_wporg_info', [__CLASS__, 'reget_wporg_info']);
         }
     }
 
     public static function set_scheduled_job()
     {
-        if (!as_next_scheduled_action('wpi/reget_info')) {
-            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 2 * MINUTE_IN_SECONDS, 'wpi/reget_info');
+        if (!as_next_scheduled_action('wpi/reget_website_info')) {
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 5 * MINUTE_IN_SECONDS, 'wpi/reget_website_info');
+        }
+
+        if (!as_next_scheduled_action('wpi/reget_wporg_info')) {
+            as_schedule_recurring_action(time() + MINUTE_IN_SECONDS, 16 * MINUTE_IN_SECONDS, 'wpi/reget_wporg_info');
         }
 
         /*
@@ -38,18 +42,11 @@ class RY_WPI_Cron
         self::$action_id = $action_id;
     }
 
-    public static function reget_info()
+    public static function reget_website_info()
     {
-        $post_type = ['website', 'plugin', '', 'website', 'theme', ''];
-        $time = floor(time() / 120);
-        $post_type = $post_type[$time % 6];
-        if (empty($post_type)) {
-            return;
-        }
-
         $query = new WP_Query();
         $post_list = $query->query([
-            'post_type' => $post_type,
+            'post_type' => 'website',
             'post_status' => 'publish',
             'meta_query' => [
                 [
@@ -65,10 +62,43 @@ class RY_WPI_Cron
         ]);
         foreach ($post_list as $post_ID) {
             if (self::$action_id !== null) {
-                ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . $post_type . ': ' . $post_ID);
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'get website : ' . $post_ID);
             }
 
-            do_action('wpi/get_' . $post_type . '_info', (int) $post_ID);
+            RY_WPI_Website::get_basic_info($post_ID);
+        }
+    }
+
+    public static function reget_wporg_info()
+    {
+        $query = new WP_Query();
+        $post_list = $query->query([
+            'post_type' => ['plugin', 'theme'],
+            'post_status' => 'publish',
+            'meta_query' => [
+                [
+                    'key' => 'info_update',
+                    'type' => 'DATETIME'
+                ],
+                [
+                    'key' => 'at_org',
+                    'compare' => '=',
+                    'value' => '1'
+                ]
+            ],
+            'meta_key' => 'info_update',
+            'orderby' => 'meta_value',
+            'order' => 'ASC',
+            'fields' => 'ids',
+            'posts_per_page' => 1
+        ]);
+        foreach ($post_list as $post_ID) {
+            $post = get_post($post_ID);
+            if (self::$action_id !== null) {
+                ActionScheduler_Logger::instance()->log(self::$action_id, 'get ' . $post->post_type . ' : ' . $post->ID);
+            }
+
+            do_action('wpi/get_' . $post->post_type . '_info', $post->ID);
         }
     }
 

@@ -14,6 +14,8 @@ class RY_WPI_Theme
 
         $theme_slug = get_post_field('post_name', $theme_ID, 'raw');
         $json = RY_WPI_Remote::get('https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=' . $theme_slug, $theme_ID);
+        update_field('info_update', current_time('mysql'), $theme_ID);
+
         if (empty($json)) {
             update_field('at_org', false, $theme_ID);
             wp_update_post([
@@ -40,7 +42,6 @@ class RY_WPI_Theme
             }
 
             check_and_update_post($update_data);
-            update_field('info_update', current_time('mysql'), $theme_ID);
         }
     }
 

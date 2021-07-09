@@ -14,6 +14,8 @@ class RY_WPI_Plugin
 
         $plugin_slug = get_post_field('post_name', $plugin_ID, 'raw');
         $json = RY_WPI_Remote::get('https://api.wordpress.org/plugins/info/1.0/' . $plugin_slug . '.json', $plugin_ID);
+        update_field('info_update', current_time('mysql'), $plugin_ID);
+
         if (empty($json)) {
             update_field('at_org', false, $plugin_ID);
             wp_update_post([
@@ -41,7 +43,6 @@ class RY_WPI_Plugin
             }
 
             check_and_update_post($update_data);
-            update_field('info_update', current_time('mysql'), $plugin_ID);
         }
     }
 

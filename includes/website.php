@@ -11,6 +11,7 @@ class RY_WPI_Website
             $is_wp = false;
         }
         $html = RY_WPI_Remote::get($url, $website_ID);
+        update_field('info_update', current_time('mysql'), $website_ID);
 
         if (empty($html)) {
             if (count(RY_WPI_Remote::$error_messages) == 1) {
@@ -63,7 +64,6 @@ class RY_WPI_Website
                         'post_excerpt' => (string) $xml->channel->description,
                         'post_status' => 'publish'
                     ]);
-                    update_field('info_update', current_time('mysql'), $website_ID);
                 }
             }
         } else {
@@ -96,7 +96,6 @@ class RY_WPI_Website
                     'post_excerpt' => (string) $rest_data->description,
                     'post_status' => 'publish'
                 ]);
-                update_field('info_update', current_time('mysql'), $website_ID);
             }
         }
     }
