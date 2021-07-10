@@ -69,6 +69,7 @@ class RY_WPI_Website
         } else {
             $rest_url = RY_WPI_Remote::build_rest_url($rest_url, '/');
             $rest = RY_WPI_Remote::get($rest_url, $website_ID);
+            $rest = preg_replace('/[[:^print:]]/', '', $rest);
             $rest_data = json_decode($rest);
             if (!empty($rest_data)) {
                 update_field('is_wp', true, $website_ID);
@@ -223,14 +224,15 @@ class RY_WPI_Website
             0 => 0
         ];
         do {
-            $body = RY_WPI_Remote::get(RY_WPI_Remote::build_rest_url($rest_url, '/wp/v2/categories', $query_arg), $website_ID);
-            if (empty($body)) {
+            $json = RY_WPI_Remote::get(RY_WPI_Remote::build_rest_url($rest_url, '/wp/v2/categories', $query_arg), $website_ID);
+            if (empty($json)) {
                 break;
             }
 
-            $data = json_decode($body);
-            if ($data && count($data)) {
-                foreach ($data as $category) {
+            $json = preg_replace('/[[:^print:]]/', '', $json);
+            $json_data = json_decode($json);
+            if ($json_data && count($json_data)) {
+                foreach ($json_data as $category) {
                     $term_info = term_exists($category->name, 'website-category');
                     if (!$term_info) {
                         $term_info = wp_insert_term($category->name, 'website-category');

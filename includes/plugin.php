@@ -24,6 +24,7 @@ class RY_WPI_Plugin
             return;
         }
 
+        $json = preg_replace('/[[:^print:]]/', '', $json);
         $json_data = json_decode($json);
         if ($json_data && isset($json_data->name)) {
             $update_data = [

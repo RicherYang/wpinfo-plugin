@@ -1,6 +1,8 @@
 <?php
 class RY_WPI_Seo
 {
+    protected static $ld_json = [];
+
     private static $initiated = false;
 
     public static function init()
@@ -9,6 +11,15 @@ class RY_WPI_Seo
             self::$initiated = true;
 
             add_action('wp_head', [__CLASS__, 'basic_og']);
+            add_action('wp_footer', [__CLASS__, 'ld_json'], 999);
+
+            self::$ld_json[] = [
+                '@context' => 'https://schema.org',
+                '@type' => 'WebSite',
+                'name' => get_bloginfo('name'),
+                'url' => home_url(),
+                'inLanguage' => 'zh-TW',
+            ];
         }
     }
 
@@ -49,6 +60,13 @@ class RY_WPI_Seo
             } else {
                 echo '<meta property="' . $property . '" content="' . $content . '" />' . "\n";
             }
+        }
+    }
+
+    public static function ld_json()
+    {
+        foreach (self::$ld_json as $json) {
+            echo '<script type="application/ld+json">' . json_encode($json, JSON_UNESCAPED_SLASHES) . '</script>';
         }
     }
 }
